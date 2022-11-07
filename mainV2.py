@@ -8,4 +8,5 @@ mydriver = mydriver()
 driver = mydriver.start(profile)
 
 driver.get('https://browserleaks.com/client-hints')
-driver.quit()
+
+driver.quit()  # Execute on the End!
