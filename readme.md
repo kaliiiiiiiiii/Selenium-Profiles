@@ -164,7 +164,6 @@ Please feel free to open an issue or fork!
     * Android
     * Windows
   * added navigator2profile, driver.get_profile()
-  * 
 * googleV1
   * first version as importable file
 
@@ -189,8 +188,9 @@ I am not responsible what you use the code for!
 
 Inspiration, code snippets, etc.
 * [README-Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
-* [Selenium_Stealth](https://github.com/diprajpatra/selenium-stealth)
+* [Selenium-Stealth](https://github.com/diprajpatra/selenium-stealth)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
-* [Webdriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
+* [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
+* [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
