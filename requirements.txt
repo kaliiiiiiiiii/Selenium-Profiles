@@ -1,3 +1,4 @@
 selenium==4.6  # last Version with TouchActions implemented
 numpy~=1.23.3
 scipy~=1.9.1
+undetected-chromedriver~=3.1.6
