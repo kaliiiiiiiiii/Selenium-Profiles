@@ -101,7 +101,7 @@ Example Profile:
 }
 ```
 
-to export self:
+to export profile:
   ```
   from patched_driverV2 import navigator2profile
   
