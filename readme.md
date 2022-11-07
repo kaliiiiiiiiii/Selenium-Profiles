@@ -44,15 +44,6 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will be flooded! (Windows)
 
-## Google-tools
-
-```
-from googleV1 import google
-
-google = google(driver)
-google.start_page()
-```
-
 ## Profiles
 
 Example Profile: 

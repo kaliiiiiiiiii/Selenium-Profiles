@@ -8,5 +8,6 @@ mydriver = mydriver()
 driver = mydriver.start(profile)
 
 driver.get('https://browserleaks.com/client-hints')
+driver.get('https://nowsecure.nl/')
 
 driver.quit()  # Execute on the End!
