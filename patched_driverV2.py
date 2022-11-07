@@ -15,13 +15,18 @@ class driver:
     def start(self, profile):
         self.profile = profile
         mobile = profile['device']['mobile']
+
         if not profile["plugins"]["selenium-wire"] is False:
             warnings.warn("Selenium-wire not supported yet, ignoring")
+
         options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
+
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
+        options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
         options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
             "platform"])  # todo does it have an effect?
+
         if not profile["browser"]["sandbox"]:
             options.add_argument('--no-sandbox ')
         if profile["browser"]["touch_events"]:
@@ -31,12 +36,6 @@ class driver:
             options.add_argument('--force-app-mode')
         if profile["device"]["touch_device"]:
             options.add_argument("--touch-events=enabled")  # enable touch events
-        if not profile["plugins"]["modheader"] is False:
-            if not profile["browser"]["inkognito"]:
-                warnings.warn('Only use modheader when additional Headers needed!')
-                options.add_argument('--load-extension=' + profile["plugins"]["modheader"])
-            else:
-                warnings.warn('Modheader not supported in Incognito!, disabling')
         if profile["browser"]["inkognito"]:
             options.add_argument("--incognito")
         if not profile["device"]['hardware_accel']:
@@ -48,7 +47,6 @@ class driver:
             options.add_argument('--enable-features=enable-nacl')
             options.add_argument('--use-mobile-user-agent')
             options.add_argument('--enable-touchview')
-        options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
         if profile["browser"]["proxy"] is not None:
             options.add_argument(f'--proxy-server=socks5://' + profile["browser"]["proxy"])
             print('proxy= "' + profile["browser"]["proxy"] + '"')
@@ -58,26 +56,40 @@ class driver:
         if len(profile["chromeoptions"]["capabilities"]) > 0:
             for cap in profile["chromeoptions"]["capabilities"]:
                 options.set_capability(cap)
+
         if not profile["plugins"]["modheader"] is False:
+            if not profile["browser"]["inkognito"]:
+                warnings.warn('Only use modheader when additional Headers needed!')
+                options.add_argument('--load-extension=' + profile["plugins"]["modheader"])
+            else:
+                warnings.warn('Modheader not supported in Incognito!, disabling')
+
+        ## Actual start of chrome
+        if not profile["plugins"]["modheader"] is False:  # for using ModHeader extension
             from selenium.webdriver.chrome.service import Service
             from webdriver_manager.chrome import ChromeDriverManager
+
             self.driver = uc.Chrome(use_subprocess=True, options=options,
                                     service=Service(ChromeDriverManager().install()),
-                                    # needed when using ModHeader extension
                                     keep_alive=True)  # start undetected_chromedriver
-        else:
+        else:  # ModHeader not needed
             self.driver = uc.Chrome(use_subprocess=True, options=options,
                                     keep_alive=True)  # start undetected_chromedriver
+
         self.driver.get('http://icanhazip.com/')  # wait browser to start
+
         x = self.driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
         self.set_touch(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
         self.set_emulation(profile["device"]["emulation"], enabled=mobile)
         self.pointer_as_touch(mobile, profile["browser"]["pointer_as_touch"])
         self.set_darkmode(enabled=profile["browser"]["darkmode"], mobile=mobile)
         self.set_useragent(profile["device"]["agent_override"])
+
         if len(profile["cdp_cmd"]) > 0:
             for cmd in profile["cdp_cmd"]:
                 self.driver.execute_cdp_cmd(cmd[0], cmd[1])
+
+        # Return actual driver
         return self.driver
 
     def set_touch(self, enabled=True, maxpoints=5):
@@ -199,4 +211,3 @@ def navigator2profile(navigator, filename=None):
         return empty_profile
     else:
         raise ValueError("navigator was None!")
-

@@ -7,8 +7,8 @@ profile = profile["Android"]  # yet supported: "Android", "Windows"
 mydriver = mydriver()
 driver = mydriver.start(profile)
 
-driver.get('https://browserleaks.com/client-hints')
 driver.get('https://nowsecure.nl/')
+driver.get('https://browserleaks.com/client-hints')
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
