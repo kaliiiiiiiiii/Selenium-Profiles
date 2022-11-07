@@ -148,6 +148,7 @@ def sendkeys(driver, keys):  # send keys without specific Element
     actions.perform()
 
 
+# exported "navigator" to Profile
 def navigator2profile(navigator, filename=None):
     from utils import write_json
 
@@ -163,6 +164,7 @@ def navigator2profile(navigator, filename=None):
             navigator["metrics"]["angle"] = replace_none(navigator["metrics"]["angle"], 0)
 
             empty_profile = {}
+            # Map & convert Values to Profile
             empty_profile.update({'device': {'mobile': navigator["useragentdata"]["mobile"],
                                              'model': '',
                                              'language': navigator["language"],
