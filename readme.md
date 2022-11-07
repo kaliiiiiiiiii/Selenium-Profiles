@@ -16,7 +16,7 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
 
-If you want to use ModHeader Chrome Extension:
+If you want to use ModHeader Chrome Extension (not supported yet):
 * [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in your root directory
 
 ### Installing
@@ -104,14 +104,14 @@ to export profile:
 
 ## Help
 
-Any advise for common problems or issues.
+Please feel free to open an issue or fork!
 ```
 # no helper info yet
 ```
 
 ## Known Bugs
 
-- click_as_touch makes code hung
+- click_as_touch makes automation hung
 
 ## Todo // Features
 
