@@ -10,9 +10,9 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 
 ### Dependencies
 
-* Python3
-* Windows 10
-* [chromedriver.exe](https://chromedriver.chromium.org/downloads) in your root directory
+* [Python3](https://www.python.org/downloads/)
+* Windows 10 (Linux not tested yet)
+* [chromedriver.exe](https://chromedriver.chromium.org/downloads) in your root directory (already in this Repository)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
 
@@ -136,7 +136,10 @@ Please feel free to open an issue or fork!
 - [ ] plugins support
 - [ ] Add helper info
 - [ ] Add License
-- [ ] support for Jupyter Notebook
+- [ ] support for 
+  - [x] Windows
+  - [ ] Jupyter Notebook (Already prototype)
+  - [ ] Linux
 - [ ] installer.py script
 
 
