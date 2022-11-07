@@ -38,6 +38,9 @@ mydriver = mydriver()
 driver = mydriver.start(self)
 
 driver.get('https://browserleaks.com/client-hints')
+
+input("Press ENTER to exit: ")
+driver.quit()  # Execute on the End!
 ```
 
 Don't forget to execute
