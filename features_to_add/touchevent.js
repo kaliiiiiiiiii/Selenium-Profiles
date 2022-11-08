@@ -29,3 +29,5 @@
             sendTouchEvent((rect.left + rect.right)/2 + x, (rect.top + rect.bottom)/2 + y, ele, 'touchmove');
             sendTouchEvent((rect.left + rect.right)/2 + x, (rect.top + rect.bottom)/2 + y,  ele, 'touchend');
         }
+
+//https://github.com/b71db892/AutoCheckInUESTC/blob/4ea4d18e639ff6c16edd01186bc0b96add7d0724/driver.py
