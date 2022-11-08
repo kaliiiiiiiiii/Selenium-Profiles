@@ -204,7 +204,7 @@ def navigator2profile(navigator, filename=None):
                                                               'y': navigator["metrics"]["height"]}},
                                   'chromeoptions': {'arguments': [], 'capabilities': []},
                                   'cdp_cmd': [],
-                                  'plugins': {'selenium-wire': False, 'modheader': False, 'stealth': False}})
+                                  'plugins': {'selenium-wire': False, 'modheader': False, 'stealth': False, "buster": False}})
         except:
             traceback.print_exc()
             raise ValueError("Navigator not converted correctly!")

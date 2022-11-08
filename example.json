@@ -37,6 +37,7 @@
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
-      "stealth": false
+      "stealth": false,
+      "buster": false
     }
 }

@@ -37,7 +37,8 @@
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
-      "stealth": false
+      "stealth": false,
+      "buster": false
     }
 },
   "IOS": {},
@@ -80,7 +81,8 @@
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
-      "stealth": false
+      "stealth": false,
+      "buster": false
     }
 },
   "Linux": {},

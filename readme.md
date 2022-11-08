@@ -90,7 +90,8 @@ Example Profile:
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
-      "stealth": false
+      "stealth": false,
+      "captcha": false
     }
 }
 ```
@@ -123,7 +124,6 @@ Please feel free to open an issue or fork!
 - [x] export browser profile
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
-    - [ ] implement [touchevent.js](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/features_to_add/touchevent.js)
 - [x] default metrics
   - [x] Android
   - [x] Windows
@@ -136,8 +136,12 @@ Please feel free to open an issue or fork!
     - [x] useragent, profile_export (no error)
       - [x] Windows
       - [x] Android
-  - [ ] test_google.py
+  - [ ] test_google.py ("google.py" not released yet)
 - [ ] plugins support
+  - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
+  - [ ] [modheader]((https://github.com/modheader/modheader_selenium))
+  - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
+  - [ ] [buster extension](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
 - [ ] Add helper info
 - [ ] Add License
 - [ ] support for 
@@ -168,7 +172,7 @@ Please feel free to open an issue or fork!
     * Android
     * Windows
   * added navigator2profile, driver.get_profile()
-* googleV1
+* googleV1 (not released yet!)
   * first version as importable file
 
 ## License
@@ -191,11 +195,12 @@ I am not responsible what you use the code for!!! Also no warranty!
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
+
 * [README-Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
 * [Selenium-Stealth](https://github.com/diprajpatra/selenium-stealth)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
-* [touchevent_js](https://github.com/b71db892/AutoCheckInUESTC/blob/4ea4d18e639ff6c16edd01186bc0b96add7d0724/driver.py)
+* [captcha_bypass](https://github.com/teal33t/captcha_bypass)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
