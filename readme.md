@@ -196,5 +196,6 @@ Inspiration, code snippets, etc.
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
+* [touchevent_js](https://github.com/b71db892/AutoCheckInUESTC/blob/4ea4d18e639ff6c16edd01186bc0b96add7d0724/driver.py)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
