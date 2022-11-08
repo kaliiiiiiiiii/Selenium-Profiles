@@ -3,6 +3,7 @@ import undetected_chromedriver as uc  # undetected chromedriver
 from selenium.webdriver.common.action_chains import ActionChains  # Type text without specific Element
 from utils import read  # read txt files
 import traceback  # print exception
+from typing import Dict, List
 
 
 class driver:
@@ -12,7 +13,7 @@ class driver:
         self.driver = None
         self.js_return_navigator = read('get_navigator.js')[0]  # for exporting javascript Variables
 
-    def start(self, profile):
+    def start(self, profile: Dict[str, dict or list]):
         self.profile = profile
         mobile = profile['device']['mobile']
 
@@ -50,6 +51,7 @@ class driver:
         if profile["browser"]["proxy"] is not None:
             options.add_argument(f'--proxy-server=socks5://' + profile["browser"]["proxy"])
             print('proxy= "' + profile["browser"]["proxy"] + '"')
+
         if len(profile["chromeoptions"]["arguments"]) > 0:
             for arg in profile["chromeoptions"]["arguments"]:
                 options.add_argument(arg)
@@ -78,6 +80,10 @@ class driver:
 
         self.driver.get('http://icanhazip.com/')  # wait browser to start
 
+        if len(profile["cdp_cmd"]) > 0:
+            for args in profile["cdp_cmd"]:
+                self.driver.execute_cdp_cmd(args[0], args[1])
+
         x = self.driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
         self.set_touch(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
         self.set_emulation(profile["device"]["emulation"], enabled=mobile)
@@ -92,18 +98,18 @@ class driver:
         # Return actual driver
         return self.driver
 
-    def set_touch(self, enabled=True, maxpoints=5):
+    def set_touch(self, enabled=True, maxpoints=5) -> (bool, int):
         return self.driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
                                            {'enabled': enabled, 'maxTouchPoints': maxpoints})  # already set in options
 
-    def set_emulation(self, emulation, enabled=True):
+    def set_emulation(self, emulation, enabled=True) -> (Dict[str, int or Dict[str, str or int or float]], bool):
         emulation.update({"mobile": enabled})
         if enabled:
             warnings.warn('disabling emulation not supported')
             x = self.driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
             return self.driver.execute_cdp_cmd('Page.setDeviceMetricsOverride', emulation), x
 
-    def pointer_as_touch(self, mobile, enabled=True):
+    def pointer_as_touch(self, mobile, enabled=True) -> (bool, bool):
         if mobile:
             config = 'mobile'
         else:
@@ -113,23 +119,23 @@ class driver:
         return self.driver.execute_cdp_cmd('Emulation.setEmitTouchEventsForMouse', {'enabled': enabled,
                                                                                     'configuration': config})  # executes, but then takes long [maybe check if success?]
 
-    def set_darkmode(self, enabled=True, mobile=True):
+    def set_darkmode(self, enabled=True, mobile=True) -> (bool, bool):
         if not mobile:
             warnings.warn('darkmode might look weird without mobile_view!')
         else:
             return self.driver.execute_cdp_cmd('Emulation.setAutoDarkModeOverride',
                                                {'enabled': enabled})
 
-    def set_useragent(self, useragent):
+    def set_useragent(self, useragent) -> Dict[str, str or Dict[str, str or bool or List[Dict[str, str]]]]:
         x = self.driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
-        return self.driver.execute_cdp_cmd('Network.setUserAgentOverride', useragent), x
+        return self.driver.execute_cdp_cmd("Network.setUserAgentOverride", useragent), x
 
     def start_no_profile(self):
         options = uc.ChromeOptions()
         options.add_argument("--incognito")
         return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
-    def get_profile(self, filename=None):
+    def get_profile(self, filename=None) -> str:
         navigator = self.get_navigator()
         return navigator2profile(navigator, filename=filename)
 
@@ -149,7 +155,7 @@ def sendkeys(driver, keys):  # send keys without specific Element
 
 
 # exported "navigator" to Profile
-def navigator2profile(navigator, filename=None):
+def navigator2profile(navigator: dict, filename: str = None):
     from utils import write_json
 
     def replace_none(var, replace_with):
@@ -204,7 +210,8 @@ def navigator2profile(navigator, filename=None):
                                                               'y': navigator["metrics"]["height"]}},
                                   'chromeoptions': {'arguments': [], 'capabilities': []},
                                   'cdp_cmd': [],
-                                  'plugins': {'selenium-wire': False, 'modheader': False, 'stealth': False, "buster": False}})
+                                  'plugins': {'selenium-wire': False, 'modheader': False, 'stealth': False,
+                                              "buster": False}})
         except:
             traceback.print_exc()
             raise ValueError("Navigator not converted correctly!")

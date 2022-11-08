@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By  # locate elements
 mydriver = mydriver()
 
 
-def test_driver(choose, headless=True):
+def test_driver(choose: str, headless: bool = True):
     profile = read_json(filename='default.json')
     global mydriver
     testprofile = profile[choose]
@@ -26,13 +26,15 @@ class Driver(unittest.TestCase):
     def test_windows(self):
         global mydriver
         output = test_driver('Windows', headless=True)
-        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'], output["useragent"])  # add assertion here
+        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'],
+                         output["useragent"])  # add assertion here
 
     # noinspection PyGlobalUndefined
     def test_android(self):
         global mydriver
         output = test_driver('Android', headless=False)
-        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'], output["useragent"])  # add assertion here
+        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'],
+                         output["useragent"])  # add assertion here
 
 
 if __name__ == '__main__':

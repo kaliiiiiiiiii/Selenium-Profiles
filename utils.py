@@ -2,7 +2,7 @@ import json
 import warnings
 
 
-def write(lst, filename='out', encoding="utf-8"):  # write list to textfile line by line
+def write(lst: any, filename: str = 'out', encoding: str = "utf-8"):  # write list to textfile line by line
     if type(lst) is dict:
         filename = filename + '.json'
     else:
@@ -21,16 +21,16 @@ def write(lst, filename='out', encoding="utf-8"):  # write list to textfile line
     print('Wrote to "' + filename + '"')
 
 
-def read(filename, encoding="utf-8"):
+def read(filename: str, encoding: str = "utf-8"):
     with open(filename, encoding=encoding) as f:
         return f.readlines()
 
 
-def read_json(filename='example.json', encoding="utf-8"):
+def read_json(filename: str = 'example.json', encoding: str = "utf-8"):
     with open(filename, 'r', encoding=encoding) as f:
         return json.load(f)
 
 
-def write_json(obj, filename="out.json", encoding="utf-8"):
+def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "utf-8"):
     with open(filename, "w", encoding=encoding) as outfile:
         json.dump(obj, outfile)
