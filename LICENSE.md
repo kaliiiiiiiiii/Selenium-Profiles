@@ -13,4 +13,8 @@ This work is licensed under a
 
 ## Disclaimer
 
-I am not responsible what you use the code for!!!
+I am not responsible what you use the code for!!! Also no warranty!
+
+## Author
+
+[Aurin Aegerter](mailto:aurin.aegerter@stud.gymthun.ch)
