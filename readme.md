@@ -123,6 +123,7 @@ Please feel free to open an issue or fork!
 - [x] export browser profile
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
+    - [ ] implement [touchevent.js](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/features_to_add/touchevent.js)
 - [x] default metrics
   - [x] Android
   - [x] Windows
