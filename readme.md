@@ -185,7 +185,7 @@ This work is licensed under a
 
 ## Disclaimer
 
-I am not responsible what you use the code for!
+I am not responsible what you use the my code for!
 
 ## Acknowledgments
 
