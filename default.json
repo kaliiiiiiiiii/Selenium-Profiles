@@ -28,13 +28,13 @@
                     "wow64": false}
     }},
   "browser": {
-      "sandbox": true, "inkognito": true, "proxy": null, "darkmode": false,
+      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": false,
       "pointer_as_touch": false, "mobile_view":  true, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 700}
     },
   "chromeoptions": {"arguments": [], "capabilities": []},
   "cdp_cmd": [],
-  "evaluate__on_new_document": "Object.defineProperty(navigator, 'webdriver', {get: () => 5})",
+  "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
@@ -73,13 +73,13 @@
                     "wow64": false}
     }},
   "browser": {
-      "sandbox": true, "inkognito": true, "proxy": null, "darkmode": true,
+      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": false,
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 1024, "y": 648}
     },
   "chromeoptions": {"arguments": [], "capabilities": []},
   "cdp_cmd": [],
-  "evaluate__on_new_document": null,
+  "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
       "modheader":false,

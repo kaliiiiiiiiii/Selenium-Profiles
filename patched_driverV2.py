@@ -3,7 +3,8 @@ import undetected_chromedriver as uc  # undetected chromedriver
 from selenium.webdriver.common.action_chains import ActionChains  # Type text without specific Element
 from utils import read  # read txt files
 import traceback  # print exception
-from typing import Dict, List
+from typing import Dict, List  # define types in functions
+import json  # python dict to js
 
 
 def sendkeys(driver, keys):  # send keys without specific Element
@@ -12,8 +13,10 @@ def sendkeys(driver, keys):  # send keys without specific Element
     actions.perform()
 
 
+# noinspection PyPep8Naming,GrazieInspection
 class driver(object):
     def __init__(self):
+        # initial attributes
         self.returnnavigator = None
         self.profile = None
         self.driver = None
@@ -28,14 +31,22 @@ class driver(object):
 
         options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
 
+        # always used options
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
         options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
             "platform"])  # todo does it have an effect?
+        options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
+        options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
+        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        # options.add_experimental_option('useAutomationExtension', False)
 
+        # options-manager
         if not profile["browser"]["sandbox"]:
-            options.add_argument('--no-sandbox ')
+            options.arguments.extend(["--no-sandbox", "--test-type"])
+        if profile["browser"]["headless"]:
+            options.add_argument('--headless')
         if profile["browser"]["touch_events"]:
             options.add_argument("--touch-events=enabled")
         if profile["browser"]["app"]:
@@ -58,13 +69,15 @@ class driver(object):
             options.add_argument(f'--proxy-server=socks5://' + profile["browser"]["proxy"])
             print('proxy= "' + profile["browser"]["proxy"] + '"')
 
+        # additional options and capabilities from profile
         if len(profile["chromeoptions"]["arguments"]) > 0:
             for arg in profile["chromeoptions"]["arguments"]:
                 options.add_argument(arg)
         if len(profile["chromeoptions"]["capabilities"]) > 0:
             for cap in profile["chromeoptions"]["capabilities"]:
-                options.set_capability(cap)
+                options.set_capability(cap[0], cap[1])
 
+        # ModHeader extension options
         if not profile["plugins"]["modheader"] is False:
             if not profile["browser"]["inkognito"]:
                 warnings.warn('Only use modheader when additional Headers needed!')
@@ -72,7 +85,7 @@ class driver(object):
             else:
                 warnings.warn('Modheader not supported in Incognito!, disabling')
 
-        ## Actual start of chrome
+        # Actual start of chrome
         if not profile["plugins"]["modheader"] is False:  # for using ModHeader extension
             from selenium.webdriver.chrome.service import Service
             from webdriver_manager.chrome import ChromeDriverManager
@@ -86,28 +99,31 @@ class driver(object):
 
         self.driver.get('http://icanhazip.com/')  # wait browser to start
 
-        if len(profile["cdp_cmd"]) > 0:
-            for args in profile["cdp_cmd"]:
-                self.driver.execute_cdp_cmd(args[0], args[1])
+        # initial property
+        self.driver.evaluate_on_document_identifiers = {}
 
+        # functions to execute
         x = self.driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
         self.set_touch(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
         self.set_emulation(profile["device"]["emulation"], enabled=mobile)
         self.pointer_as_touch(mobile, profile["browser"]["pointer_as_touch"])
         self.set_darkmode(enabled=profile["browser"]["darkmode"], mobile=mobile)
         self.set_useragent(profile["device"]["agent_override"])
+        self.get_navigator()
 
+        # additional cdp_cmd commands from profile
         if len(profile["cdp_cmd"]) > 0:
-            for cmd in profile["cdp_cmd"]:
-                self.driver.execute_cdp_cmd(cmd[0], cmd[1])
+            for args in profile["cdp_cmd"]:
+                self.driver.execute_cdp_cmd(args[0], args[1])
 
-        self.driver.evaluate_on_document_identifiers = {}
+        if not (profile["evaluate_on_new_document"] is None):
+            print('identifier for ""evaluate_on_new_document" in profile is :' + str(
+                self.evaluate_on_new_document(profile["evaluate_on_new_document"])))
 
-        if not (profile["evaluate__on_new_document"] is None):
-            print("first_identifier = "+str(self.evaluate_on_new_document(profile["evaluate__on_new_document"])))
+        # set webdriver js var to false
+        self.define_prop_on_new_document("navigator", "webdriver", False)
 
         # add my functions to driver
-
         self.driver.set_touch = self.set_touch
         self.driver.set_emulation = self.set_emulation
         self.driver.pointer_as_touch = self.pointer_as_touch
@@ -125,10 +141,11 @@ class driver(object):
         # Return actual driver
         return self.driver
 
-    def set_touch(self, enabled=True, maxpoints=5) -> (bool, int):
+    def set_touch(self, enabled=True, maxpoints=5) -> (bool, int):  # set touch options
         return self.driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
                                            {'enabled': enabled, 'maxTouchPoints': maxpoints})  # already set in options
 
+    # set emulation props, disabling not supported!
     def set_emulation(self, emulation, enabled=True) -> (Dict[str, int or Dict[str, str or int or float]], bool):
         emulation.update({"mobile": enabled})
         if enabled:
@@ -136,6 +153,7 @@ class driver(object):
             x = self.driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
             return self.driver.execute_cdp_cmd('Page.setDeviceMetricsOverride', emulation), x
 
+    # set pointer as touch (makes code hung)
     def pointer_as_touch(self, mobile, enabled=True) -> (bool, bool):
         if mobile:
             config = 'mobile'
@@ -146,6 +164,7 @@ class driver(object):
         return self.driver.execute_cdp_cmd('Emulation.setEmitTouchEventsForMouse', {'enabled': enabled,
                                                                                     'configuration': config})  # executes, but then takes long [maybe check if success?]
 
+    # set force darkmode
     def set_darkmode(self, enabled=True, mobile=True) -> (bool, bool):
         if not mobile:
             warnings.warn('darkmode might look weird without mobile_view!')
@@ -153,32 +172,42 @@ class driver(object):
             return self.driver.execute_cdp_cmd('Emulation.setAutoDarkModeOverride',
                                                {'enabled': enabled})
 
+    # set useragent
     def set_useragent(self, useragent) -> Dict[str, str or Dict[str, str or bool or List[Dict[str, str]]]]:
         x = self.driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
+        # noinspection PyTypeChecker
         return self.driver.execute_cdp_cmd("Network.setUserAgentOverride", useragent), x
 
-    def start_no_profile(self):
+    def start_no_profile(self):  # start minimal driver without profile
         options = uc.ChromeOptions()
         options.add_argument("--incognito")
         return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
-    def evaluate_on_new_document(self, js: str):
-        identifier = int(self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": js})["identifier"])
+    def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
+        identifier = int(
+            self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": js})["identifier"])
         self.driver.evaluate_on_document_identifiers.update({identifier: js})
         return identifier
 
+    # remove js evaluation  on every new page for specific script
     def remove_evaluate_on_document(self, identifier: int):
         del self.driver.evaluate_on_document_identifiers[identifier]
         return self.driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
 
-    def define_prop_on_new_document(self, var, prop, val) -> (str, str, str):
-        self.evaluate_on_new_document("Object.defineProperty("+var+", "+prop+", {get: () => "+val+"})")
+    # define var.property for javascript
+    def define_prop_on_new_document(self, var, prop, val) -> (str, str, any):
+        self.evaluate_on_new_document(
+            "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {get: () => " + json.dumps(val) + "})")
 
+    # noinspection PyTypeChecker
+    # get profile from current driver
     def get_profile(self, filename: str or None = None) -> str:
         navigator = self.get_navigator()
         return navigator2profile(navigator, filename=filename)
 
+    # get "navigator", object convertible to profile with "navigator2profile"
     def get_navigator(self):
+        # noinspection PyBroadException
         try:
             self.returnnavigator = self.driver.execute_script(self.js_return_navigator)
         except:
@@ -192,7 +221,7 @@ class driver(object):
         actions.perform()
 
 
-# exported "navigator" to Profile
+# convert exported "navigator" to Profile
 def navigator2profile(navigator: dict, filename: str = None):
     from utils import write_json
 

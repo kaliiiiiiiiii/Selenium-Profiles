@@ -11,8 +11,7 @@ def test_driver(choose: str, headless: bool = True):
     profile = read_json(filename='default.json')
     global mydriver
     testprofile = profile[choose]
-    if headless:
-        testprofile.update({"chromeoptions": {"arguments": ["--headless"], "capabilities": []}})
+    testprofile["browser"]["headless"] = headless
     driver = mydriver.start(testprofile)
     driver.get('https://browserleaks.com/client-hints')
     useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
