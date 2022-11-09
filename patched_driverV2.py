@@ -55,7 +55,10 @@ class driver(object):
         if profile["device"]["touch_device"]:
             options.add_argument("--touch-events=enabled")  # enable touch events
         if profile["browser"]["inkognito"]:
-            options.add_argument("--incognito")
+            if profile["plugins"]["modheader"] is False:
+                options.add_argument("--incognito")
+            else:
+                warnings.warn('Incognito not working with ModHeader!, disabling Incognito')
         if not profile["device"]['hardware_accel']:
             options.add_argument('--disable-gpu')
             options.add_argument('--override-use-software-gl-for-tests')
@@ -79,11 +82,13 @@ class driver(object):
 
         # ModHeader extension options
         if not profile["plugins"]["modheader"] is False:
-            if not profile["browser"]["inkognito"]:
-                warnings.warn('Only use modheader when additional Headers needed!')
-                options.add_argument('--load-extension=' + profile["plugins"]["modheader"])
-            else:
-                warnings.warn('Modheader not supported in Incognito!, disabling')
+            import os
+            warnings.warn('Only use modheader when additional Headers needed!')
+            if not os.path.isdir(os.getcwd() + "\\\\modheader"):
+                warnings.warn('Modheader not installed & extracted in /modheader yet!')
+                from modheader_installer import install as modheader_install
+                modheader_install()
+            options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
         # Actual start of chrome
         if not profile["plugins"]["modheader"] is False:  # for using ModHeader extension

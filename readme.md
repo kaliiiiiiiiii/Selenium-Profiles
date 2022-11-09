@@ -17,7 +17,7 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 * Requirements.txt
 
 If you want to use ModHeader Chrome Extension (not supported yet):
-* [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in your root directory
+* extracted [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in ```/modheader```
 
 ### Installing
 
@@ -201,6 +201,7 @@ Inspiration, code snippets, etc.
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
+* [ModHeader docs](https://docs.modheader.com/advanced/selenium-webdriver)
 * [captcha_bypass](https://github.com/teal33t/captcha_bypass)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
