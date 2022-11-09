@@ -22,7 +22,7 @@ function sendTouchEvent(x, y, element, eventType) {
             element.dispatchEvent(touchEvent);
         }
 
-function tap()
+//function tap()
 function move(ele, x, y){
             rect = ele.getBoundingClientRect()
             sendTouchEvent((rect.left + rect.right)/2, (rect.top + rect.bottom)/2, ele, 'touchstart');
@@ -30,7 +30,7 @@ function move(ele, x, y){
             sendTouchEvent((rect.left + rect.right)/2 + x, (rect.top + rect.bottom)/2 + y,  ele, 'touchend');
         }
 
-const myElement = document.getElementsByClassName('slider')[0]
+//const myElement = document.getElementsByClassName('slider')[0]
 
 
 //https://github.com/b71db892/AutoCheckInUESTC/blob/4ea4d18e639ff6c16edd01186bc0b96add7d0724/driver.py

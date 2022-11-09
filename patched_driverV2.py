@@ -101,6 +101,9 @@ class driver(object):
             for cmd in profile["cdp_cmd"]:
                 self.driver.execute_cdp_cmd(cmd[0], cmd[1])
 
+        if profile["evaluate__on_new_document"] is (not None):
+            self.evaluate_on_new_document({"source":profile["evaluate__on_new_document"]})
+
         # add my functions to driver
 
         self.driver.set_touch = self.set_touch
@@ -113,6 +116,7 @@ class driver(object):
         self.driver.send_keys = self.sendkeys
         self.driver.navigator2profile = navigator2profile
         self.driver.profile = profile
+        self.driver.evaluate_on_new_document = self.evaluate_on_new_document
 
         # Return actual driver
         return self.driver
@@ -153,6 +157,9 @@ class driver(object):
         options = uc.ChromeOptions()
         options.add_argument("--incognito")
         return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+
+    def evaluate_on_new_document(self, js: Dict[str, str]):  # todo does it work?!
+        return self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", js)
 
     def get_profile(self, filename: str or None = None) -> str:
         navigator = self.get_navigator()

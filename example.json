@@ -34,6 +34,7 @@
     },
   "chromeoptions": {"arguments": [], "capabilities": []},
   "cdp_cmd": [],
+  "evaluate__on_new_document": null,
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
