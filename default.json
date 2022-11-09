@@ -34,7 +34,7 @@
     },
   "chromeoptions": {"arguments": [], "capabilities": []},
   "cdp_cmd": [],
-  "evaluate__on_new_document": null,
+  "evaluate__on_new_document": "Object.defineProperty(navigator, 'webdriver', {get: () => 5})",
   "plugins": {
       "selenium-wire": false,
       "modheader":false,
