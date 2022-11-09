@@ -11,6 +11,7 @@ def sendkeys(driver, keys):  # send keys without specific Element
     actions.send_keys(str(keys))
     actions.perform()
 
+
 class driver(object):
     def __init__(self):
         self.returnnavigator = None
@@ -153,7 +154,7 @@ class driver(object):
         options.add_argument("--incognito")
         return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
-    def get_profile(self, filename=None) -> str:
+    def get_profile(self, filename: str or None = None) -> str:
         navigator = self.get_navigator()
         return navigator2profile(navigator, filename=filename)
 
