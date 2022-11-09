@@ -120,6 +120,7 @@ class driver(object):
         self.driver.profile = profile
         self.driver.evaluate_on_new_document = self.evaluate_on_new_document
         self.driver.remove_evaluate_on_document = self.remove_evaluate_on_document
+        self.driver.define_prop_on_new_document = self.define_prop_on_new_document
 
         # Return actual driver
         return self.driver
@@ -169,6 +170,9 @@ class driver(object):
     def remove_evaluate_on_document(self, identifier: int):
         del self.driver.evaluate_on_document_identifiers[identifier]
         return self.driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
+
+    def define_prop_on_new_document(self, var, prop, val) -> (str, str, str):
+        self.evaluate_on_new_document("Object.defineProperty("+var+", "+prop+", {get: () => "+val+"})")
 
     def get_profile(self, filename: str or None = None) -> str:
         navigator = self.get_navigator()
