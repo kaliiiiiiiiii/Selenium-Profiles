@@ -46,7 +46,7 @@ class driver(object):
         if not profile["browser"]["sandbox"]:
             options.arguments.extend(["--no-sandbox", "--test-type"])
         if profile["browser"]["headless"]:
-            options.add_argument('--headless')
+            options.add_argument('--headless=chrome')
         if profile["browser"]["touch_events"]:
             options.add_argument("--touch-events=enabled")
         if profile["browser"]["app"]:
@@ -145,6 +145,8 @@ class driver(object):
         self.driver.evaluate_on_new_document = self.evaluate_on_new_document
         self.driver.remove_evaluate_on_document = self.remove_evaluate_on_document
         self.driver.define_prop_on_new_document = self.define_prop_on_new_document
+        self.driver.add_header = self.add_header
+        self.driver.clear_header = self.clear_header
 
         # Return actual driver
         return self.driver
@@ -206,6 +208,18 @@ class driver(object):
     def define_prop_on_new_document(self, var, prop, val, func='get: ()') -> (str, str, any, str):
         self.evaluate_on_new_document(
             "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {" + func + " => " + json.dumps(val) + "})")
+
+    def add_header(self, name: str, value: str):
+        if self.profile["plugins"]["modheader"] is not False:
+            self.driver.get('https://webdriver.modheader.com/add?{'+name+'}={'+value+'}')
+        else:
+            warnings.warn('ModHeader needs to be enabled for custom headers!')
+
+    def clear_header(self):
+        if self.profile["plugins"]["modheader"] is not False:
+            self.driver.get('https://webdriver.modheader.com/clear')
+        else:
+            warnings.warn('ModHeader needs to be enabled for custom headers!')
 
     # noinspection PyTypeChecker
     # get profile from current driver
