@@ -6,7 +6,12 @@ import traceback  # print exception
 from typing import Dict, List
 
 
-class driver:
+def sendkeys(driver, keys):  # send keys without specific Element
+    actions = ActionChains(driver)
+    actions.send_keys(str(keys))
+    actions.perform()
+
+class driver(object):
     def __init__(self):
         self.returnnavigator = None
         self.profile = None
@@ -95,6 +100,19 @@ class driver:
             for cmd in profile["cdp_cmd"]:
                 self.driver.execute_cdp_cmd(cmd[0], cmd[1])
 
+        # add my functions to driver
+
+        self.driver.set_touch = self.set_touch
+        self.driver.set_emulation = self.set_emulation
+        self.driver.pointer_as_touch = self.pointer_as_touch
+        self.driver.set_darkmode = self.set_darkmode
+        self.driver.set_set_useragent = self.set_useragent
+        self.driver.get_profile = self.get_profile
+        self.driver.get_navigator = self.get_navigator
+        self.driver.send_keys = self.sendkeys
+        self.driver.navigator2profile = navigator2profile
+        self.driver.profile = profile
+
         # Return actual driver
         return self.driver
 
@@ -147,11 +165,10 @@ class driver:
             warnings.warn('get_navigator.js executed incorrectly!')
         return self.returnnavigator
 
-
-def sendkeys(driver, keys):  # send keys without specific Element
-    actions = ActionChains(driver)
-    actions.send_keys(str(keys))
-    actions.perform()
+    def sendkeys(self, keys):  # send keys without specific Element
+        actions = ActionChains(self.driver)
+        actions.send_keys(str(keys))
+        actions.perform()
 
 
 # exported "navigator" to Profile
