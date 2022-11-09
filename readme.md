@@ -31,11 +31,11 @@ If you want to use ModHeader Chrome Extension (not supported yet):
 from utils import read_json
 from patched_driverV2 import driver as mydriver
 
-self = read_json(filename='default.json')
-self = self["Windows"]  # yet supported: "Android", "Windows"
+profile = read_json(filename='default.json')
+profile = self["Windows"]  # yet supported: "Android", "Windows"
 
 mydriver = mydriver()
-driver = mydriver.start(self)
+driver = mydriver.start(profile)
 
 driver.get('https://browserleaks.com/client-hints')
 
@@ -45,7 +45,7 @@ driver.quit()  # Execute on the End!
 
 Don't forget to execute
 ```driver.quit()```
-in the End. Else-wise your temporary folder will be flooded! (Windows)
+in the End. Else-wise your temporary folder will get flooded! (Windows)
 
 ## Profiles
 
