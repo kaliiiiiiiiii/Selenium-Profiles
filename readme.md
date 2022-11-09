@@ -45,7 +45,7 @@ driver.quit()  # Execute on the End!
 
 Don't forget to execute
 ```driver.quit()```
-in the End. Else-wise your temporary folder will be flooded! (Windows)
+in the End. Else-wise your temporary folder will get flooded! (Windows)
 
 ## Profiles
 
