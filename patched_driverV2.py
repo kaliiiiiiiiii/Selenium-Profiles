@@ -167,7 +167,7 @@ class driver(object):
         return identifier
 
     def remove_evaluate_on_document(self, identifier: int):
-        self.driver.evaluate_on_document_identifiers.update({identifier: None})
+        del self.driver.evaluate_on_document_identifiers[identifier]
         return self.driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
 
     def get_profile(self, filename: str or None = None) -> str:
