@@ -122,6 +122,9 @@ class driver(object):
 
         # set webdriver js var to false
         self.define_prop_on_new_document("navigator", "webdriver", False)
+        # remove plugins when mobile
+        if mobile:
+            self.define_prop_on_new_document("navigator", "plugins", [])
 
         # add my functions to driver
         self.driver.set_touch = self.set_touch
@@ -195,9 +198,9 @@ class driver(object):
         return self.driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
 
     # define var.property for javascript
-    def define_prop_on_new_document(self, var, prop, val) -> (str, str, any):
+    def define_prop_on_new_document(self, var, prop, val, func='get: ()') -> (str, str, any, str):
         self.evaluate_on_new_document(
-            "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {get: () => " + json.dumps(val) + "})")
+            "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {" + func + " => " + json.dumps(val) + "})")
 
     # noinspection PyTypeChecker
     # get profile from current driver
