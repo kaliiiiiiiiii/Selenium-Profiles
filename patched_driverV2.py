@@ -35,8 +35,7 @@ class driver(object):
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
-        options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
-            "platform"])  # todo does it have an effect?
+        options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"]["platform"])  # todo does it have an effect?
         options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
         options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
         # options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -69,7 +68,7 @@ class driver(object):
             options.add_argument('--use-mobile-user-agent')
             options.add_argument('--enable-touchview')
         if profile["browser"]["proxy"] is not None:
-            options.add_argument(f'--proxy-server=socks5://' + profile["browser"]["proxy"])
+            options.add_argument('--proxy-server=socks5://' + profile["browser"]["proxy"])
             print('proxy= "' + profile["browser"]["proxy"] + '"')
 
         # additional options and capabilities from profile
@@ -125,6 +124,7 @@ class driver(object):
             for args in profile["cdp_cmd"]:
                 self.driver.execute_cdp_cmd(args[0], args[1])
 
+        # additional evaluate on new document
         if not (profile["evaluate_on_new_document"] is None):
             print('identifier for ""evaluate_on_new_document" in profile is :' + str(
                 self.evaluate_on_new_document(profile["evaluate_on_new_document"])))
