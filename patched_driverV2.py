@@ -86,7 +86,7 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from modheader_installer import install as modheader_install
+                from installer import modheader_selenium as modheader_install
                 modheader_install()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 

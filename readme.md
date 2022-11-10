@@ -117,7 +117,7 @@ Please feel free to open an issue or fork!
 
 - click_as_touch makes automation hung
 - modheader-selenium doesn't change anything?!
-  - normal modheader works ==> implement normal?
+  - normal modheader doesn't work with selenium_devices either
 
 ## Todo // Features
 
