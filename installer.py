@@ -35,6 +35,7 @@ def install_buster(dirname="buster"):
               'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
 
 
+
 if __name__ == '__main__':
     install_modheader()
     install_buster()
