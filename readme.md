@@ -16,8 +16,8 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
 
-If you want to use ModHeader Chrome Extension (not supported yet):
-* extracted [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in ```/modheader```
+If you want to use ModHeader Chrome Extension (not working yet):
+* extracted [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in ```/modheader``` (automatic installation)
 
 ### Installing
 
@@ -85,11 +85,11 @@ Example Profile:
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 400}
     },
-  "chromeoptions": {"arguments": [], "capabilities": []},
+  "chromeoptions": {"arguments": ["--my_argument", ..], "capabilities": []},
   "cdp_cmd": [],
   "plugins": {
       "selenium-wire": false,
-      "modheader":false,
+      "modheader":[["name", "value"], ..],
       "stealth": false,
       "captcha": false
     }
@@ -116,6 +116,8 @@ Please feel free to open an issue or fork!
 ## Known Bugs
 
 - click_as_touch makes automation hung
+- modheader-selenium doesn't change anything?!
+  - normal modheader works ==> implement normal?
 
 ## Todo // Features
 
@@ -139,7 +141,8 @@ Please feel free to open an issue or fork!
   - [ ] test_google.py ("google.py" not released yet)
 - [ ] plugins support
   - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
-  - [ ] [modheader]((https://github.com/modheader/modheader_selenium))
+  - [x] [modheader]((https://github.com/modheader/modheader_selenium))
+    - [ ] modheader-selenium doesn't change anything?!
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
   - [ ] [buster extension](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
 - [ ] Add helper info
@@ -172,6 +175,7 @@ Please feel free to open an issue or fork!
     * Android
     * Windows
   * added navigator2profile, driver.get_profile()
+  * added modheader (not working yet!)
 * googleV1 (not released yet!)
   * first version as importable file
 

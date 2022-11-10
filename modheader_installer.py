@@ -4,6 +4,8 @@ import zipfile
 
 
 def install():
+    if os.path.isdir(os.getcwd() + "\\\\modheader"):
+        print('Updating ModHeader ...')
     url = 'https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx?raw=true'
     r = requests.get(url, allow_redirects=True)
     open('modheader.crx', 'wb').write(r.content)

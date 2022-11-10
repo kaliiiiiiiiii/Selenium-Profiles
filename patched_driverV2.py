@@ -5,7 +5,7 @@ from utils import read  # read txt files
 import traceback  # print exception
 from typing import Dict, List  # define types in functions
 import json  # python dict to js
-
+import urllib # for url parsing
 
 def sendkeys(driver, keys):  # send keys without specific Element
     actions = ActionChains(driver)
@@ -55,7 +55,7 @@ class driver(object):
         if profile["device"]["touch_device"]:
             options.add_argument("--touch-events=enabled")  # enable touch events
         if profile["browser"]["inkognito"]:
-            if profile["plugins"]["modheader"] is False:
+            if not (len(profile["plugins"]["modheader"][0]) > 0):
                 options.add_argument("--incognito")
             else:
                 warnings.warn('Incognito not working with ModHeader!, disabling Incognito')
@@ -81,7 +81,7 @@ class driver(object):
                 options.set_capability(cap[0], cap[1])
 
         # ModHeader extension options
-        if not profile["plugins"]["modheader"] is False:
+        if len(profile["plugins"]["modheader"][0]) > 0:
             import os
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
@@ -91,7 +91,7 @@ class driver(object):
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
         # Actual start of chrome
-        if not profile["plugins"]["modheader"] is False:  # for using ModHeader extension
+        if len(profile["plugins"]["modheader"][0]) > 0:  # for using ModHeader extension
             from selenium.webdriver.chrome.service import Service
             from webdriver_manager.chrome import ChromeDriverManager
 
@@ -115,6 +115,10 @@ class driver(object):
         self.set_darkmode(enabled=profile["browser"]["darkmode"], mobile=mobile)
         self.set_useragent(profile["device"]["agent_override"])
         self.get_navigator()
+        self.driver.headers = []
+
+        if len(profile["plugins"]["modheader"][0]) > 0:
+            self.add_headers(profile["plugins"]["modheader"])
 
         # additional cdp_cmd commands from profile
         if len(profile["cdp_cmd"]) > 0:
@@ -145,8 +149,9 @@ class driver(object):
         self.driver.evaluate_on_new_document = self.evaluate_on_new_document
         self.driver.remove_evaluate_on_document = self.remove_evaluate_on_document
         self.driver.define_prop_on_new_document = self.define_prop_on_new_document
-        self.driver.add_header = self.add_header
+        self.driver.add_headers = self.add_headers
         self.driver.clear_header = self.clear_header
+        self.driver.set_headers = self.set_headers
 
         # Return actual driver
         return self.driver
@@ -209,17 +214,30 @@ class driver(object):
         self.evaluate_on_new_document(
             "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {" + func + " => " + json.dumps(val) + "})")
 
-    def add_header(self, name: str, value: str):
-        if self.profile["plugins"]["modheader"] is not False:
-            self.driver.get('https://webdriver.modheader.com/add?{'+name+'}={'+value+'}')
+    def add_headers(self, headers: List[list]):
+        header_str = []
+        if len(self.profile["plugins"]["modheader"][0]) > 0:
+            for header in headers:
+                if len (header) == 2 and type(header) is list:
+                    header_str.append('' + urllib.parse.quote(header[0], safe='') + '=' + urllib.parse.quote(header[1], safe='') + '&')
+                    self.driver.headers.append(header)
+                else:
+                    warnings.warn('"headers" need to be [["name", "value"]]! Value ERROR! Headers cleared!')
+                    self.clear_header()
+            self.driver.get('https://webdriver.modheader.com/add?+'+''.join(header_str)[0:-1])
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
     def clear_header(self):
         if self.profile["plugins"]["modheader"] is not False:
             self.driver.get('https://webdriver.modheader.com/clear')
+            self.driver.headers = []
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
+
+    def set_headers(self, headers: List[list]):
+        self.clear_header()
+        self.add_headers(headers)
 
     # noinspection PyTypeChecker
     # get profile from current driver

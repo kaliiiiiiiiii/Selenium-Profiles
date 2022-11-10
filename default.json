@@ -37,7 +37,7 @@
   "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
-      "modheader":true,
+      "modheader":[[]],
       "stealth": false,
       "buster": false
     }
@@ -82,7 +82,7 @@
   "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
-      "modheader":true,
+      "modheader":[[]],
       "stealth": false,
       "buster": false
     }

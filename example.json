@@ -37,7 +37,7 @@
   "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
-      "modheader":false,
+      "modheader":[[]],
       "stealth": false,
       "buster": false
     }
