@@ -16,9 +16,6 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
 
-If you want to use ModHeader Chrome Extension (not working yet):
-* extracted [modheader.crx](https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx) in ```/modheader``` (automatic installation)
-
 ### Installing
 
 * Download latest [chromedriver.exe](https://chromedriver.chromium.org/downloads)
@@ -91,7 +88,7 @@ Example Profile:
       "selenium-wire": false,
       "modheader":[["name", "value"], ..],
       "stealth": false,
-      "captcha": false
+      "buster": false
     }
 }
 ```
@@ -124,6 +121,13 @@ Please feel free to open an issue or fork!
 - [x] Undetected
 - [x] support custom device metrics
 - [x] export browser profile
+- [x] Add License
+- [x] installer.py script
+  - [x] [buster captcha solver](https://github.com/dessant/buster)
+  - [x] [modheader]((https://github.com/modheader/modheader_selenium))
+  - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
+  - [ ] [Chrome-Browser](https://www.google.de/chrome/)
+  - [ ] requirements.txt
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
@@ -144,14 +148,13 @@ Please feel free to open an issue or fork!
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
     - [ ] modheader-selenium doesn't change anything?!
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
-  - [ ] [buster extension](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
+  - [x] [buster captcha solver](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
+    - [ ] how to click on closed shadow-root "solve captcha" element?. 
 - [ ] Add helper info
-- [ ] Add License
 - [ ] support for 
   - [x] Windows
   - [ ] Jupyter Notebook (Already prototype)
   - [ ] Linux
-- [ ] installer.py script
 
 
 ## Deprecated
@@ -176,6 +179,7 @@ Please feel free to open an issue or fork!
     * Windows
   * added navigator2profile, driver.get_profile()
   * added modheader (not working yet!)
+  * added buster captcha solver (but can't click on "solve-captcha" yet)
 * googleV1 (not released yet!)
   * first version as importable file
 
@@ -206,6 +210,6 @@ Inspiration, code snippets, etc.
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
 * [ModHeader docs](https://docs.modheader.com/advanced/selenium-webdriver)
-* [captcha_bypass](https://github.com/teal33t/captcha_bypass)
+* [buster captcha solver](https://github.com/dessant/buster)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)

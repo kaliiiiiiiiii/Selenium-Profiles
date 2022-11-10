@@ -4,20 +4,20 @@ import zipfile
 import shutil
 
 
-def modheader_selenium(dirname):
-    if os.path.isdir(os.getcwd() + "\\\\modheader"):
-        print('Updating ModHeader ...')
+def installer(dirname, url) -> (str, str):
+    if os.path.isdir(os.getcwd() + "\\\\"+dirname):
+        print('Updating ' + dirname + ' ...')
         shutil.rmtree(dirname)  # remove directory
-    url = 'https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx?raw=true'
-    # url = 'https://github.com/requestly/modify-headers-manifest-v3/blob/master/dist/extension-1.0.0.zip?raw=true'
+
     r = requests.get(url, allow_redirects=True)
-    open('modheader.crx', 'wb').write(r.content)
-    extract_del("modheader.crx", dirname)
+    open(dirname+'.crx', 'wb').write(r.content)
+    extract_del(dirname+'.crx', dirname)
 
 
-def extract_del(filename, dirname):
+def extract_del(filename, dirname) -> (str, str):
     with zipfile.ZipFile(filename, 'r') as zObject:
         zObject.extractall(path=os.getcwd() + '\\\\' + dirname)
+
     if os.path.isdir(os.getcwd() + "\\\\" + dirname):
         print(filename + ' extracted sucessfully!')
     else:
@@ -25,5 +25,16 @@ def extract_del(filename, dirname):
     os.remove(filename)
 
 
+def install_modheader(dirname="modheader"):
+    installer(dirname,
+              'https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx?raw=true')
+
+
+def install_buster(dirname="buster"):
+    installer(dirname,
+              'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
+
+
 if __name__ == '__main__':
-    modheader_selenium("modheader")
+    install_modheader()
+    install_buster()

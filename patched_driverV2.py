@@ -54,10 +54,10 @@ class driver(object):
         if profile["device"]["touch_device"]:
             options.add_argument("--touch-events=enabled")  # enable touch events
         if profile["browser"]["inkognito"]:
-            if not (len(profile["plugins"]["modheader"][0]) > 0):
+            if not ((len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"]["buster"]):
                 options.add_argument("--incognito")
             else:
-                warnings.warn('Incognito not working with ModHeader!, disabling Incognito')
+                warnings.warn('Incognito not working with Extensions!, disabling Incognito')
         if not profile["device"]['hardware_accel']:
             options.add_argument('--disable-gpu')
             options.add_argument('--override-use-software-gl-for-tests')
@@ -85,12 +85,22 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from installer import modheader_selenium as modheader_install
-                modheader_install()
+                from installer import install_modheader
+                install_modheader()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
+        # Buster extension options
+        if profile["plugins"]["buster"]:
+            import os
+            warnings.warn('Only use Buster when Captcha solver needed!')
+            if not os.path.isdir(os.getcwd() + "\\\\buster"):
+                warnings.warn('Buster not installed & extracted in /buster yet!')
+                from installer import install_buster
+                install_buster()
+            options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
+
         # Actual start of chrome
-        if len(profile["plugins"]["modheader"][0]) > 0:  # for using ModHeader extension
+        if (len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"]["buster"]:  # for using ModHeader extension
             from selenium.webdriver.chrome.service import Service
             from webdriver_manager.chrome import ChromeDriverManager
 
@@ -152,6 +162,7 @@ class driver(object):
         self.driver.add_headers = self.add_headers
         self.driver.clear_header = self.clear_header
         self.driver.set_headers = self.set_headers
+        self.driver.solve_captcha = self.solve_captcha
 
         # Return actual driver
         return self.driver
@@ -238,6 +249,23 @@ class driver(object):
     def set_headers(self, headers: List[list]):
         self.clear_header()
         self.add_headers(headers)
+
+    def solve_captcha(self):
+        if self.driver.profile["plugins"]["buster"]:
+            from selenium.webdriver.common.by import By  # locate elements
+            from selenium.webdriver.support import expected_conditions as EC
+            from selenium.webdriver.support.ui import WebDriverWait
+            # noinspection PyBroadException
+            try:
+                self.driver.switch_to.default_content()
+                self.driver.find_element(By.XPATH, '//*[@title="reCAPTCHA"]').click()
+                WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '//*[@title="recaptcha challenge expires in two minutes"]')))
+                warnings.warn('solve_captcha doesn\'t work further yet!, How to click on closed shadow-root element?')
+                self.driver.switch_to.default_content()
+            except:
+                warnings.warn("Captcha could not be solved!")
+        else:
+            warnings.warn('Buster extension needs to be installed to solve Captcha!')
 
     # noinspection PyTypeChecker
     # get profile from current driver
