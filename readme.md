@@ -128,6 +128,7 @@ Please feel free to open an issue or fork!
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)
   - [ ] requirements.txt
+- [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
@@ -204,7 +205,9 @@ I am not responsible what you use the code for!!! Also no warranty!
 
 Inspiration, code snippets, etc.
 
+* [Selenium](https://github.com/SeleniumHQ/selenium)
 * [README-Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
+* [headless_js](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 * [Selenium-Stealth](https://github.com/diprajpatra/selenium-stealth)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
