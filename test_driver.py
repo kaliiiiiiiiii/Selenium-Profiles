@@ -7,10 +7,11 @@ from selenium.webdriver.common.by import By  # locate elements
 mydriver = mydriver()
 
 
-def test_driver(choose: str, headless: bool = True):
+def test_driver(choose: str, headless: bool = True, modheader: str = False):
     profile = read_json(filename='default.json')
     global mydriver
     testprofile = profile[choose]
+    testprofile["plugins"]["modheader"] = modheader
     testprofile["browser"]["headless"] = headless
     driver = mydriver.start(testprofile)
     driver.get('https://browserleaks.com/client-hints')
@@ -31,7 +32,7 @@ class Driver(unittest.TestCase):
     # noinspection PyGlobalUndefined
     def test_android(self):
         global mydriver
-        output = test_driver('Android', headless=False)
+        output = test_driver('Android', headless=False, modheader='[{"headers":[{"enabled":true,"name":"google","value":"\\"x\\""}],"shortTitle":"1","title":"Profile 1","version":2}]')
         self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'],
                          output["useragent"])  # add assertion here
 

@@ -32,12 +32,12 @@
       "pointer_as_touch": false, "mobile_view":  true, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 700}
     },
-  "chromeoptions": {"arguments": [], "capabilities": []},
-  "cdp_cmd": [],
+  "chromeoptions": {"arguments": [], "capabilities": [[]]},
+  "cdp_cmd": [[]],
   "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
-      "modheader":[[]],
+      "modheader":false,
       "stealth": false,
       "buster": false
     }
@@ -77,12 +77,12 @@
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 1024, "y": 648}
     },
-  "chromeoptions": {"arguments": [], "capabilities": []},
-  "cdp_cmd": [],
+  "chromeoptions": {"arguments": [], "capabilities": [[]]},
+  "cdp_cmd": [[]],
   "evaluate_on_new_document": null,
   "plugins": {
       "selenium-wire": false,
-      "modheader":[[]],
+      "modheader":false,
       "stealth": false,
       "buster": false
     }

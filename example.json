@@ -1,7 +1,7 @@
 {
   "device":{
       "mobile": false,
-      "model": "",
+      "model": "modelName",
       "language": "de-CH,de;q=0.9",
       "touch_device": true,
       "maxtouchpoints": 5,
@@ -22,7 +22,7 @@
                     "platform": "Windows",
                     "platformVersion": "10.0.0",
                     "architecture": "x86",
-                    "model": "",
+                    "model": "modelName",
                     "mobile": true,
                     "bitness": "64",
                     "wow64": false}
@@ -32,12 +32,12 @@
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 400}
     },
-  "chromeoptions": {"arguments": [], "capabilities": []},
-  "cdp_cmd": [],
-  "evaluate_on_new_document": null,
+  "chromeoptions": {"arguments": ["--my-argument=value"], "capabilities": [["cap_name", "cap_value"]]},
+  "cdp_cmd": [["name", "value"]],
+  "evaluate_on_new_document": "my_js_script",
   "plugins": {
       "selenium-wire": false,
-      "modheader":[[]],
+      "modheader":"[{\"headers\":[{\"enabled\":true,\"name\":\"google\",\"value\":\"\\\"x\\\"\"}],\"shortTitle\":\"1\",\"title\":\"Profile 1\",\"version\":2}]",
       "stealth": false,
       "buster": false
     }

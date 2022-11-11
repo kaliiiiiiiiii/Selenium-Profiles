@@ -51,7 +51,7 @@ Example Profile:
 {
   "device":{
       "mobile": false,
-      "model": "",
+      "model": "modelName",
       "language": "de-CH,de;q=0.9",
       "touch_device": true,
       "maxtouchpoints": 5,
@@ -72,21 +72,22 @@ Example Profile:
                     "platform": "Windows",
                     "platformVersion": "10.0.0",
                     "architecture": "x86",
-                    "model": "",
+                    "model": "modelName",
                     "mobile": true,
                     "bitness": "64",
                     "wow64": false}
     }},
   "browser": {
-      "sandbox": true, "inkognito": true, "proxy": null, "darkmode": true,
+      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": true,
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 400}
     },
-  "chromeoptions": {"arguments": ["--my_argument", ..], "capabilities": []},
-  "cdp_cmd": [],
+  "chromeoptions": {"arguments": ["--my-argument=value", ..], "capabilities": [["cap_name", "cap_value"], ..]},
+  "cdp_cmd": [["name", "value"], ..],
+  "evaluate_on_new_document": "my_js_script",
   "plugins": {
       "selenium-wire": false,
-      "modheader":[["name", "value"], ..],
+      "modheader":"[{\"headers\":[{\"enabled\":true,\"name\":\"google\",\"value\":\"\\\"x\\\"\"}],\"shortTitle\":\"1\",\"title\":\"Profile 1\",\"version\":2}]",
       "stealth": false,
       "buster": false
     }
@@ -113,7 +114,6 @@ Please feel free to open an issue or fork!
 ## Known Bugs
 
 - click_as_touch makes automation hung
-- modheader-selenium doesn't get the right permissions when installing in Chrome ==> doesn't change Headers
 
 ## Todo // Features
 
@@ -146,7 +146,7 @@ Please feel free to open an issue or fork!
 - [ ] plugins support
   - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
-    - [ ] modheader-selenium doesn't get the right permissions, manual installation works
+    - [x] load modheader profile
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
   - [x] [buster captcha solver](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
     - [ ] how to click on closed shadow-root "solve captcha" element?. 
@@ -178,7 +178,7 @@ Please feel free to open an issue or fork!
     * Android
     * Windows
   * added navigator2profile, driver.get_profile()
-  * added modheader (not working yet!)
+  * added modheader (load modheader json profile)
   * added buster captcha solver (but can't click on "solve-captcha" yet)
 * googleV1 (not released yet!)
   * first version as importable file

@@ -56,7 +56,7 @@ class driver(object):
         if profile["device"]["touch_device"]:
             options.add_argument("--touch-events=enabled")  # enable touch events
         if profile["browser"]["inkognito"]:
-            if not ((len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"]["buster"]):
+            if (profile["plugins"]["modheader"] is False) and (profile["plugins"]["buster"] is False):
                 options.add_argument("--incognito")
             else:
                 warnings.warn('Incognito not working with Extensions!, disabling Incognito')
@@ -77,12 +77,12 @@ class driver(object):
         if len(profile["chromeoptions"]["arguments"]) > 0:
             for arg in profile["chromeoptions"]["arguments"]:
                 options.add_argument(arg)
-        if len(profile["chromeoptions"]["capabilities"]) > 0:
+        if len(profile["chromeoptions"]["capabilities"][0]) > 0:
             for cap in profile["chromeoptions"]["capabilities"]:
                 options.set_capability(cap[0], cap[1])
 
         # ModHeader extension options
-        if len(profile["plugins"]["modheader"][0]) > 0:
+        if not (profile["plugins"]["modheader"] is False):
             import os
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
@@ -92,7 +92,7 @@ class driver(object):
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
         # Buster extension options
-        if profile["plugins"]["buster"]:
+        if not profile["plugins"]["buster"] is False:
             import os
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(os.getcwd() + "\\\\buster"):
@@ -102,17 +102,7 @@ class driver(object):
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
         # Actual start of chrome
-        if (len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"][
-            "buster"]:  # for using ModHeader extension
-            from selenium.webdriver.chrome.service import Service
-            from webdriver_manager.chrome import ChromeDriverManager
-
-            self.driver = uc.Chrome(use_subprocess=True, options=options,
-                                    service=Service(ChromeDriverManager().install()),
-                                    keep_alive=True)  # start undetected_chromedriver
-        else:  # ModHeader not needed
-            self.driver = uc.Chrome(use_subprocess=True, options=options,
-                                    keep_alive=True)  # start undetected_chromedriver
+        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
         self.driver.get('http://icanhazip.com/')  # wait browser to start
 
@@ -129,11 +119,11 @@ class driver(object):
         self.get_navigator()
         self.driver.headers = []
 
-        if len(profile["plugins"]["modheader"][0]) > 0:
-            self.add_headers(profile["plugins"]["modheader"])
+        if not (profile["plugins"]["modheader"] is False):
+            self.load_header_profiles(profile["plugins"]["modheader"])
 
         # additional cdp_cmd commands from profile
-        if len(profile["cdp_cmd"]) > 0:
+        if len(profile["cdp_cmd"][0]) > 0:
             for args in profile["cdp_cmd"]:
                 self.driver.execute_cdp_cmd(args[0], args[1])
 
@@ -162,9 +152,8 @@ class driver(object):
         self.driver.evaluate_on_new_document = self.evaluate_on_new_document
         self.driver.remove_evaluate_on_document = self.remove_evaluate_on_document
         self.driver.define_prop_on_new_document = self.define_prop_on_new_document
-        self.driver.add_headers = self.add_headers
+        self.driver.load_header_profiles = self.load_header_profiles
         self.driver.clear_header = self.clear_header
-        self.driver.set_headers = self.set_headers
         self.driver.solve_captcha = self.solve_captcha
 
         # Return actual driver
@@ -236,10 +225,7 @@ class driver(object):
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
-        from selenium.webdriver.chrome.service import Service
-        from webdriver_manager.chrome import ChromeDriverManager
-
-        return uc.Chrome(use_subprocess=True, options=options, keep_alive=True, service = Service(ChromeDriverManager().install()))  # start undetected_chromedriver
+        return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
     def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
         identifier = int(
@@ -257,18 +243,11 @@ class driver(object):
         self.evaluate_on_new_document(
             "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {" + func + " => " + json.dumps(val) + "})")
 
-    def add_headers(self, headers: List[list]):
+    def load_header_profiles(self, profile: str):
         header_str = []
-        if len(self.profile["plugins"]["modheader"][0]) > 0:
-            for header in headers:
-                if len(header) == 2 and type(header) is list:
-                    header_str.append('' + urllib.parse.quote(header[0], safe='') + '=' + urllib.parse.quote(header[1],
-                                                                                                             safe='') + '&')
-                    self.driver.headers.append(header)
-                else:
-                    warnings.warn('"headers" need to be [["name", "value"]]! Value ERROR! Headers cleared!')
-                    self.clear_header()
-            self.driver.get('https://webdriver.modheader.com/add?+' + ''.join(header_str)[0:-1])
+        if not self.profile["plugins"]["modheader"] is False:
+            self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe='')
+            self.driver.get('https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe=''))
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
@@ -278,10 +257,6 @@ class driver(object):
             self.driver.headers = []
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
-
-    def set_headers(self, headers: List[list]):
-        self.clear_header()
-        self.add_headers(headers)
 
     def solve_captcha(self):
         if self.driver.profile["plugins"]["buster"]:
