@@ -1,14 +1,14 @@
 import unittest
 
-from utils import read_json
-from patched_driverV2 import driver as mydriver
+from sel_profiles.utils.utils import read_json
+from sel_profiles.driver import driver as mydriver
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
 
 
 def test_driver(choose: str, headless: bool = True, modheader: str = False):
-    profile = read_json(filename='default.json')
+    profile = read_json(filename='profiles\\default.json')
     # noinspection PyGlobalUndefined
     global mydriver
     testprofile = profile[choose]

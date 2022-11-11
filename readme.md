@@ -25,19 +25,21 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 ### Start Driver
 
 ```
-from utils import read_json
-from patched_driverV2 import driver as mydriver
+from sel_profiles.utils.utils import read_json
+from sel_profiles.driver import driver as mydriver
 
-profile = read_json(filename='default.json')
-profile = self["Windows"]  # yet supported: "Android", "Windows"
+profile = read_json(filename="profiles\\default.json")
+profile = profile["Android"]  # yet supported: "Android", "Windows"
 
 mydriver = mydriver()
 driver = mydriver.start(profile)
 
-driver.get('https://browserleaks.com/client-hints')
+# get url
+driver.get('https://browserleaks.com/client-hints')  # test client hints
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
+
 ```
 
 Don't forget to execute
@@ -96,7 +98,7 @@ Example Profile:
 
 to export profile:
   ```
-  from patched_driverV2 import navigator2profile
+  from sel_profiles.driver import navigator2profile
   
   navigator = execute_javascript_in_browser({"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData} )
   self = navigator2profile(navigator, filename='myprofile.json)
@@ -170,7 +172,7 @@ Please feel free to open an issue or fork!
 
 * patched_driverV1
   * first version as importable file
-* patched_driverV2
+* sel_profiles
   * added custom device metrics
   * change metrics while running
   * added example.json
@@ -180,6 +182,7 @@ Please feel free to open an issue or fork!
   * added navigator2profile, driver.get_profile()
   * added modheader (load modheader json profile)
   * added buster captcha solver (but can't click on "solve-captcha" yet)
+  * put everything into folders
 * googleV1 (not released yet!)
   * first version as importable file
 

@@ -1,9 +1,9 @@
-from utils import read_json
-from patched_driverV2 import driver as mydriver
+from sel_profiles.utils.utils import read_json
+from sel_profiles.driver import driver as mydriver
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By  # locate elements
 
-profile = read_json(filename='default.json')
+profile = read_json(filename="profiles\\default.json")
 profile = profile["Android"]  # yet supported: "Android", "Windows"
 
 mydriver = mydriver()
