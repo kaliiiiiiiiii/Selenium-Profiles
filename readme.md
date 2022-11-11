@@ -113,8 +113,7 @@ Please feel free to open an issue or fork!
 ## Known Bugs
 
 - click_as_touch makes automation hung
-- modheader-selenium doesn't change anything?!
-  - normal modheader doesn't work with selenium_devices either
+- modheader-selenium doesn't get the right permissions when installing in Chrome ==> doesn't change Headers
 
 ## Todo // Features
 
@@ -147,7 +146,7 @@ Please feel free to open an issue or fork!
 - [ ] plugins support
   - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
-    - [ ] modheader-selenium doesn't change anything?!
+    - [ ] modheader-selenium doesn't get the right permissions, manual installation works
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
   - [x] [buster captcha solver](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
     - [ ] how to click on closed shadow-root "solve captcha" element?. 

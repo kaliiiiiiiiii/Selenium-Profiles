@@ -5,7 +5,8 @@ from utils import read  # read txt files
 import traceback  # print exception
 from typing import Dict, List  # define types in functions
 import json  # python dict to js
-import urllib # for url parsing
+import urllib  # for url parsing
+
 
 def sendkeys(driver, keys):  # send keys without specific Element
     actions = ActionChains(driver)
@@ -35,7 +36,8 @@ class driver(object):
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
-        options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"]["platform"])  # todo does it have an effect?
+        options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
+            "platform"])  # todo does it have an effect?
         options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
         options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
         # options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -100,7 +102,8 @@ class driver(object):
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
         # Actual start of chrome
-        if (len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"]["buster"]:  # for using ModHeader extension
+        if (len(profile["plugins"]["modheader"][0]) > 0) or profile["plugins"][
+            "buster"]:  # for using ModHeader extension
             from selenium.webdriver.chrome.service import Service
             from webdriver_manager.chrome import ChromeDriverManager
 
@@ -204,10 +207,39 @@ class driver(object):
         # noinspection PyTypeChecker
         return self.driver.execute_cdp_cmd("Network.setUserAgentOverride", useragent), x
 
-    def start_no_profile(self):  # start minimal driver without profile
+    def start_no_profile(self, modheader: bool = False, buster: bool = False, arguments: list[str] = []):  # start minimal driver without profile
         options = uc.ChromeOptions()
-        options.add_argument("--incognito")
-        return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+        # additional options
+        if len(arguments) > 0:
+            for arg in arguments:
+                options.add_argument(arg)
+
+        options.add_argument("--no-sandbox")
+
+        # ModHeader extension options
+        if modheader:
+            import os
+            warnings.warn('Only use modheader when additional Headers needed!')
+            if not os.path.isdir(os.getcwd() + "\\\\modheader"):
+                warnings.warn('Modheader not installed & extracted in /modheader yet!')
+                from installer import install_modheader
+                install_modheader()
+            options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
+
+        # Buster extension options
+        if buster:
+            import os
+            warnings.warn('Only use Buster when Captcha solver needed!')
+            if not os.path.isdir(os.getcwd() + "\\\\buster"):
+                warnings.warn('Buster not installed & extracted in /buster yet!')
+                from installer import install_buster
+                install_buster()
+            options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
+
+        from selenium.webdriver.chrome.service import Service
+        from webdriver_manager.chrome import ChromeDriverManager
+
+        return uc.Chrome(use_subprocess=True, options=options, keep_alive=True, service = Service(ChromeDriverManager().install()))  # start undetected_chromedriver
 
     def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
         identifier = int(
@@ -229,13 +261,14 @@ class driver(object):
         header_str = []
         if len(self.profile["plugins"]["modheader"][0]) > 0:
             for header in headers:
-                if len (header) == 2 and type(header) is list:
-                    header_str.append('' + urllib.parse.quote(header[0], safe='') + '=' + urllib.parse.quote(header[1], safe='') + '&')
+                if len(header) == 2 and type(header) is list:
+                    header_str.append('' + urllib.parse.quote(header[0], safe='') + '=' + urllib.parse.quote(header[1],
+                                                                                                             safe='') + '&')
                     self.driver.headers.append(header)
                 else:
                     warnings.warn('"headers" need to be [["name", "value"]]! Value ERROR! Headers cleared!')
                     self.clear_header()
-            self.driver.get('https://webdriver.modheader.com/add?+'+''.join(header_str)[0:-1])
+            self.driver.get('https://webdriver.modheader.com/add?+' + ''.join(header_str)[0:-1])
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
@@ -259,7 +292,8 @@ class driver(object):
             try:
                 self.driver.switch_to.default_content()
                 self.driver.find_element(By.XPATH, '//*[@title="reCAPTCHA"]').click()
-                WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '//*[@title="recaptcha challenge expires in two minutes"]')))
+                WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
+                    (By.XPATH, '//*[@title="recaptcha challenge expires in two minutes"]')))
                 warnings.warn('solve_captcha doesn\'t work further yet!, How to click on closed shadow-root element?')
                 self.driver.switch_to.default_content()
             except:
