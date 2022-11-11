@@ -1,5 +1,6 @@
 from utils import read_json
 from patched_driverV2 import driver as mydriver
+# noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By  # locate elements
 
 profile = read_json(filename='default.json')

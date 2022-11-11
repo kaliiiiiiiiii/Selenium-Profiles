@@ -8,6 +8,7 @@ import json  # python dict to js
 import urllib  # for url parsing
 
 
+# noinspection PyShadowingNames
 def sendkeys(driver, keys):  # send keys without specific Element
     actions = ActionChains(driver)
     actions.send_keys(str(keys))
@@ -110,6 +111,7 @@ class driver(object):
         self.driver.evaluate_on_document_identifiers = {}
 
         # functions to execute
+        # noinspection PyUnusedLocal
         x = self.driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
         self.set_touch(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
         self.set_emulation(profile["device"]["emulation"], enabled=mobile)
@@ -243,8 +245,8 @@ class driver(object):
         self.evaluate_on_new_document(
             "Object.defineProperty(" + var + ", " + json.dumps(prop) + ", {" + func + " => " + json.dumps(val) + "})")
 
+    # noinspection PyUnresolvedReferences
     def load_header_profiles(self, profile: str):
-        header_str = []
         if not self.profile["plugins"]["modheader"] is False:
             self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe='')
             self.driver.get('https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe=''))

@@ -9,6 +9,7 @@ mydriver = mydriver()
 
 def test_driver(choose: str, headless: bool = True, modheader: str = False):
     profile = read_json(filename='default.json')
+    # noinspection PyGlobalUndefined
     global mydriver
     testprofile = profile[choose]
     testprofile["plugins"]["modheader"] = modheader
