@@ -24,7 +24,7 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 
 ### Start Driver
 
-```python
+```python 
 from sel_profiles.utils.utils import read_json
 from sel_profiles.driver import driver as mydriver
 
