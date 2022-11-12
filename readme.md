@@ -129,6 +129,9 @@ Please feel free to open an issue or fork!
   - [x] [buster captcha solver](https://github.com/dessant/buster)
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
+    - [x] Windows
+    - [ ] Jupyter
+    - [ ] Linux (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)
   - [ ] requirements.txt
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
