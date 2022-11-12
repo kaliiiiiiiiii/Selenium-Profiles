@@ -95,7 +95,7 @@ Example Profile:
 }
 ```
 
-to export profile:
+### To export a profile:
 
 go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num%29%20%7Breturn%20Math.round%28num*2%29/2%3B%7D%3B%20function%20a%28elem%29/*if_exist%2C%20else%20null*/%7Bif%20%28typeof%20elem%20%21%3D%3D%20%22undefined%22%29%20%7Breturn%20elem%7D%20else%20%7Breturn%20null%7D%7D%3B%20mynavigator%3D%20%7B%22wow64%22%3Aa%28navigator.userAgent%29.indexOf%28%22WOW64%22%29%3E-1%2C%22metrics%22%3A%7B%22width%22%3Aa%28screen.availWidth%29%2C%20%22height%22%3Aa%28screen.availHeight%29%2C%20%22scale_factor%22%3AroundHalf%28a%28window.devicePixelRatio%29%29%2C%20%22angle%22%3Aa%28screen.orientation.angle%29%2C%20%22orientation%22%3Aa%28screen.orientation.type%29%2C%20%22maxtouchpoints%22%3Aa%28window.navigator.maxTouchPoints%29%7D%2C%22memory%22%3Aa%28navigator.deviceMemory%29%2C%20%22language%22%3Aa%28navigator.language%29%2C%20%22platform%22%3Aa%28navigator.platform%29%2C%20%22useragent%22%3A%20a%28navigator.userAgent%29%2C%20%22useragentdata%22%3A%20a%28navigator.userAgentData%29%7D%3Bfunction%20copyToClipboard%28text%29%20%7Bwindow.prompt%28%22Copy%20to%20clipboard%3A%20Ctrl+C%2C%20Enter%22%2C%20text%29%3B%7D%3B%20copyToClipboard%28JSON.stringify%28mynavigator%29%29) in your browser and copy the text.
 
