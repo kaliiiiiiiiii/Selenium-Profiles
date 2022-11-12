@@ -101,7 +101,7 @@ to export profile:
 from sel_profiles.driver import navigator2profile
 
 # to execute in browser console or on https://jsconsole.com/
-navigator = execute_javascript_in_browser('{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}')
+navigator = execute_javascript_in_browser('function roundHalf(num) {return Math.round(num*2)/2;}; function a(elem)/*if_exist, else null*/{if (typeof elem !== "undefined") {return elem} else {return null}}; mynavigator= {"wow64":a(navigator.userAgent).indexOf("WOW64")>-1,"metrics":{"width":a(screen.availWidth), "height":a(screen.availHeight), "scale_factor":roundHalf(a(window.devicePixelRatio)), "angle":a(screen.orientation.angle), "orientation":a(screen.orientation.type), "maxtouchpoints":a(window.navigator.maxTouchPoints)},"memory":a(navigator.deviceMemory), "language":a(navigator.language), "platform":a(navigator.platform), "useragent": a(navigator.userAgent), "useragentdata": a(navigator.userAgentData)};function copyToClipboard(text) {window.prompt("Copy to clipboard: Ctrl+C, Enter", text);}; copyToClipboard(JSON.stringify(mynavigator))')
 
 self = navigator2profile(navigator, filename='myprofile.json')
  ```
