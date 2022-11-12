@@ -24,7 +24,7 @@ Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multipl
 
 ### Start Driver
 
-```
+```python
 from sel_profiles.utils.utils import read_json
 from sel_profiles.driver import driver as mydriver
 
@@ -49,7 +49,7 @@ in the End. Else-wise your temporary folder will get flooded! (Windows)
 ## Profiles
 
 Example Profile: 
-```
+```json
 {
   "device":{
       "mobile": false,
@@ -97,11 +97,11 @@ Example Profile:
 ```
 
 to export profile:
-  ```
+  ```python
   from sel_profiles.driver import navigator2profile
   
-  navigator = execute_javascript_in_browser({"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData} )
-  self = navigator2profile(navigator, filename='myprofile.json)
+  navigator = execute_javascript_in_browser('{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}' )
+  self = navigator2profile(navigator, filename='myprofile.json')
   ```
 
   
@@ -109,7 +109,7 @@ to export profile:
 ## Help
 
 Please feel free to open an issue or fork!
-```
+```commandline
 # no helper info yet
 ```
 
