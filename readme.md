@@ -1,10 +1,9 @@
 # Selenium-Devices V2
 
-Undetected Chromedriver
-
-### Chrome Browser for Web Automation
-
-Using the [Selenium](https://github.com/SeleniumHQ/selenium) library for multiple supported device profiles.
+* Overwrite **device metrics** using Selenium
+* Mobile and Desktop **emulation**
+* **Undetected** by Google, Cloudfare, ..
+* Modifying or **adding headers** supported using "ModHeader" chrome-extension
 
 ## Getting Started
 
