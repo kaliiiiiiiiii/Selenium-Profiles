@@ -7,7 +7,7 @@ import warnings
 def terminate_thread(thread):
     """Terminates a python thread from another thread.
 
-            :param thread: a threading.Thread instance
+            param thread: a threading.Thread instance
             """
     if not thread.is_alive():
         return

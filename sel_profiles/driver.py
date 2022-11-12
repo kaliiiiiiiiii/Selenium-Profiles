@@ -88,7 +88,7 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(sel_profiles_path() + "files\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from installer import install_modheader
+                from sel_profiles.utils.installer import install_modheader
                 install_modheader()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files\\modheader")
 
@@ -98,7 +98,7 @@ class driver(object):
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(sel_profiles_path() + "files\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
-                from installer import install_buster
+                from sel_profiles.utils.installer import install_buster
                 install_buster()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files\\buster")
 
@@ -213,7 +213,7 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from installer import install_modheader
+                from sel_profiles.utils.installer import install_modheader
                 install_modheader()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
@@ -223,7 +223,7 @@ class driver(object):
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(os.getcwd() + "\\\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
-                from installer import install_buster
+                from sel_profiles.utils.installer import install_buster
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 

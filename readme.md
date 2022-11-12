@@ -2,7 +2,7 @@
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
-* **Undetected** by Google, Cloudfare, ..
+* **Undetected** by Google, Cloudflare, ..
 * Modifying or **adding headers** supported using "ModHeader" chrome-extension
 
 ## Getting Started
@@ -96,12 +96,15 @@ Example Profile:
 ```
 
 to export profile:
-  ```python
-  from sel_profiles.driver import navigator2profile
-  
-  navigator = execute_javascript_in_browser('{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}' )
-  self = navigator2profile(navigator, filename='myprofile.json')
-  ```
+
+```python
+from sel_profiles.driver import navigator2profile
+
+# noinspection PyUnresolvedReferences
+navigator = execute_javascript_in_browser(
+  '{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}')
+self = navigator2profile(navigator, filename='myprofile.json')
+ ```
 
   
 
