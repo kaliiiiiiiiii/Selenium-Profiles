@@ -100,9 +100,9 @@ to export profile:
 ```python
 from sel_profiles.driver import navigator2profile
 
-# noinspection PyUnresolvedReferences
-navigator = execute_javascript_in_browser(
-  '{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}')
+# to execute in browser console or on https://jsconsole.com/
+navigator = execute_javascript_in_browser('{"memory":navigator.deviceMemory, "language":navigator.language, "platform":navigator.platform, "useragent": navigator.userAgent, "useragentdata": navigator.userAgentData}')
+
 self = navigator2profile(navigator, filename='myprofile.json')
  ```
 
