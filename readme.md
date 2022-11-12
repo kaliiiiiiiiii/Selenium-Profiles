@@ -83,8 +83,8 @@ Example Profile:
       "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
       "window_size": {"x": 400, "y": 400}
     },
-  "chromeoptions": {"arguments": ["--my-argument=value", ..], "capabilities": [["cap_name", "cap_value"], ..]},
-  "cdp_cmd": [["name", "value"], ..],
+  "chromeoptions": {"arguments": ["--my-argument=value", ".."], "capabilities": [["cap_name", "cap_value"], ".."]},
+  "cdp_cmd": [["name", "value"], ".."],
   "evaluate_on_new_document": "my_js_script",
   "plugins": {
       "selenium-wire": false,
