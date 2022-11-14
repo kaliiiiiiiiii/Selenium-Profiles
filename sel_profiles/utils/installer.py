@@ -20,7 +20,7 @@ def installer(dirname, url) -> (str, str):
 
 def install_chromedriver(platform: str = platform.system(), chromeversion: int = 108):
     if os.path.isfile(sel_profiles_path() + "files\\chromedriver.exe"):
-        print('Updating "chromedriver.exe ..')
+        print(r'Updating "files\chromedriver.exe" ..')
 
     # Versions
     if chromeversion == 108:
