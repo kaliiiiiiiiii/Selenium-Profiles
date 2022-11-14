@@ -64,14 +64,13 @@ def install_modheader(dirname: str = r"files\modheader"):
 
 
 def install_buster(dirname: str = r"files\buster", patch_files: bool = False):
-    installer(dirname,
-              'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
-    print('Patching "Buster" extension..')
-
+    installer(dirname,'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
     if patch_files:
+        print('Patching "Buster" extension..')
         warnings.warn("Patch gets detected by Buster!, Not working yet.")
         patch("/files/buster/src/solve/script.js", 'mode:"closed"', 'mode:"open"')
         patch("/files/buster/src/solve/script.js.map", "mode: 'closed'", "mode: 'open'")
+        patch("/files/buster/manifest.json", '"notifications",', "")
         print("\"Buster\" extension patched successfully! ")
 
 
@@ -88,5 +87,5 @@ def patch(filename: str, replace: str, replacewith: str):
 
 if __name__ == '__main__':
     install_modheader()
-    install_buster()
+    install_buster(patch_files=False)
     install_chromedriver()
