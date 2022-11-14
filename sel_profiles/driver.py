@@ -35,6 +35,7 @@ class driver(object):
 
         # always used options
         size = profile["browser"]["window_size"]
+        size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
         options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
@@ -311,7 +312,7 @@ def navigator2profile(navigator, filename=None) -> (dict or str, str):
             return replace_with
 
     if navigator is not None:
-        if navigator is str:
+        if navigator is not dict:
             navigator = json.loads(navigator)
         try:
             navigator["metrics"]["orientation"] = replace_none(navigator["metrics"]["orientation"], "portrait-primary")
