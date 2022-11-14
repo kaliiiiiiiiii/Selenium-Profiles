@@ -312,8 +312,8 @@ def navigator2profile(navigator, filename=None) -> (dict or str, str):
             return replace_with
 
     if navigator is not None:
-        # if navigator is not dict:
-        #     navigator = json.loads(navigator)
+        if type(navigator) is str:
+            navigator = json.loads(navigator)
         try:
             navigator["metrics"]["orientation"] = replace_none(navigator["metrics"]["orientation"], "portrait-primary")
             navigator["metrics"]["angle"] = replace_none(navigator["metrics"]["angle"], 0)
