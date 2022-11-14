@@ -51,7 +51,7 @@ def extract_del(filename, dirname) -> (str, str):
         zObject.extractall(path=sel_profiles_path() + dirname)
 
     if os.path.isdir(sel_profiles_path() + dirname):
-        print(filename + ' extracted to "'+dirname+'" successfully!')
+        print(filename + ' extracted to "' + dirname + '" successfully!')
     else:
         raise ValueError(
             filename + ' could not be installed correctly!, "' + dirname + '" doesn\'t exist or isn\'t a directory')
@@ -63,9 +63,27 @@ def install_modheader(dirname: str = r"files\modheader"):
               'https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx?raw=true')
 
 
-def install_buster(dirname: str = r"files\buster"):
+def install_buster(dirname: str = r"files\buster", patch_files: bool = False):
     installer(dirname,
               'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
+    print('Patching "Buster" extension..')
+
+    if patch_files:
+        warnings.warn("Patch gets detected by Buster!, Not working yet.")
+        patch("/files/buster/src/solve/script.js", 'mode:"closed"', 'mode:"open"')
+        patch("/files/buster/src/solve/script.js.map", "mode: 'closed'", "mode: 'open'")
+        print("\"Buster\" extension patched successfully! ")
+
+
+def patch(filename: str, replace: str, replacewith: str):
+    # replace string inside file
+    file = open(sel_profiles_path() + filename, "rt")
+    patched = file.read().replace(replace, replacewith)
+    file.close()
+    file = open(sel_profiles_path() + filename, "wt")
+    file.write(patched)
+    file.close()
+    print('Patched "' + filename + '" successfully!')
 
 
 if __name__ == '__main__':

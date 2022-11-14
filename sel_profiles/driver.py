@@ -266,6 +266,7 @@ class driver(object):
             from selenium.webdriver.common.by import By  # locate elements
             from selenium.webdriver.support import expected_conditions as EC
             from selenium.webdriver.support.ui import WebDriverWait
+            solve_script = read("js/solve_script.js")
             # noinspection PyBroadException
             try:
                 self.driver.switch_to.default_content()
