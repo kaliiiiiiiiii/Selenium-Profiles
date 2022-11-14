@@ -301,7 +301,7 @@ class driver(object):
 
 
 # convert exported "navigator" to Profile
-def navigator2profile(navigator: dict, filename: str = None):
+def navigator2profile(navigator, filename=None) -> (dict or str, str):
     from sel_profiles.utils.utils import write_json
 
     def replace_none(var, replace_with):
@@ -311,6 +311,8 @@ def navigator2profile(navigator: dict, filename: str = None):
             return replace_with
 
     if navigator is not None:
+        if navigator is str:
+            navigator = json.loads(navigator)
         try:
             navigator["metrics"]["orientation"] = replace_none(navigator["metrics"]["orientation"], "portrait-primary")
             navigator["metrics"]["angle"] = replace_none(navigator["metrics"]["angle"], 0)
