@@ -104,7 +104,7 @@ go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num
 and then run in Python:
 ```python
 from sel_profiles.driver import navigator2profile
-self = navigator2profile(my_copied_text, filename='myprofile.json')
+myprofile = navigator2profile(my_copied_text, filename='myprofile.json')
 ```
 
   
