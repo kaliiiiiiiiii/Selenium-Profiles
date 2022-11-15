@@ -6,6 +6,7 @@ import traceback  # print exception
 from typing import Dict, List  # define types in functions
 import json  # python dict to js
 import urllib  # for url parsing
+import time  # for time.sleep()
 
 
 # noinspection PyShadowingNames
@@ -96,6 +97,7 @@ class driver(object):
         # Buster extension options
         if not profile["plugins"]["buster"] is False:
             import os
+            warnings.warn("Buster is deprecated and automating isn't supported!")
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(sel_profiles_path() + "files\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
@@ -221,6 +223,7 @@ class driver(object):
         # Buster extension options
         if buster:
             import os
+            warnings.warn("Buster is deprecated and automating isn't supported!")
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(os.getcwd() + "\\\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
@@ -262,23 +265,33 @@ class driver(object):
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
     def solve_captcha(self):
-        if self.driver.profile["plugins"]["buster"]:
-            from selenium.webdriver.common.by import By  # locate elements
-            from selenium.webdriver.support import expected_conditions as EC
-            from selenium.webdriver.support.ui import WebDriverWait
-            solve_script = read("js/solve_script.js")
-            # noinspection PyBroadException
-            try:
-                self.driver.switch_to.default_content()
-                self.driver.find_element(By.XPATH, '//*[@title="reCAPTCHA"]').click()
-                WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
-                    (By.XPATH, '//*[@title="recaptcha challenge expires in two minutes"]')))
-                warnings.warn('solve_captcha doesn\'t work further yet!, How to click on closed shadow-root element?')
-                self.driver.switch_to.default_content()
-            except:
-                warnings.warn("Captcha could not be solved!")
-        else:
-            warnings.warn('Buster extension needs to be installed to solve Captcha!')
+        from selenium.webdriver.common.by import By  # locate elements
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support.ui import WebDriverWait
+
+        solve_script = read("js/solve_script.js")
+        # noinspection PyBroadException
+        try:
+            wait = WebDriverWait(self.driver, 5)  # driver 5s timeout
+            #  click on captcha
+            wait.until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+            wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
+            self.driver.switch_to.default_content()
+            # click on audio
+            WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
+                (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
+            time.sleep(2)
+            self.driver.find_element(By.XPATH, '//*[@id="recaptcha-audio-button"]').click()
+            self.driver.switch_to.default_content()
+        except:
+            # check "try again later"
+            WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
+                (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
+            self.driver.find_element(By.CSS_SELECTOR,
+                                     "a[href='https://developers.google.com/recaptcha/docs/faq#my-computer-or-network-may-be-sending-automated-queries']")
+            traceback.print_exc()
+            warnings.warn("Captcha could not be solved!")
+            self.driver.switch_to.default_content()
 
     # noinspection PyTypeChecker
     # get profile from current driver

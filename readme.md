@@ -125,7 +125,7 @@ Please feel free to open an issue or fork!
 - [x] export browser profile
 - [x] Add License
 - [x] installer.py script
-  - [x] [buster captcha solver](https://github.com/dessant/buster)
+  - [x] [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/3)
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
@@ -154,8 +154,7 @@ Please feel free to open an issue or fork!
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
     - [x] load modheader profile
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
-  - [x] [buster captcha solver](https://github.com/teal33t/captcha_bypass/blob/master/buster_captcha_solver_for_humans-0.7.2-an%2Bfx.xpi)
-    - [ ] how to click on closed shadow-root "solve captcha" element?. 
+- [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 - [ ] Add helper info
 - [ ] support for 
   - [x] Windows
@@ -167,6 +166,7 @@ Please feel free to open an issue or fork!
 
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
+* [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/3)
 
 ## Authors
 
@@ -176,7 +176,7 @@ Please feel free to open an issue or fork!
 
 * patched_driverV1
   * first version as importable file
-* sel_profiles
+* sel_profilesV2
   * added custom device metrics
   * change metrics while running
   * added example.json
@@ -185,7 +185,6 @@ Please feel free to open an issue or fork!
     * Windows
   * added navigator2profile, driver.get_profile()
   * added modheader (load modheader json profile)
-  * added buster captcha solver (but can't click on "solve-captcha" yet)
   * put everything into folders
 * googleV1 (not released yet!)
   * first version as importable file
@@ -219,6 +218,7 @@ Inspiration, code snippets, etc.
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium)
 * [ModHeader docs](https://docs.modheader.com/advanced/selenium-webdriver)
-* [buster captcha solver](https://github.com/dessant/buster)
+* [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/3)
+* [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
