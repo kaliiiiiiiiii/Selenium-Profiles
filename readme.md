@@ -158,6 +158,7 @@ Please feel free to open an issue or fork!
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 - [ ] Add helper info
+- [ ] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
   - [ ] Jupyter Notebook (Already prototype)
