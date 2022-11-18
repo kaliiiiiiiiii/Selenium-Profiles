@@ -213,6 +213,7 @@ I am not responsible what you use the code for!!! Also no warranty!
 Inspiration, code snippets, etc.
 
 * [Selenium](https://github.com/SeleniumHQ/selenium)
+* [selenium-documentation](https://www.selenium.dev/documentation/)
 * [README-Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
 * [headless_js](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 * [Selenium-Stealth](https://github.com/diprajpatra/selenium-stealth)
