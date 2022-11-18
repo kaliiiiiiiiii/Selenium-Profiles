@@ -52,4 +52,4 @@ def read_json(filename: str = 'example.json', encoding: str = "utf-8"):
 
 def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "utf-8"):
     with open(sel_profiles_path() + filename, "w", encoding=encoding) as outfile:
-        json.dump(obj, outfile)
+        outfile.write(json.dumps(obj))

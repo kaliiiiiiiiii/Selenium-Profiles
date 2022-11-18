@@ -143,6 +143,13 @@ class driver(object):
         if mobile:
             self.define_prop_on_new_document("navigator", "plugins", [])
 
+        self.driver.profile = profile
+        self.add_my_functions()
+
+        # Return actual driver
+        return self.driver
+
+    def add_my_functions(self):
         # add my functions to driver
         self.driver.set_touch = self.set_touch
         self.driver.set_emulation = self.set_emulation
@@ -153,20 +160,44 @@ class driver(object):
         self.driver.get_navigator = self.get_navigator
         self.driver.send_keys = self.sendkeys
         self.driver.navigator2profile = navigator2profile
-        self.driver.profile = profile
         self.driver.evaluate_on_new_document = self.evaluate_on_new_document
         self.driver.remove_evaluate_on_document = self.remove_evaluate_on_document
         self.driver.define_prop_on_new_document = self.define_prop_on_new_document
         self.driver.load_header_profiles = self.load_header_profiles
         self.driver.clear_header = self.clear_header
         self.driver.solve_captcha = self.solve_captcha
+        self.driver.get_cookies = self.get_cookies
+        self.driver.add_cookie = self.add_cookie
+        self.driver.get_cookie = self.get_cookie
+        self.driver.delete_cookie = self.delete_cookie
+        self.driver.delete_all_cookies = self.delete_all_cookies
 
-        # Return actual driver
-        return self.driver
+    def export_profile(self, to_path=sel_profiles_path() + "files\\user_dir"):
+        import shutil
+        shutil.copytree(self.driver.user_data_dir, to_path)
 
     def set_touch(self, enabled=True, maxpoints=5) -> (bool, int):  # set touch options
         return self.driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
                                            {'enabled': enabled, 'maxTouchPoints': maxpoints})  # already set in options
+
+    def get_cookies(self):
+        return self.driver.execute_cdp_cmd("Network.getAllCookies", {})
+
+    def get_cookie(self, urls: list[str] = []):
+        if len(urls) > 0:
+            arg = {"urls": urls}
+        else:
+            arg = {}
+        return self.driver.execute_cdp_cmd("Network.getCookies", arg)
+
+    def add_cookie(self, cookie_dict):
+        return self.driver.execute_cdp_cmd("Network.setCookie", cookie_dict)
+
+    def delete_cookie(self, name: str):
+        return self.driver.execute_cdp_cmd("Network.deleteCookies", {"name": name})
+
+    def delete_all_cookies(self):
+        return self.driver.execute_cdp_cmd("Network.clearBrowserCookies", {})
 
     # set emulation props, disabling not supported!
     def set_emulation(self, emulation, enabled=True) -> (Dict[str, int or Dict[str, str or int or float]], bool):
@@ -201,7 +232,8 @@ class driver(object):
         # noinspection PyTypeChecker
         return self.driver.execute_cdp_cmd("Network.setUserAgentOverride", useragent), x
 
-    def start_no_profile(self, modheader: bool = False, buster: bool = False, arguments: list[str] = []):  # start minimal driver without profile
+    def start_no_profile(self, modheader: bool = False, buster: bool = False, user_dir: str = None,
+                         arguments: list[str] = []):  # start minimal driver without profile
         options = uc.ChromeOptions()
         # additional options
         if len(arguments) > 0:
@@ -209,6 +241,9 @@ class driver(object):
                 options.add_argument(arg)
 
         options.add_argument("--no-sandbox")
+
+        if not (user_dir is None):
+            options.add_argument(r"--user-data-dir=" + user_dir)
 
         # ModHeader extension options
         if modheader:
@@ -231,7 +266,11 @@ class driver(object):
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
-        return uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+
+        self.add_my_functions()
+
+        return self.driver
 
     def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
         identifier = int(
@@ -252,8 +291,10 @@ class driver(object):
     # noinspection PyUnresolvedReferences
     def load_header_profiles(self, profile: str):
         if not self.profile["plugins"]["modheader"] is False:
-            self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe='')
-            self.driver.get('https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe=''))
+            self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(
+                profile[1:-1], safe='')
+            self.driver.get(
+                'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe=''))
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
@@ -274,7 +315,8 @@ class driver(object):
         try:
             wait = WebDriverWait(self.driver, 5)  # driver 5s timeout
             #  click on captcha
-            wait.until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+            wait.until(EC.frame_to_be_available_and_switch_to_it(
+                (By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
             wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
             self.driver.switch_to.default_content()
             # click on audio
