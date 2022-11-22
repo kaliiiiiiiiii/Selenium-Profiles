@@ -1,4 +1,4 @@
-# Selenium-Devices V2
+# Selenium-Profiles V2
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
@@ -127,7 +127,7 @@ Please feel free to open an issue or fork!
 - [x] export browser profile
 - [x] Add License
 - [x] installer.py script
-  - [x] [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/3)
+  - [x] [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
@@ -169,7 +169,7 @@ Please feel free to open an issue or fork!
 
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
-* [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/3)
+* [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
 
 ## Authors
 
