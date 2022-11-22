@@ -17,12 +17,12 @@ def sel_profiles_path():
         return os.getcwd() + "\\sel_profiles\\"
 
     # "utils" subdirectory of "sel_profiles" of "Selenium-Profiles-master"
-    elif "Selenium-Profiles-master" in os.listdir() and "utils" in os.listdir(os.getcwd() + "\\Selenium-Profiles-master\\sel_profiles"):
-        return os.getcwd() + "\\Selenium-Profiles-master\\sel_profiles\\"
+    elif "Selenium_Profiles-master" in os.listdir() and "utils" in os.listdir(os.getcwd() + "\\Selenium_Profiles-master\\sel_profiles"):
+        return os.getcwd() + "\\Selenium_Profiles-master\\sel_profiles\\"
 
     # "utils" subdirectory of "sel_profiles" of "Selenium-Profiles"
-    elif "Selenium-Profiles" in os.listdir() and "utils" in os.listdir(os.getcwd() + "\\Selenium-Profiles\\sel_profiles"):
-        return os.getcwd() + "\\Selenium-Profiles\\sel_profiles\\"
+    elif "Selenium_Profiles" in os.listdir() and "utils" in os.listdir(os.getcwd() + "\\Selenium_Profiles\\sel_profiles"):
+        return os.getcwd() + "\\Selenium_Profiles\\sel_profiles\\"
 
     # where is "sel_profiles" folder?!
     else:
