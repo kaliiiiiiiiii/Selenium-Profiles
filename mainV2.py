@@ -1,10 +1,10 @@
-from selenium_profiles.driver import driver as mydriver
+from selenium_profiles import driver as mydriver
 from selenium_profiles.profiles import profiles
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
-driver = mydriver.start(profiles.Windows())
+driver = mydriver.start(profiles.Android())
 
 # get url
 
