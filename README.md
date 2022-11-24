@@ -133,7 +133,7 @@ Please feel free to open an issue or fork!
     - [ ] Linux (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)s
   - [ ] requirements.txt
-- [ ] Selenium-Devices as installable module
+- [x] Selenium-Devices as installable module
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
@@ -189,7 +189,7 @@ Please feel free to open an issue or fork!
   * put everything into folders
 * googleV1 (not released yet!)
   * first version as importable file
-* sel_profilesV2.2 (not released yet!)
+* sel_profilesV2.2
   * installable as module (pip)
 
 ## License
