@@ -266,6 +266,7 @@ class driver(object):
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
+        # todo: patch chrome-browser path finder in undetected_chromedriver!
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
 
         self.add_my_functions()
