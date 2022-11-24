@@ -151,7 +151,6 @@ Please feel free to open an issue or fork!
     - [x] useragent, profile_export (no error)
       - [x] Windows
       - [x] Android
-  - [ ] test_google.py ("google.py" not released yet)
 - [ ] plugins support
   - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
