@@ -20,7 +20,7 @@
 
 * Download latest [chromedriver.exe](https://chromedriver.chromium.org/downloads)
 * Install [Chrome-Browser](https://www.google.de/chrome/)
-* ```pip install https://github.com/kaliiiiiiiiii/Selenium_Profiles/archive/refs/heads/master.zip```
+* ```pip install https://github.com/kaliiiiiiiiii/Selenium_Profiles/archive/refs/tags/v2.2.zip```
 
 ### Start Driver
 
