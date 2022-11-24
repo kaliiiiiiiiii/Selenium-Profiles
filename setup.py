@@ -35,7 +35,7 @@ setuptools.setup(
         'License :: CC BY-NC-SA 4.0',
         'Operating System :: Windows',
     ],
-    python_requires='~=3.7.9',
+    python_requires='~=3.7',
     install_requires=['selenium', 'requests', 'undetected-chromedriver'],
     include_package_data=True,
     extras_require={
