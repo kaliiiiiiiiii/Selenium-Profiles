@@ -5,7 +5,7 @@ import zipfile
 import shutil
 import platform
 
-from sel_profiles.utils.utils import sel_profiles_path
+from selenium_profiles.utils.utils import sel_profiles_path
 
 
 def installer(dirname, url) -> (str, str):

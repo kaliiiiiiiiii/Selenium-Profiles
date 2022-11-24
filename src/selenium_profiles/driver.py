@@ -1,7 +1,7 @@
 import warnings
 import undetected_chromedriver as uc  # undetected chromedriver
 from selenium.webdriver.common.action_chains import ActionChains  # Type text without specific Element
-from sel_profiles.utils.utils import read, sel_profiles_path  # read txt files
+from selenium_profiles.utils.utils import read, sel_profiles_path  # read txt files
 import traceback  # print exception
 from typing import Dict, List  # define types in functions
 import json  # python dict to js
@@ -90,7 +90,7 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(sel_profiles_path() + "files\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from sel_profiles.utils.installer import install_modheader
+                from selenium_profiles.utils.installer import install_modheader
                 install_modheader()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files\\modheader")
 
@@ -251,7 +251,7 @@ class driver(object):
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(os.getcwd() + "\\\\modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from sel_profiles.utils.installer import install_modheader
+                from selenium_profiles.utils.installer import install_modheader
                 install_modheader()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
 
@@ -262,7 +262,7 @@ class driver(object):
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(os.getcwd() + "\\\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
-                from sel_profiles.utils.installer import install_buster
+                from selenium_profiles.utils.installer import install_buster
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
@@ -359,7 +359,7 @@ class driver(object):
 
 # convert exported "navigator" to Profile
 def navigator2profile(navigator, filename=None) -> (dict or str, str):
-    from sel_profiles.utils.utils import write_json
+    from selenium_profiles.utils.utils import write_json
 
     def replace_none(var, replace_with):
         if var is not None:

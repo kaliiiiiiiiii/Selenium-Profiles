@@ -13,7 +13,6 @@
 
 * [Python3](https://www.python.org/downloads/)
 * Windows 10 (Linux not tested yet)
-* [chromedriver.exe](https://chromedriver.chromium.org/downloads) in your root directory (already in this Repository)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
 
@@ -21,25 +20,24 @@
 
 * Download latest [chromedriver.exe](https://chromedriver.chromium.org/downloads)
 * Install [Chrome-Browser](https://www.google.de/chrome/)
-* Install Requirements```pip install -r requirements.txt```
+* ```pip install https://github.com/kaliiiiiiiiii/Selenium_Profiles/archive/refs/heads/master.zip```
 
 ### Start Driver
 
 ```python
-from sel_profiles.utils.utils import read_json
-from sel_profiles.driver import driver as mydriver
-
-profile = read_json(filename="profiles\\default.json")
-profile = profile["Android"]  # yet supported: "Android", "Windows"
+from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.profiles import profiles
+from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
-driver = mydriver.start(profile)
+driver = mydriver.start(profiles.Windows())  # or .Android
 
 # get url
 driver.get('https://browserleaks.com/client-hints')  # test client hints
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
+
 
 ```
 
@@ -104,7 +102,7 @@ go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num
 and then run in Python:
 ```python
 from sel_profiles.driver import navigator2profile
-myprofile = navigator2profile(my_copied_text, filename='myprofile.json')
+myprofile = navigator2profile("my_copied_text", filename='myprofile.json')
 ```
 
   
@@ -228,3 +226,4 @@ Inspiration, code snippets, etc.
 * [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
+* [example_pypi_package](https://github.com/tomchen/example_pypi_package)

@@ -1,7 +1,7 @@
 import unittest
 
-from sel_profiles.utils.utils import read_json
-from sel_profiles.driver import driver as mydriver
+from selenium_profiles.utils.utils import read_json
+from selenium_profiles.driver import driver as mydriver
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()

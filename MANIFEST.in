@@ -1,0 +1,7 @@
+include pyproject.toml
+include *.md
+include LICENSE.md
+recursive-include tests test*.py
+graft src/selenium_profiles/js
+graft src/selenium_profiles/profiles
+

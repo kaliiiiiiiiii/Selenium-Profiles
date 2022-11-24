@@ -1,13 +1,10 @@
-from sel_profiles.utils.utils import read_json
-from sel_profiles.driver import driver as mydriver
+from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.profiles import profiles
 # noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By  # locate elements
 
-profile = read_json(filename="profiles\\default.json")
-profile = profile["Android"]  # yet supported: "Android", "Windows"
-
 mydriver = mydriver()
-driver = mydriver.start(profile)
+driver = mydriver.start(profiles.Windows())
 
 # get url
 
