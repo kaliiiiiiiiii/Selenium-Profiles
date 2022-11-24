@@ -171,7 +171,7 @@ Please feel free to open an issue or fork!
 
 ## Authors
 
-[Aurin Aegerter](mailto:aurin.aegerter@stud.gymthun.ch)
+[Aurin Aegerter](mailto:aurinliun@gmx.ch)
 
 ## Version History
 
