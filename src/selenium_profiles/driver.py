@@ -183,7 +183,7 @@ class driver(object):
     def get_cookies(self):
         return self.driver.execute_cdp_cmd("Network.getAllCookies", {})
 
-    def get_cookie(self, urls: list[str] = []):
+    def get_cookie(self, urls: list = []):
         if len(urls) > 0:
             arg = {"urls": urls}
         else:
@@ -233,7 +233,7 @@ class driver(object):
         return self.driver.execute_cdp_cmd("Network.setUserAgentOverride", useragent), x
 
     def start_no_profile(self, modheader: bool = False, buster: bool = False, user_dir: str = None,
-                         arguments: list[str] = []):  # start minimal driver without profile
+                         arguments: list = []):  # start minimal driver without profile
         options = uc.ChromeOptions()
         # additional options
         if len(arguments) > 0:
