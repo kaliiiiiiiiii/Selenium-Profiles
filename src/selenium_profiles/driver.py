@@ -101,7 +101,7 @@ class driver(object):
             warnings.warn('Only use Buster when Captcha solver needed!')
             if not os.path.isdir(sel_profiles_path() + "files\\buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
-                from sel_profiles.utils.installer import install_buster
+                from selenium_profiles.utils.installer import install_buster
                 install_buster()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files\\buster")
 
