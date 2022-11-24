@@ -192,7 +192,7 @@ Please feel free to open an issue or fork!
   * put everything into folders
 * googleV1 (not released yet!)
   * first version as importable file
-* sel_profilesV2.1 (not released yet!)
+* sel_profilesV2.2 (not released yet!)
   * installable as module (pip)
 
 ## License
