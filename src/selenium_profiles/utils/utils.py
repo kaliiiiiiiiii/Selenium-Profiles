@@ -42,10 +42,8 @@ def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "u
         outfile.write(json.dumps(obj))
 
 
-import sys
-
-
 def find_chrome_executable():  # needed until https://github.com/ultrafunkamsterdam/undetected-chromedriver/pull/920 gets patched
+    import sys
     """
     Finds the chrome, chrome beta, chrome canary, chromium executable
     Returns

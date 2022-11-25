@@ -11,7 +11,7 @@
 
 ### Dependencies
 
-* [Python3](https://www.python.org/downloads/)
+* [Python >= 3.7](https://www.python.org/downloads/)
 * Windows 10 (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
