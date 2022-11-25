@@ -28,7 +28,9 @@ setuptools.setup(
 
         'Intended Audience :: Developers',
         'Topic :: Webautomation :: Selenium',
+        'Programming Language :: Python :: 3.1',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'License :: CC BY-NC-SA 4.0',
         'Operating System :: Windows',
     ],

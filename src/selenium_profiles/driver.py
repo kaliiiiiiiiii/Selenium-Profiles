@@ -1,7 +1,7 @@
 import warnings
 import undetected_chromedriver as uc  # undetected chromedriver
 from selenium.webdriver.common.action_chains import ActionChains  # Type text without specific Element
-from selenium_profiles.utils.utils import read, sel_profiles_path  # read txt files
+from selenium_profiles.utils.utils import read, sel_profiles_path, find_chrome_executable  # read txt files
 import traceback  # print exception
 from typing import Dict, List  # define types in functions
 import json  # python dict to js
@@ -106,7 +106,7 @@ class driver(object):
             options.add_argument('--load-extension=' + sel_profiles_path() + "files\\buster")
 
         # Actual start of chrome
-        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
 
         self.driver.get('http://icanhazip.com/')  # wait browser to start
 
@@ -266,8 +266,7 @@ class driver(object):
                 install_buster()
             options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
 
-        # todo: patch chrome-browser path finder in undetected_chromedriver!
-        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True)  # start undetected_chromedriver
+        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
 
         self.add_my_functions()
 

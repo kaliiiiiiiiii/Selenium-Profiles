@@ -11,7 +11,7 @@
 
 ### Dependencies
 
-* [Python3](https://www.python.org/downloads/) (3.7 working)
+* [Python3](https://www.python.org/downloads/)
 * Windows 10 (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * Requirements.txt
@@ -156,7 +156,7 @@ Please feel free to open an issue or fork!
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 - [ ] Add helper info
-- [ ] Rewrite driver.py to V2.2
+- [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
   - [ ] Jupyter Notebook (Already prototype)

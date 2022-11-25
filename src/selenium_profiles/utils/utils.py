@@ -5,7 +5,7 @@ import selenium_profiles
 
 
 def sel_profiles_path():
-    return os.path.dirname(selenium_profiles.__file__)+"\\"
+    return os.path.dirname(selenium_profiles.__file__) + "\\"
 
 
 def write(lst: any, filename: str = 'out', encoding: str = "utf-8"):  # write list to textfile line by line
@@ -40,3 +40,48 @@ def read_json(filename: str = 'example.json', encoding: str = "utf-8"):
 def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "utf-8"):
     with open(sel_profiles_path() + filename, "w", encoding=encoding) as outfile:
         outfile.write(json.dumps(obj))
+
+
+def find_chrome_executable():
+    import sys
+    """
+    Finds the chrome, chrome beta, chrome canary, chromium executable
+
+    Returns
+    -------
+    executable_path :  str
+        the full file path to found executable
+
+    """
+    candidates = set()
+    if sys.platform.startswith(("darwin", "cygwin", "linux")):
+        for item in os.environ.get("PATH").split(os.pathsep):
+            for subitem in (
+                    "google-chrome",
+                    "chromium",
+                    "chromium-browser",
+                    "chrome",
+                    "google-chrome-stable",
+            ):
+                candidates.add(os.sep.join((item, subitem)))
+        if "darwin" in sys.platform:
+            candidates.update(
+                [
+                    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+                ]
+            )
+    else:
+        paths = list(map(os.environ.get, ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")))
+        paths.append(r"C:\Program Files")
+        for item in paths:
+            if item is not None:
+                for subitem in (
+                        "Google/Chrome/Application",
+                        "Google/Chrome Beta/Application",
+                        "Google/Chrome Canary/Application",
+                ):
+                    candidates.add(os.sep.join((item, subitem, "chrome.exe")))
+    for candidate in candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return os.path.normpath(candidate)
