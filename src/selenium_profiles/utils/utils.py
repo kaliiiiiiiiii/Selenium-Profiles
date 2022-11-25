@@ -42,19 +42,21 @@ def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "u
         outfile.write(json.dumps(obj))
 
 
-def find_chrome_executable():
-    import sys
+import sys
+
+
+def find_chrome_executable():  # needed until https://github.com/ultrafunkamsterdam/undetected-chromedriver/pull/920 gets patched
     """
     Finds the chrome, chrome beta, chrome canary, chromium executable
-
     Returns
     -------
     executable_path :  str
         the full file path to found executable
-
     """
     candidates = set()
-    if sys.platform.startswith(("darwin", "cygwin", "linux")):
+    IS_POSIX = sys.platform.startswith(
+        ("darwin", "cygwin", "linux"))  # imported from .patcher in undetected_chromedriver
+    if IS_POSIX:
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
                     "google-chrome",
@@ -72,9 +74,9 @@ def find_chrome_executable():
                 ]
             )
     else:
-        paths = list(map(os.environ.get, ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")))
-        paths.append(r"C:\Program Files")
-        for item in paths:
+        for item in map(
+                os.environ.get, ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")
+        ):
             if item is not None:
                 for subitem in (
                         "Google/Chrome/Application",
