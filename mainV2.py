@@ -4,8 +4,7 @@ from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
-#driver = mydriver.start(profiles.Windows())
-driver =mydriver.start_no_profile()
+driver = mydriver.start(profiles.Windows())
 
 # get url
 
