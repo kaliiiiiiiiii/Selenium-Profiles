@@ -107,9 +107,6 @@ myprofile = navigator2profile("my_copied_text", filename='myprofile.json')
 ## Help
 
 Please feel free to open an issue or fork!
-```commandline
-# no helper info yet
-```
 
 ## Known Bugs
 
