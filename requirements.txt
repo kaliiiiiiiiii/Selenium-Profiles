@@ -1,1 +1,1 @@
-selenium-profiles
+selenium-profiles~=2.2
