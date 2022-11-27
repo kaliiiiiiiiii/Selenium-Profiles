@@ -51,6 +51,7 @@ class driver(object):
             options.arguments.extend(["--no-sandbox", "--test-type"])
         if profile["browser"]["headless"]:
             options.add_argument('--headless=chrome')
+            options.add_argument("--blink-settings=imagesEnabled=false")  # disable loading Images
         if profile["browser"]["touch_events"]:
             options.add_argument("--touch-events=enabled")
         if profile["browser"]["app"]:
