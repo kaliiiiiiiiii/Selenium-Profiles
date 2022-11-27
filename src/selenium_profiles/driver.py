@@ -220,7 +220,7 @@ class driver(object):
 
     # set force darkmode
     def set_darkmode(self, enabled=True, mobile=True) -> (bool, bool):
-        if not mobile:
+        if not mobile and enabled:
             warnings.warn('darkmode might look weird without mobile_view!')
         else:
             return self.driver.execute_cdp_cmd('Emulation.setAutoDarkModeOverride',
