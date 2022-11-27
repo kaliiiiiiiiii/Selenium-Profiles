@@ -14,13 +14,12 @@
 * [Python >= 3.7](https://www.python.org/downloads/)
 * Windows 10 (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
-* Requirements.txt
+* selenium-profiles
 
 ### Installing
 
-* Download latest [chromedriver.exe](https://chromedriver.chromium.org/downloads)
 * Install [Chrome-Browser](https://www.google.de/chrome/)
-* ```pip install https://github.com/kaliiiiiiiiii/Selenium_Profiles/archive/refs/tags/v2.2.zip```
+* ```pip install selenium-profiles```
 
 ### Start Driver
 
@@ -101,7 +100,7 @@ go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num
 
 and then run in Python:
 ```python
-from sel_profiles.driver import navigator2profile
+from selenium_profiles.driver import navigator2profile
 myprofile = navigator2profile("my_copied_text", filename='myprofile.json')
 ```
 

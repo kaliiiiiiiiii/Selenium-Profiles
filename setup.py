@@ -24,18 +24,20 @@ setuptools.setup(
     packages=setuptools.find_packages(where='src'),
     classifiers=[
         # see https://pypi.org/classifiers/
-        'Development Status :: 5 - Production/Stable',
-
+        'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
-        'Topic :: Webautomation :: Selenium',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
-        'License :: CC BY-NC-SA 4.0',
-        'Operating System :: Windows',
+        'License :: Free for non-commercial use',
+        'Natural Language :: English',
+        'Operating System :: Microsoft :: Windows',
+        'Topic :: Internet',
+        'Topic :: Internet :: WWW/HTTP :: Browsers',
+
     ],
     python_requires='>=3.7',
     install_requires=['selenium', 'requests', 'undetected-chromedriver'],
