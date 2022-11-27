@@ -36,8 +36,6 @@ driver.get('https://browserleaks.com/client-hints')  # test client hints
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
-
-
 ```
 
 Don't forget to execute
