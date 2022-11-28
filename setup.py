@@ -4,6 +4,7 @@ import setuptools
 # noinspection SpellCheckingInspection
 def is_collab():
     import sys
+    # noinspection PyBroadException
     try:
         # noinspection PyPackageRequirements
         import google.colab
