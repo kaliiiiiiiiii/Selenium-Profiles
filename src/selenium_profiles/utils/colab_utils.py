@@ -8,7 +8,9 @@ def restart_runtime():
 
 def is_collab():
     import sys
+    # noinspection PyBroadException
     try:
+        # noinspection PyPackageRequirements
         import google.colab
         cimport = True
     except:
@@ -20,6 +22,7 @@ def is_collab():
 
 
 def collab_installer():
+    import os
     sucess = os.system('''
     apt install chromium-chromedriver >> tmp;
     apt install -y xvfb >> tmp;
@@ -28,6 +31,7 @@ def collab_installer():
     ''')
     with open('tmp', 'r') as f:
         out = f.read()
+    os.remove('tmp')
     patcher_src = "/usr/local/lib/python3.7/dist-packages/undetected_chromedriver/patcher.py"
     with open(patcher_src, "r") as f:
         contents = f.read()
@@ -39,8 +43,16 @@ def collab_installer():
         return out
     else:
         print(out)
-        raise ValueError("Installation not sucessfull!!")
+        raise ValueError("Installation not successful!!")
 
 
 def update_apts():
-    return os.system("apt-get update")
+    success = os.system("apt-get update >> tmp")
+    with open('tmp', 'r') as f:
+        out = f.read()
+    os.remove('tmp')
+    if success == 0:
+        return out
+    else:
+        print(out)
+        raise ValueError("Installation not successful!!")
