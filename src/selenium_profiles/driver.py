@@ -7,6 +7,7 @@ from typing import Dict, List  # define types in functions
 import json  # python dict to js
 import urllib  # for url parsing
 import time  # for time.sleep()
+from selenium_profiles.utils.colab_utils import is_collab, display
 
 
 # noinspection PyShadowingNames
@@ -20,6 +21,7 @@ def sendkeys(driver, keys):  # send keys without specific Element
 class driver(object):
     def __init__(self):
         # initial attributes
+        self.overwride_quit = None
         self.returnnavigator = None
         self.profile = None
         self.driver = None
@@ -105,6 +107,9 @@ class driver(object):
                 from selenium_profiles.utils.installer import install_buster
                 install_buster()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
+
+        if is_collab():
+            display.start_display()  # todo: stop display missing!
 
         # Actual start of chrome
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
