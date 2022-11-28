@@ -6,6 +6,12 @@ import shutil
 import platform
 
 from selenium_profiles.utils.utils import sel_profiles_path
+from selenium_profiles.utils.colab_utils import is_collab
+
+if is_collab:
+    my_platform = "Google_Colab"
+else:
+    my_platform = platform.system()
 
 
 def installer(dirname, url) -> (str, str):
@@ -18,7 +24,7 @@ def installer(dirname, url) -> (str, str):
     extract_del(dirname + '.crx', dirname)
 
 
-def install_chromedriver(platform: str = platform.system(), chromeversion: int = 108):
+def install_chromedriver(platform: str = platform, chromeversion: int = 108):
     if os.path.isfile(sel_profiles_path() + "files\\chromedriver.exe"):
         print(r'Updating "files\chromedriver.exe" ..')
 
