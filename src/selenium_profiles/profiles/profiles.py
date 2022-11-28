@@ -1,6 +1,6 @@
 def return_profile(platform: str):
     from selenium_profiles.utils.utils import read_json
-    profile = read_json(filename="profiles\\default.json")
+    profile = read_json(filename="profiles/default.json")
     return profile[platform]  # yet supported: "Android", "Windows"
 
 
