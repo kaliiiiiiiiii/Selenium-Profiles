@@ -22,12 +22,7 @@ def is_collab():
 def collab_installer():
     import ast
     import subprocess
-    out = subprocess.run('''
-    apt install chromium-chromedriver
-    apt install -y xvfb
-    cp /usr/lib/chromium-browser/chromedriver /usr/bin
-    zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver
-    ''')
+    out = subprocess.run('apt install chromium-chromedriver;apt install -y xvfb;cp /usr/lib/chromium-browser/chromedriver /usr/bin;zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver')
     patcher_src = "/usr/local/lib/python3.7/dist-packages/undetected_chromedriver/patcher.py"
     with open(patcher_src, "r") as f:
         contents = f.read()
