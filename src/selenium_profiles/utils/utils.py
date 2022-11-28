@@ -5,7 +5,7 @@ import selenium_profiles
 
 
 def sel_profiles_path():
-    return os.path.dirname(selenium_profiles.__file__) + "\\"
+    return os.path.dirname(selenium_profiles.__file__) + "/"
 
 
 def write(lst: any, filename: str = 'out', encoding: str = "utf-8"):  # write list to textfile line by line

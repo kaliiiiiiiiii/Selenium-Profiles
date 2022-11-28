@@ -23,7 +23,7 @@ class driver(object):
         self.returnnavigator = None
         self.profile = None
         self.driver = None
-        self.js_return_navigator = read('js\\get_navigator.js')[0]  # for exporting javascript Variables
+        self.js_return_navigator = read('js/get_navigator.js')[0]  # for exporting javascript Variables
 
     def start(self, profile: Dict[str, dict or list]):
         self.profile = profile
@@ -89,22 +89,22 @@ class driver(object):
         if not (profile["plugins"]["modheader"] is False):
             import os
             warnings.warn('Only use modheader when additional Headers needed!')
-            if not os.path.isdir(sel_profiles_path() + "files\\modheader"):
+            if not os.path.isdir(sel_profiles_path() + "files/modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
                 from selenium_profiles.utils.installer import install_modheader
                 install_modheader()
-            options.add_argument('--load-extension=' + sel_profiles_path() + "files\\modheader")
+            options.add_argument('--load-extension=' + sel_profiles_path() + "files/modheader")
 
         # Buster extension options
         if not profile["plugins"]["buster"] is False:
             import os
             warnings.warn("Buster is deprecated and automating isn't supported!")
             warnings.warn('Only use Buster when Captcha solver needed!')
-            if not os.path.isdir(sel_profiles_path() + "files\\buster"):
+            if not os.path.isdir(sel_profiles_path() + "files/buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
                 from selenium_profiles.utils.installer import install_buster
                 install_buster()
-            options.add_argument('--load-extension=' + sel_profiles_path() + "files\\buster")
+            options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         # Actual start of chrome
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
@@ -173,7 +173,7 @@ class driver(object):
         self.driver.delete_cookie = self.delete_cookie
         self.driver.delete_all_cookies = self.delete_all_cookies
 
-    def export_profile(self, to_path=sel_profiles_path() + "files\\user_dir"):
+    def export_profile(self, to_path=sel_profiles_path() + "files/user_dir"):
         import shutil
         shutil.copytree(self.driver.user_data_dir, to_path)
 
@@ -250,22 +250,22 @@ class driver(object):
         if modheader:
             import os
             warnings.warn('Only use modheader when additional Headers needed!')
-            if not os.path.isdir(os.getcwd() + "\\\\modheader"):
+            if not os.path.isdir(os.getcwd() + "/modheader"):
                 warnings.warn('Modheader not installed & extracted in /modheader yet!')
                 from selenium_profiles.utils.installer import install_modheader
                 install_modheader()
-            options.add_argument('--load-extension=' + os.getcwd() + "\\\\modheader")
+            options.add_argument('--load-extension=' + os.getcwd() + "/modheader")
 
         # Buster extension options
         if buster:
             import os
             warnings.warn("Buster is deprecated and automating isn't supported!")
             warnings.warn('Only use Buster when Captcha solver needed!')
-            if not os.path.isdir(os.getcwd() + "\\\\buster"):
+            if not os.path.isdir(os.getcwd() + "/buster"):
                 warnings.warn('Buster not installed & extracted in /buster yet!')
                 from selenium_profiles.utils.installer import install_buster
                 install_buster()
-            options.add_argument('--load-extension=' + os.getcwd() + "\\\\buster")
+            options.add_argument('--load-extension=' + os.getcwd() + "/buster")
 
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
 

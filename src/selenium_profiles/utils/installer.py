@@ -27,13 +27,13 @@ def installer(dirname, url) -> (str, str):
 
 
 def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108):
-    if os.path.isfile(sel_profiles_path() + "files\\chromedriver.exe"):
-        print(r'Updating "files\chromedriver.exe" ..')
+    if os.path.isfile(sel_profiles_path() + "files/chromedriver.exe"):
+        print(r'Updating "files/chromedriver.exe" ..')
 
     def write():
         # write .zip
-        open(sel_profiles_path() + r'files\chromedriver.zip', 'wb').write(r.content)
-        extract_del(r'files\chromedriver.zip', dirname="files\\")
+        open(sel_profiles_path() + r'files/chromedriver.zip', 'wb').write(r.content)
+        extract_del(r'files/chromedriver.zip', dirname="files/")
 
     # Versions
     if chromeversion == 108:
@@ -72,12 +72,12 @@ def extract_del(filename, dirname) -> (str, str):
     os.remove(sel_profiles_path() + filename)
 
 
-def install_modheader(dirname: str = r"files\modheader"):
+def install_modheader(dirname: str = r"files/modheader"):
     installer(dirname,
               'https://github.com/modheader/modheader_selenium/blob/main/chrome-modheader/modheader.crx?raw=true')
 
 
-def install_buster(dirname: str = r"files\buster", patch_files: bool = False):
+def install_buster(dirname: str = r"files/buster", patch_files: bool = False):
     installer(dirname,
               'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
     if patch_files:
