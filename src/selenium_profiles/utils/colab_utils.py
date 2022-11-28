@@ -20,7 +20,8 @@ def is_collab():
 
 
 def collab_installer():
-    out = os.system('''
+    import subprocess
+    out = subprocess.run('''
     apt install chromium-chromedriver
     apt install -y xvfb
     cp /usr/lib/chromium-browser/chromedriver /usr/bin
