@@ -110,8 +110,8 @@ class driver(object):
 
         if is_collab():
             from selenium_profiles.utils.colab_utils import display
-            self.driver.display = display
-            self.driver.display.start_display()  # todo: stop display missing!
+            self.display = display
+            self.display.start_display()  # todo: stop display missing!
 
         # Actual start of chrome
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
@@ -179,6 +179,8 @@ class driver(object):
         self.driver.get_cookie = self.get_cookie
         self.driver.delete_cookie = self.delete_cookie
         self.driver.delete_all_cookies = self.delete_all_cookies
+        if is_collab():
+            self.driver.display = self.display
 
     def export_profile(self, to_path=sel_profiles_path() + "files/user_dir"):
         import shutil
