@@ -71,3 +71,11 @@ class display:
 
     def stop_display(self):
         self.display.stop()
+
+
+# noinspection PyUnresolvedReferences,PyPackageRequirements
+def showscreen(driver):
+    from IPython.display import display as imagerender
+    from IPython.display import Image
+    driver.save_screenshot('screen.png')
+    imagerender(Image('screen.png'))

@@ -42,6 +42,9 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
+#### Using Google-Colab
+see [Google-Colab]()
+
 ## Profiles
 
 Example Profile: 
@@ -123,7 +126,7 @@ Please feel free to open an issue or fork!
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
-    - [ ] Jupyter
+    - [x] Jupyter (Google-Colab)
     - [ ] Linux (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)s
   - [ ] requirements.txt
@@ -153,7 +156,7 @@ Please feel free to open an issue or fork!
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
-  - [ ] Jupyter Notebook (Already prototype)
+  - [x] Jupyter Notebook (Google-Colab)
   - [ ] Linux
 
 
