@@ -56,3 +56,21 @@ def update_apts():
     else:
         print(out)
         raise ValueError("Installation not successful!!")
+
+
+# noinspection PyPep8Naming
+class display:
+    def __init__(self):
+        self.display = None
+
+    def start_display(self, x=1200, y=2200):
+        # noinspection PyUnresolvedReferences,PyPackageRequirements
+        from pyvirtualdisplay import Display
+        self.display = Display(visible=0, size=(x, y))
+        self.display.start()
+
+    def stop_display(self):
+        self.display.stop_display()
+
+
+display = display()
