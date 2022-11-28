@@ -20,6 +20,7 @@ def is_collab():
 
 
 def collab_installer():
+    import ast
     import subprocess
     out = subprocess.run('''
     apt install chromium-chromedriver
@@ -35,7 +36,7 @@ def collab_installer():
     with open(patcher_src, "w") as f:
         f.write(contents)
 
-    return out
+    return ast.literal_eval(str(out))
 
 
 def update_apts():
