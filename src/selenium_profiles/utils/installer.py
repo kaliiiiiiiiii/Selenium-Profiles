@@ -8,10 +8,12 @@ import platform
 from selenium_profiles.utils.utils import sel_profiles_path
 from selenium_profiles.utils.colab_utils import is_collab
 
-if is_collab:
-    my_platform = "Google_Colab"
-else:
-    my_platform = platform.system()
+
+def my_platform():
+    if is_collab:
+        return "Google_Colab"
+    else:
+        return platform.system()
 
 
 def installer(dirname, url) -> (str, str):
@@ -24,7 +26,7 @@ def installer(dirname, url) -> (str, str):
     extract_del(dirname + '.crx', dirname)
 
 
-def install_chromedriver(platform: str = platform, chromeversion: int = 108):
+def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108):
     if os.path.isfile(sel_profiles_path() + "files\\chromedriver.exe"):
         print(r'Updating "files\chromedriver.exe" ..')
 
@@ -70,7 +72,8 @@ def install_modheader(dirname: str = r"files\modheader"):
 
 
 def install_buster(dirname: str = r"files\buster", patch_files: bool = False):
-    installer(dirname,'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
+    installer(dirname,
+              'https://github.com/dessant/buster/releases/download/v1.3.2/buster_captcha_solver_for_humans-1.3.2-chrome.zip')
     if patch_files:
         print('Patching "Buster" extension..')
         warnings.warn("Patch gets detected by Buster!, Not working yet.")
