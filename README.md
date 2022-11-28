@@ -42,8 +42,10 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### Using Google-Colab
-see [Google-Colab]()
+#### Run with Google-Colab
+[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
+
+Note that _*collab crashes*_ when installing so that we don't need to press the restart button.
 
 ## Profiles
 
