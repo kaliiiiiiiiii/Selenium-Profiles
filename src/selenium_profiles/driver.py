@@ -7,7 +7,7 @@ from typing import Dict, List  # define types in functions
 import json  # python dict to js
 import urllib  # for url parsing
 import time  # for time.sleep()
-from selenium_profiles.utils.colab_utils import is_collab, display
+from selenium_profiles.utils.colab_utils import is_collab
 
 
 # noinspection PyShadowingNames
@@ -109,8 +109,9 @@ class driver(object):
             options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         if is_collab():
-            self.display = display
-            display.start_display()  # todo: stop display missing!
+            from selenium_profiles.utils.colab_utils import display
+            self.driver.display = display
+            self.driver.display.start_display()  # todo: stop display missing!
 
         # Actual start of chrome
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
