@@ -70,7 +70,7 @@ class display:
         self.display.start()
 
     def stop_display(self):
-        self.display.stop_display()
+        self.display.stop()
 
 
 display = display()
