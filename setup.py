@@ -1,5 +1,26 @@
 import setuptools
 
+
+# noinspection SpellCheckingInspection
+def is_collab():
+    import sys
+    try:
+        # noinspection PyPackageRequirements
+        import google.colab
+        cimport = True
+    except:
+        cimport = False
+    if ('google.colab' in sys.modules) and cimport:
+        return True
+    else:
+        return False
+
+
+requirements = ['selenium~=4.6', 'requests~=2.28', 'undetected-chromedriver~=3.1']
+
+if is_collab():
+    requirements.append('PyVirtualDisplay')
+
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
@@ -15,7 +36,7 @@ setuptools.setup(
     project_urls={
         'Documentation': 'https://github.com/kaliiiiiiiiii/Selenium_Profiles',
         'Bug Reports':
-        'https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues',
+            'https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues',
         'Source Code': 'https://github.com/kaliiiiiiiiii/Selenium_Profiles',
         # 'Funding': '',
         # 'Say Thanks!': '',
@@ -40,7 +61,7 @@ setuptools.setup(
 
     ],
     python_requires='>=3.7',
-    install_requires=['selenium~=4.6', 'requests~=2.28', 'undetected-chromedriver~=3.1'],
+    install_requires=requirements,
     include_package_data=True,
     extras_require={
         'dev': ['check-manifest'],

@@ -1,3 +1,8 @@
+def restart_runtime():
+    import os
+    os.kill(os.getpid(), 9)
+
+
 def is_collab():
     import sys
     try:
