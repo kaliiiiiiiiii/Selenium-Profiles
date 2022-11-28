@@ -46,6 +46,9 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
     elif platform == "Linux":
         warnings.warn("Linux not tested yet!")
         r = requests.get(url + 'chromedriver_linux64.zip')
+    elif platform == "Google-Colab":
+        from selenium_profiles.utils.colab_utils import collab_installer
+        collab_installer()
     else:
         warnings.warn('Chromedriver installation for "' + platform + '" not supported yet!')
 

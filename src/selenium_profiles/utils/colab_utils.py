@@ -1,3 +1,6 @@
+import os
+
+
 def restart_runtime():
     import os
     os.kill(os.getpid(), 9)
@@ -14,3 +17,22 @@ def is_collab():
         return True
     else:
         return False
+
+
+def collab_installer():
+    os.system('''
+    apt install chromium-chromedriver
+    apt install -y xvfb
+    cp /usr/lib/chromium-browser/chromedriver /usr/bin
+    zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver
+    ''')
+    patcher_src = "/usr/local/lib/python3.7/dist-packages/undetected_chromedriver/patcher.py"
+    with open(patcher_src, "r") as f:
+        contents = f.read()
+        contents = contents.replace("return urlretrieve(u)[0]",
+                                    "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
+    with open(patcher_src, "w") as f:
+        f.write(contents)
+
+def update_apts():
+    os.system("apt-get update")
