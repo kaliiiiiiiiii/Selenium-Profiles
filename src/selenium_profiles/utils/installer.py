@@ -11,7 +11,7 @@ from selenium_profiles.utils.colab_utils import is_collab
 
 def my_platform():
     if is_collab:
-        return "Google_Colab"
+        return "Google-Colab"
     else:
         return platform.system()
 
