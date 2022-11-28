@@ -40,7 +40,7 @@ setuptools.setup(
 
     ],
     python_requires='>=3.7',
-    install_requires=['selenium', 'requests', 'undetected-chromedriver'],
+    install_requires=['selenium~=4.6', 'requests~=2.28', 'undetected-chromedriver~=3.1'],
     include_package_data=True,
     extras_require={
         'dev': ['check-manifest'],
