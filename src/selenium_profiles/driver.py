@@ -21,7 +21,7 @@ def sendkeys(driver, keys):  # send keys without specific Element
 class driver(object):
     def __init__(self):
         # initial attributes
-        self.overwride_quit = None
+        self.display = None
         self.returnnavigator = None
         self.profile = None
         self.driver = None
@@ -109,6 +109,7 @@ class driver(object):
             options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         if is_collab():
+            self.display = display
             display.start_display()  # todo: stop display missing!
 
         # Actual start of chrome
