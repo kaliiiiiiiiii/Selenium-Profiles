@@ -39,8 +39,6 @@ setuptools.setup(
         'Bug Reports':
             'https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues',
         'Source Code': 'https://github.com/kaliiiiiiiiii/Selenium_Profiles',
-        # 'Funding': '',
-        # 'Say Thanks!': '',
     },
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
@@ -57,6 +55,7 @@ setuptools.setup(
         'License :: Free for non-commercial use',
         'Natural Language :: English',
         'Operating System :: Microsoft :: Windows',
+        'Framework :: Jupyter'
         'Topic :: Internet',
         'Topic :: Internet :: WWW/HTTP :: Browsers',
 

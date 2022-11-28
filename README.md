@@ -12,13 +12,13 @@
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows 10 (Linux not tested yet)
+* Windows or [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * selenium-profiles
 
 ### Installing
 
-* Install [Chrome-Browser](https://www.google.de/chrome/)
+* [Windows] Install [Chrome-Browser](https://www.google.de/chrome/)
 * ```pip install selenium-profiles```
 
 ### Start Driver
@@ -45,7 +45,7 @@ in the End. Else-wise your temporary folder will get flooded! (Windows)
 #### Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
-Note that _*collab crashes*_ when installing so that we don't need to press the restart button.
+Note that _*colab crashes*_ when installing so that we don't need to press the restart button.
 
 ## Profiles
 
@@ -131,7 +131,7 @@ Please feel free to open an issue or fork!
     - [x] Jupyter (Google-Colab)
     - [ ] Linux (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)s
-  - [ ] requirements.txt
+  - [x] requirements.txt
 - [x] Selenium-Devices as installable module
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
@@ -141,6 +141,7 @@ Please feel free to open an issue or fork!
   - [x] Windows
   - [ ] IOS
   - [ ] Linux
+  - [ ] Tablet
 - [x] change metrics while running
   - [ ] disable emulation while running
 - [ ] test.py script
@@ -152,9 +153,9 @@ Please feel free to open an issue or fork!
   - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
   - [x] [modheader]((https://github.com/modheader/modheader_selenium))
     - [x] load modheader profile
+    - [ ] add headers without profile
   - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
-- [ ] Add helper info
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
@@ -178,8 +179,6 @@ Please feel free to open an issue or fork!
   * first version as importable file
 * sel_profilesV2
   * added custom device metrics
-  * change metrics while running
-  * added example.json
   * added default.json metrics
     * Android
     * Windows
