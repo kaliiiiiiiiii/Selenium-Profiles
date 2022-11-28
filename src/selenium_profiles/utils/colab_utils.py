@@ -20,9 +20,14 @@ def is_collab():
 
 
 def collab_installer():
-    import ast
-    import subprocess
-    out = subprocess.run(['apt install chromium-chromedriver;apt install -y xvfb;cp /usr/lib/chromium-browser/chromedriver /usr/bin;zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver'], stdout=subprocess.PIPE)
+    sucess = os.system('''
+    apt install chromium-chromedriver >> tmp;
+    apt install -y xvfb >> tmp;
+    cp /usr/lib/chromium-browser/chromedriver /usr/bin >> tmp;
+    zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver >> tmp;
+    ''')
+    with open('tmp', 'r') as f:
+        out = f.read()
     patcher_src = "/usr/local/lib/python3.7/dist-packages/undetected_chromedriver/patcher.py"
     with open(patcher_src, "r") as f:
         contents = f.read()
@@ -30,8 +35,11 @@ def collab_installer():
                                     "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
     with open(patcher_src, "w") as f:
         f.write(contents)
-
-    return ast.literal_eval(str(out.stdout))
+    if sucess == 0:
+        return out
+    else:
+        print(out)
+        raise ValueError("Installation not sucessfull!!")
 
 
 def update_apts():
