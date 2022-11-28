@@ -110,6 +110,7 @@ class driver(object):
 
         if is_collab():
             from selenium_profiles.utils.colab_utils import display
+            display = display()
             self.display = display
             self.display.start_display()  # todo: stop display missing!
 

@@ -71,6 +71,3 @@ class display:
 
     def stop_display(self):
         self.display.stop()
-
-
-display = display()
