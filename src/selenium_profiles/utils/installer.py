@@ -30,6 +30,11 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
     if os.path.isfile(sel_profiles_path() + "files\\chromedriver.exe"):
         print(r'Updating "files\chromedriver.exe" ..')
 
+    def write():
+        # write .zip
+        open(sel_profiles_path() + r'files\chromedriver.zip', 'wb').write(r.content)
+        extract_del(r'files\chromedriver.zip', dirname="files\\")
+
     # Versions
     if chromeversion == 108:
         url = 'https://chromedriver.storage.googleapis.com/108.0.5359.22/'
@@ -43,18 +48,16 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
     # Platforms
     if platform == "Windows":
         r = requests.get(url + 'chromedriver_win32.zip')
+        write()
     elif platform == "Linux":
         warnings.warn("Linux not tested yet!")
         r = requests.get(url + 'chromedriver_linux64.zip')
+        write()
     elif platform == "Google-Colab":
         from selenium_profiles.utils.colab_utils import collab_installer
         return collab_installer()
     else:
         warnings.warn('Chromedriver installation for "' + platform + '" not supported yet!')
-
-    # write .zip
-    open(sel_profiles_path() + r'files\chromedriver.zip', 'wb').write(r.content)
-    extract_del(r'files\chromedriver.zip', dirname="files\\")
 
 
 def extract_del(filename, dirname) -> (str, str):
