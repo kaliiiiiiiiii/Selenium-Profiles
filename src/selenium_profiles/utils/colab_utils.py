@@ -20,7 +20,7 @@ def is_collab():
 
 
 def collab_installer():
-    os.system('''
+    out = os.system('''
     apt install chromium-chromedriver
     apt install -y xvfb
     cp /usr/lib/chromium-browser/chromedriver /usr/bin
@@ -34,5 +34,8 @@ def collab_installer():
     with open(patcher_src, "w") as f:
         f.write(contents)
 
+    return out
+
+
 def update_apts():
-    os.system("apt-get update")
+    return os.system("apt-get update")
