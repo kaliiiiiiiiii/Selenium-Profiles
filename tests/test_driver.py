@@ -7,17 +7,17 @@ from selenium.webdriver.common.by import By  # locate elements
 mydriver = mydriver()
 
 
-def test_driver(choose: str, headless: bool = True, modheader: str = False):
+def test_driver(choose: str, headless: bool = True, modheader: str = False, uc_driver=False):
     profile = read_json(filename='profiles\\default.json')
     # noinspection PyGlobalUndefined
     global mydriver
     testprofile = profile[choose]
     testprofile["plugins"]["modheader"] = modheader
     testprofile["browser"]["headless"] = headless
-    driver = mydriver.start(testprofile)
+    driver = mydriver.start(testprofile, uc_driver=uc_driver)
     driver.get('https://browserleaks.com/client-hints')
     useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
-    exported_profile = mydriver.get_profile(None)
+    exported_profile = driver.get_profile(driver)
     driver.quit()
     return {"useragent": useragent, "exported_profile": exported_profile}
 

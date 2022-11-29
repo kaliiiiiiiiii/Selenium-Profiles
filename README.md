@@ -29,7 +29,7 @@ from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
-driver = mydriver.start(profiles.Windows())  # or .Android
+driver = mydriver.start(profiles.Windows(), uc_driver=False)  # or .Android
 
 # get url
 driver.get('https://browserleaks.com/client-hints')  # test client hints
@@ -103,7 +103,7 @@ go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num
 
 and then run in Python:
 ```python
-from selenium_profiles.driver import navigator2profile
+from selenium_profiles.scripts.profiles import navigator2profile
 myprofile = navigator2profile("my_copied_text", filename='myprofile.json')
 ```
 
@@ -187,8 +187,11 @@ Please feel free to open an issue or fork!
   * put everything into folders
 * googleV1 (not released yet!)
   * first version as importable file
-* sel_profilesV2.2
+* selenium-profilesV2.2
   * installable as module (pip)
+*selenium-profiles V2.2.4 (pre-release, unstable!)
+  * removed undetected-chromedriver
+  * moved parts of driver to `selenium_profiles/scripts`
 
 ## License
 

@@ -1,3 +1,3 @@
-__version__ = "2.2.3.3"
+__version__ = "2.2.4"
 
-from selenium_profiles.driver import driver, sendkeys, navigator2profile
+from selenium_profiles.driver import driver
