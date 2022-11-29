@@ -44,14 +44,8 @@ class driver(object):
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
-        if uc_driver:
-            options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
-                "platform"])  # todo does it have an effect?
         options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
         options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
-        if not uc_driver:
-            options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            options.add_experimental_option('useAutomationExtension', False)
 
         # options-manager
         if not profile["browser"]["sandbox"]:
@@ -113,11 +107,19 @@ class driver(object):
                 install_buster()
             options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
-        # Actual start of chrome
         if uc_driver:
-            self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
+
+            # Actual start of chrome
+            self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True,
+                                    browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
-            self.driver = webdriver.Chrome(options=options, keep_alive=True)  # start undetected_chromedriver
+            import os
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
+            options.arguments.extend(["--no-default-browser-check", "--no-first-run"])  # suppress welcome
+
+            # Actual start of chrome
+            self.driver = webdriver.Chrome(options=options, keep_alive=True)  # start selenium webdriver
 
         self.driver.get('http://icanhazip.com/')  # wait browser to start
 
@@ -253,7 +255,7 @@ class driver(object):
             for arg in arguments:
                 options.add_argument(arg)
 
-        options.add_argument("--no-sandbox")
+        options.arguments.extend(["--no-sandbox", "--test-type"])
 
         if not (user_dir is None):
             options.add_argument(r"--user-data-dir=" + user_dir)
