@@ -1,7 +1,6 @@
 import warnings
 import undetected_chromedriver as uc  # undetected chromedriver
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.action_chains import ActionChains  # Type text without specific Element
 from selenium_profiles.utils.utils import read, sel_profiles_path, find_chrome_executable  # read txt files
 import traceback  # print exception
@@ -29,13 +28,13 @@ class driver(object):
         self.driver = None
         self.js_return_navigator = read('js/get_navigator.js')[0]  # for exporting javascript Variables
 
-    def start(self, profile: Dict[str, dict or list], undetected_chromedriver: bool = True):
+    def start(self, profile: Dict[str, dict or list], uc_driver: bool = True):
         self.profile = profile
         mobile = profile['device']['mobile']
 
         if not profile["plugins"]["selenium-wire"] is False:
             warnings.warn("Selenium-wire not supported yet, ignoring")
-        if undetected_chromedriver:
+        if uc_driver:
             options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
             options = webdriver.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
@@ -45,13 +44,14 @@ class driver(object):
         size = profile["browser"]["window_size"]
         options.add_argument("--window-size=" + str(size["x"]) + "," + str(size["y"]))
         options.add_argument('--user-agent=' + profile["device"]["agent_override"]["userAgent"])
-        if undetected_chromedriver:
+        if uc_driver:
             options.set_capability("platformName", profile["device"]["agent_override"]["userAgentMetadata"][
                 "platform"])  # todo does it have an effect?
         options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
         options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
-        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        # options.add_experimental_option('useAutomationExtension', False)
+        if not uc_driver:
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
 
         # options-manager
         if not profile["browser"]["sandbox"]:
@@ -114,7 +114,7 @@ class driver(object):
             options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         # Actual start of chrome
-        if undetected_chromedriver:
+        if uc_driver:
             self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True, browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
             self.driver = webdriver.Chrome(options=options, keep_alive=True)  # start undetected_chromedriver
