@@ -129,7 +129,7 @@ class driver(object):
         # functions to execute
         # noinspection PyUnusedLocal
         x = self.driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
-        self.set_touch(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
+        self.set_touchpoints(profile["device"]["touch_device"], maxpoints=profile["device"]["maxtouchpoints"])
         self.set_emulation(profile["device"]["emulation"], enabled=mobile)
         self.pointer_as_touch(mobile, profile["browser"]["pointer_as_touch"])
         self.set_darkmode(enabled=profile["browser"]["darkmode"], mobile=mobile)
@@ -169,14 +169,14 @@ class driver(object):
             self.define_prop_on_new_document("navigator", "plugins", [])
 
         self.driver.profile = profile
-        self.add_my_functions()
+        self.add_funcs_to_driver()
 
         # Return actual driver
         return self.driver
 
-    def add_my_functions(self):
+    def add_funcs_to_driver(self):
         # add my functions to driver
-        self.driver.set_touch = self.set_touch
+        self.driver.set_touchpoints = self.set_touchpoints
         self.driver.set_emulation = self.set_emulation
         self.driver.pointer_as_touch = self.pointer_as_touch
         self.driver.set_darkmode = self.set_darkmode
@@ -203,7 +203,7 @@ class driver(object):
         import shutil
         shutil.copytree(self.driver.user_data_dir, to_path)
 
-    def set_touch(self, enabled=True, maxpoints=5) -> (bool, int):  # set touch options
+    def set_touchpoints(self, enabled=True, maxpoints=5) -> (bool, int):  # set touch options
         return self.driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
                                            {'enabled': enabled, 'maxTouchPoints': maxpoints})  # already set in options
 
@@ -296,7 +296,7 @@ class driver(object):
         self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True,
                                 browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
 
-        self.add_my_functions()
+        self.add_funcs_to_driver()
 
         return self.driver
 
