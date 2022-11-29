@@ -55,7 +55,7 @@ setuptools.setup(
         'License :: Free for non-commercial use',
         'Natural Language :: English',
         'Operating System :: Microsoft :: Windows',
-        'Framework :: Jupyter'
+        'Framework :: Jupyter',
         'Topic :: Internet',
         'Topic :: Internet :: WWW/HTTP :: Browsers',
 
