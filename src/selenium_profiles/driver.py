@@ -151,7 +151,19 @@ class driver(object):
                 self.evaluate_on_new_document(profile["evaluate_on_new_document"])))
 
         # set webdriver js var to false
-        self.define_prop_on_new_document("navigator", "webdriver", False)
+        self.evaluate_on_new_document("""
+                            Object.defineProperty(window, 'navigator', {
+                                value: new Proxy(navigator, {
+                                        has: (target, key) => (key === 'webdriver' ? false : key in target),
+                                        get: (target, key) =>
+                                                key === 'webdriver' ?
+                                                false :
+                                                typeof target[key] === 'function' ?
+                                                target[key].bind(target) :
+                                                target[key]
+                                        })
+                            });
+                            """)
         # remove plugins when mobile
         if mobile:
             self.define_prop_on_new_document("navigator", "plugins", [])
