@@ -9,6 +9,7 @@ def to_options(profile: dict, options):
 
     if not profile["browser"]["sandbox"]:
         options.arguments.extend(["--no-sandbox", "--test-type"])
+        options.add_argument('--enable-privacy-sandbox-ads-apis')
         warnings.warn('More likely to get detected with sandbox set to False!')
     if profile["browser"]["headless"]:
         options.add_argument('--headless=chrome')
