@@ -66,7 +66,7 @@ class driver(object):
         # ACTUAL START
 
         if uc_driver:
-            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=False,
+            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True,
                                     browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
             self.options = undetected.config_options(self.options)

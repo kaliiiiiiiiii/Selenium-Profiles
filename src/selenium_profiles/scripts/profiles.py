@@ -83,7 +83,8 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
 
     # remove plugins when mobile
     if mobile:
-        cdp_tools.define_prop_on_new_document("navigator", "plugins", [])
+        # cdp_tools.define_prop_on_new_document("navigator", "plugins", []) # works, but functions missing..
+        cdp_tools.define_prop_on_new_document("navigator", "platform", profile["device"]["agent_override"]["platform"])
 
     # additional evaluate on new document
     if not (profile["evaluate_on_new_document"] is None):

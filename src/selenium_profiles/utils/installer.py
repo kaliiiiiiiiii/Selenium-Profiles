@@ -10,7 +10,7 @@ from selenium_profiles.utils.colab_utils import is_collab
 
 
 def my_platform():
-    if is_collab:
+    if is_collab():
         return "Google-Colab"
     else:
         return platform.system()
