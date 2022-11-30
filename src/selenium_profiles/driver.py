@@ -33,6 +33,11 @@ class driver(object):
         if self.profile["plugins"]["selenium-wire"]:
             warnings.warn("Selenium-wire not supported yet, ignoring")
 
+        if is_colab():  # google-colab doesn't support sandbox!
+            if self.profile["browser"]["sandbox"] is True:
+                warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
+            #self.profile["browser"]["sandbox"] = False
+
         if uc_driver:
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
@@ -41,8 +46,8 @@ class driver(object):
         # options-manager
         self.options = self.profiles.to_options(self.profile, self.options)
 
-        if is_colab():
-            self.options.add_argument('--allow-sandbox-debugging')
+        self.options.add_argument('--allow-sandbox-debugging')
+        self.options.add_argument('--enable-sandbox-logging')
 
         # EXTENSIONS
 
