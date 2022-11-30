@@ -29,7 +29,7 @@ def write(lst: any, filename: str = 'out', encoding: str = "utf-8"):  # write li
 
 def read(filename: str, encoding: str = "utf-8"):
     with open(sel_profiles_path() + filename, encoding=encoding) as f:
-        return f.readlines()
+        return f.read()
 
 
 def read_json(filename: str = 'example.json', encoding: str = "utf-8"):
@@ -75,7 +75,7 @@ def find_chrome_executable():  # needed until https://github.com/ultrafunkamster
         for item in map(
                 os.environ.get, ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA", "ProgramW6432")
         ):
-            if item is not None:
+            if item:
                 for subitem in (
                         "Google/Chrome/Application",
                         "Google/Chrome Beta/Application",

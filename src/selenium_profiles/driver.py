@@ -30,11 +30,8 @@ class driver(object):
     def start(self, profile: Dict[str, dict or list], uc_driver: bool = False):
         self.profile = profile
 
-        if not self.profile["plugins"]["selenium-wire"] is False:
+        if self.profile["plugins"]["selenium-wire"]:
             warnings.warn("Selenium-wire not supported yet, ignoring")
-
-        if is_colab():  # google-colab doesn't support sandbox!
-            self.profile["browser"]["sandbox"] = False
 
         if uc_driver:
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
@@ -44,10 +41,13 @@ class driver(object):
         # options-manager
         self.options = self.profiles.to_options(self.profile, self.options)
 
+        if is_colab():
+            self.options.add_argument('--allow-sandbox-debugging')
+
         # EXTENSIONS
 
         # ModHeader
-        if not (self.profile["plugins"]["modheader"] is False):
+        if self.profile["plugins"]["modheader"]:
             import os
             warnings.warn('Only use modheader when additional Headers needed!')
             if not os.path.isdir(sel_profiles_path() + "files/modheader"):
@@ -57,7 +57,7 @@ class driver(object):
             self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/modheader")
 
         # Buster
-        if not self.profile["plugins"]["buster"] is False:
+        if self.profile["plugins"]["buster"]:
             import os
             warnings.warn("Buster is deprecated and automating isn't supported!")
             warnings.warn('Only use Buster when Captcha solver needed!')
@@ -90,7 +90,7 @@ class driver(object):
         if not uc_driver:
             undetected.exec_cdp(self.driver, self.cdp_tools)
 
-        if not (profile["plugins"]["modheader"] is False):
+        if profile["plugins"]["modheader"]:
             self.load_header_profiles(profile["plugins"]["modheader"])
 
         self.driver.profile = profile
@@ -138,7 +138,7 @@ class driver(object):
 
         options.arguments.extend(["--no-sandbox", "--test-type"])
 
-        if not (user_dir is None):
+        if user_dir:
             options.add_argument(r"--user-data-dir=" + user_dir)
 
         # ModHeader extension options
@@ -171,7 +171,7 @@ class driver(object):
 
     # noinspection PyUnresolvedReferences
     def load_header_profiles(self, profile: str):
-        if not self.profile["plugins"]["modheader"] is False:
+        if self.profile["plugins"]["modheader"]:
             self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(
                 profile[1:-1], safe='')
             self.driver.get(
@@ -180,7 +180,7 @@ class driver(object):
             warnings.warn('ModHeader needs to be enabled for custom headers!')
 
     def clear_headers(self):
-        if self.profile["plugins"]["modheader"] is not False:
+        if self.profile["plugins"]["modheader"]:
             self.driver.get('https://webdriver.modheader.com/clear')
         else:
             warnings.warn('ModHeader needs to be enabled for custom headers!')

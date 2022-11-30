@@ -9,6 +9,7 @@ def to_options(profile: dict, options):
 
     if not profile["browser"]["sandbox"]:
         options.arguments.extend(["--no-sandbox", "--test-type"])
+        warnings.warn('More likely to get detected with sandbox set to False!')
     if profile["browser"]["headless"]:
         options.add_argument('--headless=chrome')
         options.add_argument("--blink-settings=imagesEnabled=false")  # disable loading Images
@@ -33,7 +34,7 @@ def to_options(profile: dict, options):
         options.add_argument('--enable-features=enable-nacl')
         options.add_argument('--use-mobile-user-agent')
         options.add_argument('--enable-touchview')
-    if profile["browser"]["proxy"] is not None:
+    if profile["browser"]["proxy"]:
         options.add_argument('--proxy-server=socks5://' + profile["browser"]["proxy"])
         print('proxy= "' + profile["browser"]["proxy"] + '"')
 
@@ -82,12 +83,13 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
     mobile = profile['device']['mobile']
 
     # remove plugins when mobile
-    if mobile:
-        # cdp_tools.define_prop_on_new_document("navigator", "plugins", []) # works, but functions missing..
-        cdp_tools.define_prop_on_new_document("navigator", "platform", profile["device"]["agent_override"]["platform"])
+    # if mobile:
+    #    cdp_tools.define_prop_on_new_document("navigator", "plugins", []) # works, but functions missing..
+
+    cdp_tools.define_prop_on_new_document("navigator", "platform", profile["device"]["agent_override"]["platform"])
 
     # additional evaluate on new document
-    if not (profile["evaluate_on_new_document"] is None):
+    if profile["evaluate_on_new_document"]:
         print('identifier for ""evaluate_on_new_document" in profile is :' + str(
             cdp_tools.evaluate_on_new_document(profile["evaluate_on_new_document"])))
 
@@ -107,7 +109,7 @@ def navigator2profile(navigator, filename=None) -> (dict or str, str):
         else:
             return replace_with
 
-    if navigator is not None:
+    if navigator:
         if type(navigator) is str:
             navigator = json.loads(navigator)
         try:
@@ -160,11 +162,11 @@ def navigator2profile(navigator, filename=None) -> (dict or str, str):
         except:
             traceback.print_exc()
             raise ValueError("Navigator not converted correctly!")
-        if not (filename is None):
+        if filename:
             write_json(empty_profile, filename=filename)
         return empty_profile
     else:
-        raise ValueError("navigator was None!")
+        raise ValueError("navigator was None or False!")
 
 
 # get profile from current driver
@@ -178,7 +180,7 @@ def get_navigator(driver):
     import traceback
     import warnings
     from selenium_profiles.utils.utils import read
-    js_return_navigator = read('js/get_navigator.js')[0]  # for exporting javascript Variables
+    js_return_navigator = read('js/get_navigator.js')  # for exporting javascript Variables
     # noinspection PyBroadException
     try:
         returnnavigator = driver.execute_script(js_return_navigator)
