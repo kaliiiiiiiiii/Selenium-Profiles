@@ -65,7 +65,7 @@ class driver(object):
         # ACTUAL START
 
         if uc_driver:
-            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True,
+            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=False,
                                     browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
             # undetected options
@@ -104,6 +104,29 @@ class driver(object):
                                         })
                             });
                             """)
+
+        def get_cdc_props():
+            return self.driver.execute_script(
+                """
+                let objectToInspect = window,
+                    result = [];
+                while(objectToInspect !== null)
+                { result = result.concat(Object.getOwnPropertyNames(objectToInspect));
+                  objectToInspect = Object.getPrototypeOf(objectToInspect); }
+                return result.filter(i => i.match(/.+_.+_(Array|Promise|Symbol)/ig))
+                """
+            )
+
+        if get_cdc_props():
+            self.cdp_tools.evaluate_on_new_document("""
+                                            let objectToInspect = window,
+                                                result = [];
+                                            while(objectToInspect !== null) 
+                                            { result = result.concat(Object.getOwnPropertyNames(objectToInspect));
+                                              objectToInspect = Object.getPrototypeOf(objectToInspect); }
+                                            result.forEach(p => p.match(/.+_.+_(Array|Promise|Symbol)/ig)
+                                                                &&delete window[p]&&console.log('removed',p))
+                                            """)
 
         self.driver.profile = profile
         self.add_funcs_to_driver()
