@@ -6,7 +6,7 @@ def restart_runtime():
     os.kill(os.getpid(), 9)
 
 
-def is_collab():
+def is_colab():
     import sys
     # noinspection PyBroadException
     try:

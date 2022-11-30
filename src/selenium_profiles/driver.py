@@ -7,6 +7,7 @@ from typing import Dict  # define types in functions
 import undetected_chromedriver as uc  # undetected chromedriver
 from selenium import webdriver
 from selenium_profiles.scripts import profiles
+from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.cdp_tools import cdp_tools
 from selenium_profiles.scripts.driver_utils import sendkeys
 from selenium_profiles.scripts import undetected
@@ -31,6 +32,9 @@ class driver(object):
 
         if not self.profile["plugins"]["selenium-wire"] is False:
             warnings.warn("Selenium-wire not supported yet, ignoring")
+
+        if is_colab():  # google-colab doesn't support sandbox!
+            self.profile["browser"]["sandbox"] = False
 
         if uc_driver:
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
