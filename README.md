@@ -42,10 +42,8 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### [undetected-chromedriver not supported] Run with Google-Colab
+#### [uc-driver not supported] Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
-
-Note that _*colab crashes*_ when installing so that we don't need to press the restart button.
 
 ## Profiles
 
@@ -160,7 +158,7 @@ Please feel free to open an issue or fork!
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
-  - [x] [undetected-chromedriver not supported] Jupyter Notebook (Google-Colab)
+  - [x] [uc-driver not supported] Jupyter Notebook (Google-Colab)
   - [ ] Linux
 
 
