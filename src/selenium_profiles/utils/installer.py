@@ -53,8 +53,7 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
         write()
     elif platform == "Linux":
         warnings.warn("Linux not tested yet!")
-        r = requests.get(url + 'chromedriver_linux64.zip')
-        write()
+        os.system('apt install chromium-chromedriver;apt install -y xvfb;zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver')
     elif platform == "Google-Colab":
         from selenium_profiles.utils.colab_utils import patch_uc, update_apts
         update_apts()

@@ -60,7 +60,7 @@ def get_module_path(module: str) -> typing.Optional[pathlib.Path]:
 
 
 def patch_uc(src: str = '/content/chromedriver_linux64.zip',
-             dst: str = '/usr/bin/chromedriver') -> None:
+             dst: str = '/tmp/chromedriver_linux64.zip') -> None:
     PY_uc = 'undetected_chromedriver'
     """It forces undetected_chromedriver to run the webdriver on Chromium
 

@@ -37,6 +37,8 @@ class driver(object):
             if self.profile["browser"]["sandbox"] is True:
                 warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
             self.profile["browser"]["sandbox"] = False
+            if uc_driver:
+                warnings.warn("Collab not working with uc_driver yet..")
 
         if uc_driver:
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
