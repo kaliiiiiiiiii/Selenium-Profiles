@@ -73,8 +73,8 @@ class cdp_tools(object):
     def get_cookies(self):
         return self.driver.execute_cdp_cmd("Network.getAllCookies", {})
 
-    def get_cookie(self, urls: list = []):
-        if len(urls) > 0:
+    def get_cookie(self, urls: list = None):
+        if urls:
             arg = {"urls": urls}
         else:
             arg = {}

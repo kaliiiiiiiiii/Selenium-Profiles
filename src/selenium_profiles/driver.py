@@ -4,7 +4,6 @@ import urllib  # for url parsing
 import warnings
 from typing import Dict  # define types in functions
 
-import undetected_chromedriver as uc  # undetected chromedriver
 from selenium import webdriver
 from selenium_profiles.scripts import profiles
 from selenium_profiles.utils.colab_utils import is_colab
@@ -39,6 +38,7 @@ class driver(object):
             self.profile["browser"]["sandbox"] = False
 
         if uc_driver:
+            import undetected_chromedriver as uc  # undetected chromedriver
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
             self.options = webdriver.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
@@ -72,6 +72,7 @@ class driver(object):
         # ACTUAL START
 
         if uc_driver:
+            # noinspection PyUnboundLocalVariable
             self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True,
                                     browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
@@ -131,10 +132,11 @@ class driver(object):
         shutil.copytree(self.driver.user_data_dir, to_path)
 
     def start_no_profile(self, modheader: bool = False, buster: bool = False, user_dir: str = None,
-                         arguments: list = []):  # start minimal driver without profile
+                         arguments: list = None):  # start minimal driver without profile
+        import undetected_chromedriver as uc  # undetected chromedriver
         options = uc.ChromeOptions()
         # additional options
-        if len(arguments) > 0:
+        if arguments:
             for arg in arguments:
                 options.add_argument(arg)
 
