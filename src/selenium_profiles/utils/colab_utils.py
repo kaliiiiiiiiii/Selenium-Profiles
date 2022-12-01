@@ -1,4 +1,5 @@
 import os
+import warnings
 
 
 def restart_runtime():
@@ -22,6 +23,7 @@ def is_colab():
 
 
 def collab_installer():
+    warnings.warn("Currently not working on google collab! (maybe only with python 3.7?)")
     import os
     import undetected_chromedriver
     success = os.system('''
@@ -33,6 +35,7 @@ def collab_installer():
     with open('mytmp', 'r') as f:
         out = f.read()
     os.remove('mytmp')
+
     patcher_src = os.path.dirname(undetected_chromedriver.__file__)+"/patcher.py"
     with open(patcher_src, "r") as f:
         contents = f.read()
