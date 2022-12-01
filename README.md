@@ -114,7 +114,6 @@ Please feel free to open an issue or fork!
 ## Known Bugs
 
 - click_as_touch makes automation hung
-- Google-Colab not working with undetected-chromedriver
 
 ## Todo // Features
 
