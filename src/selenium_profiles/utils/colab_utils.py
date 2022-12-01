@@ -3,6 +3,7 @@ import pathlib
 import re
 import subprocess
 import typing
+import warnings
 
 
 def restart_runtime():
@@ -61,6 +62,7 @@ def get_module_path(module: str) -> typing.Optional[pathlib.Path]:
 
 def patch_uc(src: str = '/content/chromedriver_linux64.zip',
              dst: str = '/tmp/chromedriver_linux64.zip') -> None:
+    from selenium_profiles.utils.colab_utils import restart_runtime
     PY_uc = 'undetected_chromedriver'
     """It forces undetected_chromedriver to run the webdriver on Chromium
 
@@ -76,15 +78,16 @@ def patch_uc(src: str = '/content/chromedriver_linux64.zip',
         The dst Chromium webdriver abspath
     """
     if not is_colab():
-        return
+        warnings.warn('Patching undetected-chromedriver in non-google-colab')
 
     dirpath = get_module_path(PY_uc)
 
     if dirpath is None:
-        raise ModuleNotFoundError(
+        warnings.warn(
             f"Cannot find the {PY_uc} module. "
-            f"Please install it with 'pip install {PY_uc}'"
-        )
+            f"If you want to use undetected-chromedriver"
+            f"you can install it with 'pip install {PY_uc}'")
+        return
 
     N_patcher_src = dirpath / PY_uc / 'patcher.py'
     O_patcher_src = dirpath / PY_uc / 'patcher_O.py'
@@ -109,6 +112,9 @@ def patch_uc(src: str = '/content/chromedriver_linux64.zip',
     with N_patcher_src.open('wt') as f:
         f.write(contents)
 
+    if is_colab():
+        restart_runtime()
+
 
 def update_apts():
     success = os.system("apt-get update >> mytmp")
@@ -119,7 +125,7 @@ def update_apts():
         return out
     else:
         print(out)
-        raise ValueError("Installation not successful!!")
+        raise ValueError("Updates not successful!!")
 
 
 # noinspection PyPep8Naming

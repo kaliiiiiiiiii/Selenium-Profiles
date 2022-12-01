@@ -17,7 +17,7 @@ def is_collab():
         return False
 
 
-requirements = ['selenium~=4.6', 'requests~=2.28', 'undetected-chromedriver~=3.1']
+requirements = ['selenium~=4.6', 'requests~=2.28']
 
 if is_collab():
     requirements.append('PyVirtualDisplay')
