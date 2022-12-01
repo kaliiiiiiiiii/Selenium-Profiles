@@ -24,7 +24,7 @@ def is_colab():
 def collab_installer():
     import os
     import undetected_chromedriver
-    sucess = os.system('''
+    success = os.system('''
     apt install chromium-chromedriver >> mytmp;
     apt install -y xvfb >> mytmp;
     cp /usr/lib/chromium-browser/chromedriver /usr/bin >> mytmp;
@@ -40,7 +40,7 @@ def collab_installer():
                                     "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
     with open(patcher_src, "w") as f:
         f.write(contents)
-    if sucess == 0:
+    if success == 0:
         return out
     else:
         print(out)
