@@ -3,13 +3,14 @@ import warnings
 import requests
 import zipfile
 import shutil
-import platform
+
 
 from selenium_profiles.utils.utils import sel_profiles_path
 from selenium_profiles.utils.colab_utils import is_colab
 
 
 def my_platform():
+    import platform
     if is_colab():
         return "Google-Colab"
     else:
@@ -43,6 +44,7 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
     elif chromeversion == 106:
         url = 'https://chromedriver.storage.googleapis.com/106.0.5249.61/'
     else:
+        url = None
         warnings.warn("Chromedriver Version " + str(chromeversion) + " not added to installer yet!")
 
     # Platforms
@@ -54,8 +56,10 @@ def install_chromedriver(platform: str = my_platform(), chromeversion: int = 108
         r = requests.get(url + 'chromedriver_linux64.zip')
         write()
     elif platform == "Google-Colab":
-        from selenium_profiles.utils.colab_utils import collab_installer
-        return collab_installer()
+        from selenium_profiles.utils.colab_utils import patch_uc, update_apts
+        update_apts()
+        os.system('apt install chromium-chromedriver;apt install -y xvfb;zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver')
+        patch_uc()
     else:
         warnings.warn('Chromedriver installation for "' + platform + '" not supported yet!')
 

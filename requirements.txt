@@ -1,4 +1,4 @@
-selenium-profiles
+selenium_profiles
 requests~=2.28.1
 selenium==4.6.1
 setuptools==65.6.3

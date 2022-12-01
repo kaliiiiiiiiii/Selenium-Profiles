@@ -1,5 +1,8 @@
 import os
-import warnings
+import pathlib
+import re
+import subprocess
+import typing
 
 
 def restart_runtime():
@@ -22,39 +25,96 @@ def is_colab():
         return False
 
 
-def collab_installer():
-    warnings.warn("Currently not working on google collab! (maybe only with python 3.7?)")
-    import os
-    import undetected_chromedriver
-    success = os.system('''
-    apt install chromium-chromedriver >> mytmp;
-    apt install -y xvfb >> mytmp;
-    cp /usr/lib/chromium-browser/chromedriver /usr/bin >> mytmp;
-    zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver >> mytmp;
-    ''')
-    with open('mytmp', 'r') as f:
-        out = f.read()
-    os.remove('mytmp')
+def is_jupyter() -> bool:
+    """It checks whether a module is run from a Jupyter notebook"""
+    try:
+        # noinspection PyUnresolvedReferences,PyStatementEffect
+        get_ipython
+        return True
+    except NameError:
+        # noinspection PyTypeChecker
+        return
 
-    patcher_src = os.path.dirname(undetected_chromedriver.__file__)+"/patcher.py"
-    with open(patcher_src, "r") as f:
+
+def get_module_path(module: str) -> typing.Optional[pathlib.Path]:
+    """It gets the absolute path of a Python module"""
+    r = subprocess.run(
+        ["pip", "show", module],
+        capture_output=True
+    )
+
+    try:
+        r.check_returncode()
+    except subprocess.CalledProcessError:
+        return None
+
+    stdout = r.stdout.decode()
+
+    try:
+        RE_abspath = '\nLocation: (?P<abspath>.*)\n'
+        abspath = re.search(RE_abspath, stdout).group('abspath')
+    except AttributeError:
+        return None
+
+    return pathlib.Path(abspath).absolute()
+
+
+def patch_uc(src: str = '/content/chromedriver_linux64.zip',
+             dst: str = '/usr/bin/chromedriver') -> None:
+    PY_uc = 'undetected_chromedriver'
+    """It forces undetected_chromedriver to run the webdriver on Chromium
+
+    It patches 'undetected_chromedriver/patcher.py' to make it work on Google Colab
+    by forcing the webdriver to run on Chromium, which has less stringent constraints.
+
+    Parameters
+    ----------
+    src
+        The src Chromium webdriver abspath
+
+    dst
+        The dst Chromium webdriver abspath
+    """
+    if not is_colab():
+        return
+
+    dirpath = get_module_path(PY_uc)
+
+    if dirpath is None:
+        raise ModuleNotFoundError(
+            f"Cannot find the {PY_uc} module. "
+            f"Please install it with 'pip install {PY_uc}'"
+        )
+
+    N_patcher_src = dirpath / PY_uc / 'patcher.py'
+    O_patcher_src = dirpath / PY_uc / 'patcher_O.py'
+
+    if O_patcher_src.exists():
+        return
+
+    with N_patcher_src.open('rt') as f:
         contents = f.read()
-        contents = contents.replace("return urlretrieve(u)[0]",
-                                    "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
-    with open(patcher_src, "w") as f:
+
+        with O_patcher_src.open('wt') as g:
+            g.write(contents)
+
+        contents = contents.replace(
+            "return urlretrieve(u)[0]",
+            "return urlretrieve("
+            f"'file://{src}', "
+            f"'{dst}'"
+            ")[0]"
+        )
+
+    with N_patcher_src.open('wt') as f:
         f.write(contents)
-    if success == 0:
-        return out
-    else:
-        print(out)
-        raise ValueError("Installation not successful!!")
 
 
 def update_apts():
-    success = os.system("apt-get update >> tmp")
-    with open('tmp', 'r') as f:
+    success = os.system("apt-get update >> mytmp")
+    with open('mytmp', 'r') as f:
         out = f.read()
-    os.remove('tmp')
+    os.remove('mytmp')
     if success == 0:
         return out
     else:
