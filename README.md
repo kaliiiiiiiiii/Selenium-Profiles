@@ -12,7 +12,7 @@
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows or [Not working anymore?!] [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
+* Windows or [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * selenium-profiles
 
@@ -42,7 +42,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### [not working anymore] Run with Google-Colab
+#### [undetected-chromedriver not supported] Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 Note that _*colab crashes*_ when installing so that we don't need to press the restart button.
@@ -116,6 +116,7 @@ Please feel free to open an issue or fork!
 ## Known Bugs
 
 - click_as_touch makes automation hung
+- Google-Colab not working with undetected-chromedriver
 
 ## Todo // Features
 
@@ -159,7 +160,7 @@ Please feel free to open an issue or fork!
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
-  - [ ] [not working anymore] Jupyter Notebook (Google-Colab)
+  - [x] [undetected-chromedriver not supported] Jupyter Notebook (Google-Colab)
   - [ ] Linux
 
 
@@ -229,3 +230,4 @@ Inspiration, code snippets, etc.
 * [Chromedriver-Options List](https://peter.sh/experiments/chromium-command-line-switches/)
 * [Chrome DevTools Protocol (cdp_cmd)](https://chromedevtools.github.io/devtools-protocol/1-3/)
 * [example_pypi_package](https://github.com/tomchen/example_pypi_package)
+* [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
