@@ -42,7 +42,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### Run with Google-Colab
+#### [not working anymore] Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 Note that _*colab crashes*_ when installing so that we don't need to press the restart button.
@@ -159,7 +159,7 @@ Please feel free to open an issue or fork!
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
-  - [x] Jupyter Notebook (Google-Colab)
+  - [ ] [not working anymore] Jupyter Notebook (Google-Colab)
   - [ ] Linux
 
 
