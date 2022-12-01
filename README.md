@@ -42,7 +42,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### [uc-driver not supported] Run with Google-Colab
+#### Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 ## Profiles
@@ -128,7 +128,7 @@ Please feel free to open an issue or fork!
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
     - [x] Jupyter (Google-Colab)
-    - [ ] Linux (not tested yet!)
+    - [x] Linux (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)s
   - [x] requirements.txt
 - [x] Selenium-Devices as installable module
@@ -158,7 +158,7 @@ Please feel free to open an issue or fork!
 - [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
-  - [x] [uc-driver not supported] Jupyter Notebook (Google-Colab)
+  - [x] Jupyter Notebook (Google-Colab)
   - [ ] Linux
 
 
