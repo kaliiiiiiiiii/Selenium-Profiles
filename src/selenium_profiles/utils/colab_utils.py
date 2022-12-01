@@ -23,23 +23,37 @@ def is_colab():
 
 def collab_installer():
     import os
-    sucess = os.system('''
+
+    # INSTALL
+    success = os.system('''
     apt install chromium-chromedriver >> tmp;
     apt install -y xvfb >> tmp;
     cp /usr/lib/chromium-browser/chromedriver /usr/bin >> tmp;
+    rm -r /usr/lib/chromium-browser
     zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver >> tmp;
     ''')
     with open('tmp', 'r') as f:
         out = f.read()
     os.remove('tmp')
-    patcher_src = "/usr/local/lib/python3.7/dist-packages/undetected_chromedriver/patcher.py"
-    with open(patcher_src, "r") as f:
-        contents = f.read()
-        contents = contents.replace("return urlretrieve(u)[0]",
-                                    "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
-    with open(patcher_src, "w") as f:
-        f.write(contents)
-    if sucess == 0:
+
+    # PATCH undetected-chromedriver if installed
+    uc_path = None
+    # noinspection PyBroadException
+    try:
+        import undetected_chromedriver
+        uc_path = os.path.dirname(undetected_chromedriver.__file__) + "/"
+    except:
+        print('undetected_chromedriver not installed, skipping its patch')
+
+    if uc_path:
+        with open(uc_path + 'patcher.py', "r") as f:
+            contents = f.read()
+            contents = contents.replace("return urlretrieve(u)[0]",
+                                        "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
+        with open(uc_path + 'patcher.py', "w") as f:
+            f.write(contents)
+
+    if success == 0:
         return out
     else:
         print(out)
