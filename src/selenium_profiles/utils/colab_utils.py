@@ -29,7 +29,7 @@ def collab_installer():
     apt install chromium-chromedriver >> tmp;
     apt install -y xvfb >> tmp;
     cp /usr/lib/chromium-browser/chromedriver /usr/bin >> tmp;
-    rm -r /usr/lib/chromium-browser
+    # rm -r /usr/lib/chromium-browser
     zip -j /content/chromedriver_linux64.zip /usr/bin/chromedriver >> tmp;
     ''')
     with open('tmp', 'r') as f:
@@ -52,6 +52,7 @@ def collab_installer():
                                         "return urlretrieve('file:///content/chromedriver_linux64.zip',""filename='/tmp/chromedriver_linux64.zip')[0]")
         with open(uc_path + 'patcher.py', "w") as f:
             f.write(contents)
+        print('Patched undetected-chromedriver..')
 
     if success == 0:
         return out
