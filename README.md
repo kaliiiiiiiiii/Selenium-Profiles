@@ -168,6 +168,7 @@ Please feel free to open an issue or fork!
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
+* [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) (Selenium-Webdriver should be used directly)
 
 ## Authors
 
@@ -190,7 +191,7 @@ Please feel free to open an issue or fork!
 * selenium-profilesV2.2
   * installable as module (pip)
 *selenium-profiles V2.2.4 (pre-release, unstable!)
-  * removed undetected-chromedriver
+  * removed undetected-chromedriver dependency
   * moved parts of driver to `selenium_profiles/scripts`
 
 ## License

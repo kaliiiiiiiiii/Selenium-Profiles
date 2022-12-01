@@ -2,9 +2,12 @@ from selenium_profiles.utils.utils import read
 
 
 def exec_cdp(driver, cdp_tools=None):
-    if cdp_tools is None:
+    if cdp_tools:
+        do_return = False
+    else:
         from selenium_profiles.scripts.cdp_tools import cdp_tools
         cdp_tools = cdp_tools(driver)
+        do_return = True
 
     # set webdriver js var to false
     cdp_tools.evaluate_on_new_document(read('js/undetected/navigator_webdriver.js'))
@@ -15,7 +18,7 @@ def exec_cdp(driver, cdp_tools=None):
     if get_cdc_props():
         cdp_tools.evaluate_on_new_document(read('js/undetected/remove_cdc_props.js'))
 
-        if cdp_tools is None:
+        if do_return:
             return cdp_tools.evaluate_on_document_identifiers
 
 

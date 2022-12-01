@@ -77,9 +77,12 @@ def exec_cdp(profile: dict, driver):
 
 
 def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
-    if cdp_tools is None:
+    if cdp_tools:
+        do_return = False
+    else:
         from selenium_profiles.scripts.cdp_tools import cdp_tools
         cdp_tools = cdp_tools(driver)
+        do_return = True
 
     mobile = profile['device']['mobile']
 
@@ -94,7 +97,7 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
         print('identifier for ""evaluate_on_new_document" in profile is :' + str(
             cdp_tools.evaluate_on_new_document(profile["evaluate_on_new_document"])))
 
-    if cdp_tools is None:
+    if do_return:
         return cdp_tools.evaluate_on_document_identifiers
 
 
