@@ -12,7 +12,7 @@
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows or [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
+* Windows or [Not working anymore?!] [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * selenium-profiles
 
