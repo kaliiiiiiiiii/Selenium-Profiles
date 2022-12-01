@@ -1,11 +1,9 @@
 from selenium_profiles import driver as mydriver
 from selenium_profiles.profiles import profiles
-# noinspection PyUnresolvedReferences
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
 profile = profiles.Android()
-profile["browser"]["sandbox"] = True
 driver = mydriver.start(profile, uc_driver=False)
 
 # get url
