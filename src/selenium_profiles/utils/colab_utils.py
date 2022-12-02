@@ -7,8 +7,11 @@ import warnings
 
 
 def restart_runtime():
-    import os
-    os.kill(os.getpid(), 9)
+    if is_colab():
+        import os
+        os.kill(os.getpid(), 9)
+    else:
+        raise EnvironmentError('Restarting environment necessary..!')
 
 
 def is_colab():
