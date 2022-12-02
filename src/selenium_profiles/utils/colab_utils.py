@@ -7,6 +7,7 @@ import warnings
 
 
 def restart_runtime():
+    warnings.warn('Restarting runtime..')
     if is_colab():
         import os
         os.kill(os.getpid(), 9)
