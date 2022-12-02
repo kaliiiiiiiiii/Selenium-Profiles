@@ -163,3 +163,9 @@ def show_html(driver):
     # noinspection PyUnresolvedReferences,PyPackageRequirements
     from IPython.display import display, HTML, IFrame
     display(HTML(str(driver.page_source)))
+
+
+def exec_js(js: str):
+    # noinspection PyUnresolvedReferences,PyPackageRequirements
+    from IPython.display import Javascript
+    Javascript(js)
