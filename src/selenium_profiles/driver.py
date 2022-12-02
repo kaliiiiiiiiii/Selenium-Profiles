@@ -43,9 +43,9 @@ class driver(object):
             except ImportError:
                 warnings.warn('undetected-chromedriver not installed. Installing..')
                 import os
-                from selenium_profiles.utils.colab_utils import restart_runtime
+                from selenium_profiles.utils.colab_utils import patch_uc
                 os.system('pip install undetected-chromedriver')
-                restart_runtime()
+                patch_uc()
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
             self.options = webdriver.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
