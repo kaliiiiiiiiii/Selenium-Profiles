@@ -157,3 +157,9 @@ def showscreen(driver):
     from IPython.display import Image
     driver.save_screenshot('screen.png')
     imagerender(Image('screen.png'))
+
+
+def show_html(driver):
+    # noinspection PyUnresolvedReferences,PyPackageRequirements
+    from IPython.display import display, HTML, IFrame
+    display(HTML(str(driver.page_source)))
