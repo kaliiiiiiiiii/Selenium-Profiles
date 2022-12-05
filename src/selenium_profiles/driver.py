@@ -91,6 +91,7 @@ class driver(object):
             self.driver = webdriver.Chrome(options=self.options)  # start selenium webdriver
 
         self.driver.get('http://motherfuckingwebsite.com/')  # wait browser to start
+        self.cdp_tools.delete_all_cookies() # delete website cookies
 
         self.cdp_tools = cdp_tools(self.driver)
 
