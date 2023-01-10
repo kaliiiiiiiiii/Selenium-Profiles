@@ -102,41 +102,18 @@ Example Profile:
 ```
 
 ### Change-headers
-You can change the Headers in continue_request() at my_headers = {"sec-ch-ua-platform": "Android"} .
 ```python
 
 from selenium_profiles.scripts.cdp_tools import cdp_listener
 
-# driver allready initialized
-
-async def all_requests(connection):
-    session, devtools = connection.session, connection.devtools
-    pattern = map(devtools.fetch.RequestPattern.from_json,[{"urlPattern":"*"}])
-    pattern = list(pattern)
-    await session.execute(devtools.fetch.enable(patterns=pattern))
-
-    return session.listen(devtools.fetch.RequestPaused)
-
-def continue_request(event, connection):
-    print({"type":event.resource_type.to_json(),"frame_id": event.frame_id, "url": event.request.url})
-    session, devtools = connection.session, connection.devtools
-
-    headers = event.request.headers.to_json()
-
-    my_headers = {"sec-ch-ua-platform": "Android"}
-    headers.update(my_headers)
-    my_headers = []
-    for item in headers.items():
-        my_headers.append(devtools.fetch.HeaderEntry.from_json({"name": item[0], "value": item[1]}))
-
-    return devtools.fetch.continue_request(request_id=event.request_id, headers=my_headers)
-
+# Note: driver allready initialized
 
 cdp_listener = cdp_listener(driver=driver)
+cdp_listener.specify_headers({"sec-ch-ua-platform":"Android"})
 thread = cdp_listener.start_threaded(listeners= {
-                                                "continue":{"listener":all_requests,"at_event":continue_request},
+                                                "continue":{"listener":cdp_listener.all_requests,"at_event":cdp_listener.modify_headers},
                                                  })
-driver.get("www.example.com")
+driver.get("https://modheader.com/headers?product=ModHeader")
 ```
 
 ### To export a profile:

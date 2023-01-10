@@ -1,6 +1,7 @@
 from typing import Dict, List  # define types in functions
 import warnings
 import json
+import traceback
 
 
 # noinspection PyPep8Naming
@@ -93,6 +94,8 @@ class cdp_listener(object):
     def __init__(self, driver):
         self.listeners = {}
         self.driver = driver
+        self.my_headers= None
+        self.print_requests = True
     async def async_helper(self):
         async with self.driver.bidi_connection() as connection:
             session, devtools = connection.session, connection.devtools
@@ -104,7 +107,7 @@ class cdp_listener(object):
                     try:
                         await session.execute(listener[1]["at_event"](event=event, connection=connection))
                     except Exception as e:
-                        print(e)
+                        traceback.print_exception(e)
 
     def trio_helper(self):
         import trio
@@ -126,16 +129,46 @@ class cdp_listener(object):
         del self.listeners[listener]
 
     def connection_refused(self,event, connection):
-        print({"type": event.resource_type.to_json(), "frame_id": event.frame_id, "url": event.request.url})
+        self.print_request(event)
 
         session, devtools = connection.session, connection.devtools
         # show_image(event.request.url)
         return devtools.fetch.fail_request(request_id=event.request_id,
                                            error_reason=devtools.network.ErrorReason.CONNECTION_REFUSED)
 
+    def modify_headers(self, event, connection):
+        self.print_request(event)
+
+        session, devtools = connection.session, connection.devtools
+
+        headers = event.request.headers.to_json()
+
+        try:
+            headers.update(self.my_headers)
+        except TypeError as e:
+            traceback.print_exception(e)
+            raise TypeError("Define headers using cdp_listener.specify_headers.\n")
+        my_headers = []
+        for item in headers.items():
+            if item[1]: # if value is set
+                my_headers.append(devtools.fetch.HeaderEntry.from_json({"name": item[0], "value": item[1]}))
+
+        return devtools.fetch.continue_request(request_id=event.request_id, headers=my_headers)
+
+    def specify_headers(self, headers:Dict[str, str]):
+        self.my_headers = headers
+
     async def all_images(self, connection):
         session, devtools = connection.session, connection.devtools
         pattern = map(devtools.fetch.RequestPattern.from_json, [{"resourceType": "Image"}])
+        pattern = list(pattern)
+        await session.execute(devtools.fetch.enable(patterns=pattern))
+
+        return session.listen(devtools.fetch.RequestPaused)
+
+    async def all_requests(self, connection):
+        session, devtools = connection.session, connection.devtools
+        pattern = map(devtools.fetch.RequestPattern.from_json, [{"urlPattern": "*"}])
         pattern = list(pattern)
         await session.execute(devtools.fetch.enable(patterns=pattern))
 
@@ -150,4 +183,8 @@ class cdp_listener(object):
             img = Image.open(BytesIO(response.content))
             img.show()
         except Exception as e:
-            print(e)
+            traceback.print_exception(e)
+
+    def print_request(self, event):
+        if self.print_requests:
+            print({"type": event.resource_type.to_json(), "frame_id": event.frame_id, "url": event.request.url})
