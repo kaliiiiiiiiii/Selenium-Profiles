@@ -3,7 +3,7 @@
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, ..
-* Modifying or **adding headers** supported with [cdp_listeners](###Change-headers)
+* Modifying or **adding headers** supported with [cdp_listeners](#Change-headers)
 
 ### Feel free to test my code!
 
