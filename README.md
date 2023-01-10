@@ -149,23 +149,16 @@ Please feel free to open an issue or fork!
 
 ## Known Bugs
 
-- click_as_touch makes automation hung
+- [click_as_touch makes automation hung](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/1)
 
-## Todo // Features
+## Todo
 
-- [x] Undetected
-- [x] support custom device metrics
-- [x] export browser profile
-- [x] Add License
 - [x] installer.py script
-  - [x] [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
     - [x] Jupyter (Google-Colab)
     - [x] Linux (not tested yet!)
-  - [ ] [Chrome-Browser](https://www.google.de/chrome/)s
-  - [x] requirements.txt
-- [x] Selenium-Devices as installable module
+  - [ ] [Chrome-Browser](https://www.google.de/chrome/)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
@@ -182,14 +175,7 @@ Please feel free to open an issue or fork!
     - [x] useragent, profile_export (no error)
       - [x] Windows
       - [x] Android
-- [ ] plugins support
-  - [ ] [selenium-wire]((https://github.com/wkeeling/selenium-wire))
-  - [x] [modheader]((https://github.com/modheader/modheader_selenium))
-    - [x] load modheader profile
-    - [ ] add headers without profile
-  - [ ] [stealth]((https://github.com/diprajpatra/selenium-stealth))
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
-- [x] Rewrite driver.py to V2.2
 - [ ] support for 
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
@@ -203,6 +189,7 @@ Please feel free to open an issue or fork!
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) (Selenium-Webdriver should be used directly)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
+* [selenium-wire](https://github.com/wkeeling/selenium-wire) (Changing headers now possible without)
 
 ## Authors
 
