@@ -19,6 +19,10 @@ class cdp_tools(object):
             warnings.warn('disabling emulation not supported')
             return self.driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
 
+    def clear_emulation(self, enabled:bool or None):
+        if enabled or (enabled is None):
+            self.driver.execute_cdp_cmd("Emulation.clearDeviceMetricsOverride", {})
+
     def set_useragent(self, useragent) -> Dict[str, str or Dict[str, str or bool or List[Dict[str, str]]]] or None:
         return self.driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
 

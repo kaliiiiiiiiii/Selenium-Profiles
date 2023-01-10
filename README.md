@@ -145,8 +145,6 @@ Please feel free to open an issue or fork!
   - [ ] IOS
   - [ ] Linux
   - [ ] Tablet
-- [x] change metrics while running
-  - [ ] disable emulation while running
 - [ ] test.py script
   - [x] test_driver.py
     - [x] useragent, profile_export (no error)
