@@ -5,6 +5,8 @@
 * **Undetected** by Google, Cloudflare, ..
 * Modifying or **adding headers** supported using "ModHeader" chrome-extension
 
+for the latest features, have a look at the `dev`branch
+
 ### Feel free to test my code!
 
 ## Getting Started
