@@ -1,5 +1,6 @@
-selenium_profiles
+selenium_profiles==2.2.4.7.4
 requests~=2.28.1
-selenium==4.6.1
+selenium==4.7.2 # 4.1.0 for touch_actions
 setuptools==65.6.3
 undetected-chromedriver~=3.1
+trio

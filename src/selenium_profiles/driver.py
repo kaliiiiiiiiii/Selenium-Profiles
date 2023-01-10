@@ -2,7 +2,7 @@ import time  # for time.sleep()
 import traceback  # print exception
 import urllib  # for url parsing
 import warnings
-from typing import Dict  # define types in functions
+from collections import defaultdict
 
 from selenium import webdriver
 from selenium_profiles.scripts import profiles
@@ -10,6 +10,7 @@ from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.cdp_tools import cdp_tools
 from selenium_profiles.scripts.driver_utils import sendkeys
 from selenium_profiles.scripts import undetected
+
 from selenium_profiles.utils.utils import sel_profiles_path, find_chrome_executable  # read txt files
 
 
@@ -24,18 +25,25 @@ class driver(object):
         self.cdp_tools = None
         self.options = None
 
-        self.profiles = profiles
+        self.profiles = profiles.profiles()
 
-    def start(self, profile: Dict[str, dict or list], uc_driver: bool = False):
-        self.profile = profile
+    def start(self, profile: dict, uc_driver: bool = False):
+        self.profile = defaultdict(lambda: None)
+        self.profile.update(profile)
 
-        if self.profile["plugins"]["selenium-wire"]:
-            warnings.warn("Selenium-wire not supported yet, ignoring")
+        #if self.profile["plugins"]["selenium-wire"]:
+        #    warnings.warn("Selenium-wire not supported yet, ignoring")
 
         if is_colab():  # google-colab doesn't support sandbox!
-            if self.profile["browser"]["sandbox"] is True:
-                warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
-            self.profile["browser"]["sandbox"] = False
+            if self.profile["options"]:
+                # noinspection PyUnresolvedReferences
+                if self.profile["options"]["sandbox"] is True:
+                    warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
+            else:
+                # noinspection PyTypeChecker
+                self.profile["options"] = {}
+            # noinspection PyUnresolvedReferences
+            self.profile["options"].update({"sandbox":True})
 
         if uc_driver:
             try:
@@ -53,30 +61,30 @@ class driver(object):
             self.options = webdriver.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
 
         # options-manager
-        self.options = self.profiles.to_options(self.profile, self.options)
+        self.options = self.profiles.options.set(options=self.options, options_profile=self.profile["options"])
 
         # EXTENSIONS
 
-        # ModHeader
-        if self.profile["plugins"]["modheader"]:
-            import os
-            warnings.warn('Only use modheader when additional Headers needed!')
-            if not os.path.isdir(sel_profiles_path() + "files/modheader"):
-                warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from selenium_profiles.utils.installer import install_modheader
-                install_modheader()
-            self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/modheader")
-
-        # Buster
-        if self.profile["plugins"]["buster"]:
-            import os
-            warnings.warn("Buster is deprecated and automating isn't supported!")
-            warnings.warn('Only use Buster when Captcha solver needed!')
-            if not os.path.isdir(sel_profiles_path() + "files/buster"):
-                warnings.warn('Buster not installed & extracted in /buster yet!')
-                from selenium_profiles.utils.installer import install_buster
-                install_buster()
-            self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
+        # # ModHeader
+        # if self.profile["plugins"]["modheader"]:
+        #     import os
+        #     warnings.warn('Only use modheader when additional Headers needed!')
+        #     if not os.path.isdir(sel_profiles_path() + "files/modheader"):
+        #         warnings.warn('Modheader not installed & extracted in /modheader yet!')
+        #         from selenium_profiles.utils.installer import install_modheader
+        #         install_modheader()
+        #     self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/modheader")
+        #
+        # # Buster
+        # if self.profile["plugins"]["buster"]:
+        #     import os
+        #     warnings.warn("Buster is deprecated and automating isn't supported!")
+        #     warnings.warn('Only use Buster when Captcha solver needed!')
+        #     if not os.path.isdir(sel_profiles_path() + "files/buster"):
+        #         warnings.warn('Buster not installed & extracted in /buster yet!')
+        #         from selenium_profiles.utils.installer import install_buster
+        #         install_buster()
+        #     self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         # ACTUAL START
 
@@ -85,7 +93,15 @@ class driver(object):
             self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True,
                                     browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
         else:
-            self.options = undetected.config_options(self.options)
+            try:
+                # noinspection PyUnresolvedReferences
+                adb = self.profile["options"]["adb"]
+            except TypeError:
+                adb = None
+            except KeyError:
+                adb = None
+
+            self.options = undetected.config_options(self.options, adb=adb)
 
             # Actual start of chrome
             self.driver = webdriver.Chrome(options=self.options)  # start selenium webdriver
@@ -97,17 +113,18 @@ class driver(object):
         self.cdp_tools.delete_all_cookies()  # delete website cookies
 
         # execute cdp based on profile
-        self.profiles.exec_cdp(self.profile, self.driver)
+        self.profiles.cdp.set(driver=self.driver, cdp_profile=self.profile["cdp"])
 
-        self.profiles.exec_js_evaluators(self.profile, self.driver, self.cdp_tools)
+        profiles.exec_js_evaluators(self.profile, self.driver, self.cdp_tools)
 
         if not uc_driver:
             undetected.exec_cdp(self.driver, self.cdp_tools)
 
-        if profile["plugins"]["modheader"]:
-            self.load_header_profiles(profile["plugins"]["modheader"])
+        #if profile["plugins"]["modheader"]:
+        #    self.load_header_profiles(profile["plugins"]["modheader"])
 
-        self.driver.profile = profile
+        self.driver.profile = self.profile
+        self.driver.options = self.options
         self.add_funcs_to_driver()
 
         # Return actual driver
@@ -119,10 +136,7 @@ class driver(object):
 
         # add my functions to driver
         self.driver.send_keys = sendkeys
-
-        self.driver.get_profile = self.profiles.get_profile
-        self.driver.get_navigator = self.profiles.get_navigator
-        self.driver.navigator2profile = profiles.navigator2profile
+        self.driver.get_profile =self.get_profile
 
         # ModHeader
         self.driver.load_header_profiles = self.load_header_profiles
@@ -142,48 +156,13 @@ class driver(object):
         import shutil
         shutil.copytree(self.driver.user_data_dir, to_path)
 
-    def start_no_profile(self, modheader: bool = False, buster: bool = False, user_dir: str = None,
-                         arguments: list = None):  # start minimal driver without profile
-        import undetected_chromedriver as uc  # undetected chromedriver
-        options = uc.ChromeOptions()
-        # additional options
-        if arguments:
-            for arg in arguments:
-                options.add_argument(arg)
-
-        options.arguments.extend(["--no-sandbox", "--test-type"])
-
-        if user_dir:
-            options.add_argument(r"--user-data-dir=" + user_dir)
-
-        # ModHeader extension options
-        if modheader:
-            import os
-            warnings.warn('Only use modheader when additional Headers needed!')
-            if not os.path.isdir(os.getcwd() + "/modheader"):
-                warnings.warn('Modheader not installed & extracted in /modheader yet!')
-                from selenium_profiles.utils.installer import install_modheader
-                install_modheader()
-            options.add_argument('--load-extension=' + os.getcwd() + "/modheader")
-
-        # Buster extension options
-        if buster:
-            import os
-            warnings.warn("Buster is deprecated and automating isn't supported!")
-            warnings.warn('Only use Buster when Captcha solver needed!')
-            if not os.path.isdir(os.getcwd() + "/buster"):
-                warnings.warn('Buster not installed & extracted in /buster yet!')
-                from selenium_profiles.utils.installer import install_buster
-                install_buster()
-            options.add_argument('--load-extension=' + os.getcwd() + "/buster")
-
-        self.driver = uc.Chrome(use_subprocess=True, options=options, keep_alive=True,
-                                browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
-
-        self.add_funcs_to_driver()
-
-        return self.driver
-
+    def get_profile(self):
+        from selenium_profiles.utils.utils import read
+        js = read('js/get_navigator.js')
+        # noinspection PyBroadException
+        self.driver.execute_script(js)
+        time.sleep(1)
+        return self.driver.execute_script('return window.useragent')
     # noinspection PyUnresolvedReferences
     def load_header_profiles(self, profile: str):
         if self.profile["plugins"]["modheader"]:

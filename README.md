@@ -50,62 +50,60 @@ in the End. Else-wise your temporary folder will get flooded! (Windows)
 Example Profile: 
 ```json
 {
-  "device":{
-      "mobile": false,
-      "model": "modelName",
-      "language": "de-CH,de;q=0.9",
-      "touch_device": true,
-      "maxtouchpoints": 5,
-      "hardware_accel": false,
-      "emulation": {"width": 384, "height": 700, "deviceScaleFactor": 10,
-        "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
-      "agent_override": {
-                "platform": "Win32",
-                "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-                "userAgentMetadata": {
-                    "brands": [{"brand":"Google Chrome","version":"107"},
-                              {"brand":"Chromium","version":"107"},
-                              {"brand":"Not=A?Brand","version":"24"}],
-                    "fullVersionList": [{"brand":"Google Chrome","version":"107.0.5304.88"},
-                                        {"brand":"Chromium","version":"107.0.5304.88"},
-                                        {"brand":"Not=A?Brand","version":"24.0.0.0"}],
-                    "fullVersion": "107.0.5304.88",
-                    "platform": "Windows",
-                    "platformVersion": "10.0.0",
-                    "architecture": "x86",
-                    "model": "modelName",
-                    "mobile": true,
-                    "bitness": "64",
-                    "wow64": false}
-    }},
-  "browser": {
-      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": true,
-      "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
-      "window_size": {"x": 400, "y": 400}
+  "options": {
+    "browser": {
+      "sandbox": true,
+      "window_size": {"x":1024,"y":648},
+      "headless": false,
+      "load_images": true,
+      "incognito": true,
+      "app": false,
+      "gpu": false,
+      "proxy": null,
+      "proxy_method": null
     },
-  "chromeoptions": {"arguments": ["--my-argument=value", ".."], "capabilities": [["cap_name", "cap_value"], ".."]},
-  "cdp_cmd": [["name", "value"], ".."],
-  "evaluate_on_new_document": "my_js_script",
-  "plugins": {
-      "selenium-wire": false,
-      "modheader":"[{\"headers\":[{\"enabled\":true,\"name\":\"google\",\"value\":\"\\\"x\\\"\"}],\"shortTitle\":\"1\",\"title\":\"Profile 1\",\"version\":2}]",
-      "stealth": false,
-      "buster": false
-    }
+    "extensions": {"extension_paths": []},
+    "option_args": ["--my-arg1", "..."],
+    "capabilities": [],
+    "adb": false,
+    "adb_package": "com.android.chrome",
+    "use_running_app": true
+  },
+  "cdp": {
+    "browser": {
+      "pointer_as_touch": false,
+      "darkmode": false,
+      "mobile": true
+    },
+    "touch": true,
+    "maxtouchpoints": 5,
+    "cdp_args": [],
+    "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 10,
+        "screenOrientation": {"type": "portrait-primary", "angle": 0}},
+    "useragent": {
+                "platform": "Linux aarch64",
+                "userAgent": "Mozilla/5.0 (Linux; Android 11; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36",
+                "userAgentMetadata": {
+                    "brands": [{"brand": "Google Chrome", "version": "105"}, {"brand": "Not)A;Brand", "version": "8"},
+                               {"brand": "Chromium", "version": "105"}],
+                    "fullVersionList": [{"brand": "Google Chrome", "version": "105.0.5195.136"},
+                                        {"brand": "Not)A;Brand", "version": "8.0.0.0"},
+                                        {"brand": "Chromium", "version": "105.0.5195.136"}],
+                    "fullVersion": "105.0.5195.136",
+                    "platform": "Android",
+                    "platformVersion": "11.0.0",
+                    "architecture": "",
+                    "model": "HD1913",
+                    "mobile": true,
+                    "bitness": "",
+                    "wow64": false}
+    }}
 }
 ```
 
 ### To export a profile:
 
-go to [https://jsconsole.com/](https://jsconsole.com/?function%20roundHalf%28num%29%20%7Breturn%20Math.round%28num*2%29/2%3B%7D%3Bfunction%20a%28elem%29/*if_exist%2C%20else%20null*/%7Bif%20%28typeof%20elem%20%21%3D%3D%20%27undefined%27%29%20%7Breturn%20elem%7D%20else%20%7Breturn%20null%7D%7D%3Bmynavigator%3D%20%7B%22wow64%22%3Aa%28navigator.userAgent%29.indexOf%28%27WOW64%27%29%3E-1%2C%22metrics%22%3A%7B%22width%22%3Aa%28screen.availWidth%29%2C%20%22height%22%3Aa%28screen.availHeight%29%2C%20%22scale_factor%22%3AroundHalf%28a%28window.devicePixelRatio%29%29%2C%20%22angle%22%3Aa%28screen.orientation.angle%29%2C%20%22orientation%22%3Aa%28screen.orientation.type%29%2C%20%22maxtouchpoints%22%3Aa%28window.navigator.maxTouchPoints%29%7D%2C%22memory%22%3Aa%28navigator.deviceMemory%29%2C%20%22language%22%3Aa%28navigator.language%29%2C%20%22platform%22%3Aa%28navigator.platform%29%2C%20%22useragent%22%3A%20a%28navigator.userAgent%29%2C%20%22useragentdata%22%3A%20a%28navigator.userAgentData%29%7D%3Bfunction%20copyToClipboard%28text%29%20%7Bwindow.prompt%28%22Copy%20to%20clipboard%3A%20Ctrl+C%2C%20Enter%22%2C%20text%29%3B%7D%3BcopyToClipboard%28JSON.stringify%28mynavigator%29%29) in your browser and copy the text.
-
-and then run in Python:
-```python
-from selenium_profiles.scripts.profiles import navigator2profile
-myprofile = navigator2profile("my_copied_text", filename='myprofile.json')
-```
-
-  
+go to [https://js.do/kaliiiiiiiiiii/get_profile](https://js.do/kaliiiiiiiiiii/get_profile) in your browser and copy the text.
 
 ## Help
 
