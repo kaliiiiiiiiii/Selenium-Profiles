@@ -124,3 +124,30 @@ class cdp_listener(object):
 
     def remove_listener(self, listener:str):
         del self.listeners[listener]
+
+    def connection_refused(self,event, connection):
+        print({"type": event.resource_type.to_json(), "frame_id": event.frame_id, "url": event.request.url})
+
+        session, devtools = connection.session, connection.devtools
+        # show_image(event.request.url)
+        return devtools.fetch.fail_request(request_id=event.request_id,
+                                           error_reason=devtools.network.ErrorReason.CONNECTION_REFUSED)
+
+    async def all_images(self, connection):
+        session, devtools = connection.session, connection.devtools
+        pattern = map(devtools.fetch.RequestPattern.from_json, [{"resourceType": "Image"}])
+        pattern = list(pattern)
+        await session.execute(devtools.fetch.enable(patterns=pattern))
+
+        return session.listen(devtools.fetch.RequestPaused)
+
+    def show_image(self, url: str):  # show image from URL
+        from PIL import Image
+        from io import BytesIO
+        import requests
+        try:
+            response = requests.get(url)
+            img = Image.open(BytesIO(response.content))
+            img.show()
+        except Exception as e:
+            print(e)
