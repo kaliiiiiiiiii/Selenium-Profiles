@@ -111,7 +111,7 @@ from selenium_profiles.scripts.cdp_tools import cdp_listener
 cdp_listener = cdp_listener(driver=driver)
 cdp_listener.specify_headers({"sec-ch-ua-platform":"Android"})
 thread = cdp_listener.start_threaded(listeners= {
-                                                "continue":{"listener":cdp_listener.all_requests,"at_event":cdp_listener.modify_headers},
+                                                "header_mod":{"listener":cdp_listener.all_requests,"at_event":cdp_listener.modify_headers},
                                                  })
 driver.get("https://modheader.com/headers?product=ModHeader")
 ```
