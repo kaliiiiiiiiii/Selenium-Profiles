@@ -65,16 +65,6 @@ class driver(object):
 
         # EXTENSIONS
 
-        # # ModHeader
-        # if self.profile["plugins"]["modheader"]:
-        #     import os
-        #     warnings.warn('Only use modheader when additional Headers needed!')
-        #     if not os.path.isdir(sel_profiles_path() + "files/modheader"):
-        #         warnings.warn('Modheader not installed & extracted in /modheader yet!')
-        #         from selenium_profiles.utils.installer import install_modheader
-        #         install_modheader()
-        #     self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/modheader")
-        #
         # # Buster
         # if self.profile["plugins"]["buster"]:
         #     import os
@@ -120,9 +110,6 @@ class driver(object):
         if not uc_driver:
             undetected.exec_cdp(self.driver, self.cdp_tools)
 
-        #if profile["plugins"]["modheader"]:
-        #    self.load_header_profiles(profile["plugins"]["modheader"])
-
         self.driver.profile = self.profile
         self.driver.options = self.options
         self.add_funcs_to_driver()
@@ -137,10 +124,6 @@ class driver(object):
         # add my functions to driver
         self.driver.send_keys = sendkeys
         self.driver.get_profile =self.get_profile
-
-        # ModHeader
-        self.driver.load_header_profiles = self.load_header_profiles
-        self.driver.clear_headers = self.clear_headers
 
         # Captcha
         self.driver.solve_captcha = self.solve_captcha
@@ -163,21 +146,6 @@ class driver(object):
         self.driver.execute_script(js)
         time.sleep(1)
         return self.driver.execute_script('return window.useragent')
-    # noinspection PyUnresolvedReferences
-    def load_header_profiles(self, profile: str):
-        if self.profile["plugins"]["modheader"]:
-            self.driver.modheader_url = 'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(
-                profile[1:-1], safe='')
-            self.driver.get(
-                'https://webdriver.modheader.com/load?profile=' + urllib.parse.quote(profile[1:-1], safe=''))
-        else:
-            warnings.warn('ModHeader needs to be enabled for custom headers!')
-
-    def clear_headers(self):
-        if self.profile["plugins"]["modheader"]:
-            self.driver.get('https://webdriver.modheader.com/clear')
-        else:
-            warnings.warn('ModHeader needs to be enabled for custom headers!')
 
     def solve_captcha(self):
         from selenium.webdriver.common.by import By  # locate elements

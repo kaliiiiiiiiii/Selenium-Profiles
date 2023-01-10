@@ -3,7 +3,7 @@
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, ..
-* Modifying or **adding headers** supported using "ModHeader" chrome-extension
+* Modifying or **adding headers** supported with [cdp_listeners](###Change-headers)
 
 ### Feel free to test my code!
 
@@ -101,6 +101,44 @@ Example Profile:
 }
 ```
 
+### Change-headers
+You can change the Headers in continue_request() at my_headers = {"sec-ch-ua-platform": "Android"} .
+```python
+
+from selenium_profiles.scripts.cdp_tools import cdp_listener
+
+# driver allready initialized
+
+async def all_requests(connection):
+    session, devtools = connection.session, connection.devtools
+    pattern = map(devtools.fetch.RequestPattern.from_json,[{"urlPattern":"*"}])
+    pattern = list(pattern)
+    await session.execute(devtools.fetch.enable(patterns=pattern))
+
+    return session.listen(devtools.fetch.RequestPaused)
+
+def continue_request(event, connection):
+    print({"type":event.resource_type.to_json(),"frame_id": event.frame_id, "url": event.request.url})
+    session, devtools = connection.session, connection.devtools
+
+    headers = event.request.headers.to_json()
+
+    my_headers = {"sec-ch-ua-platform": "Android"}
+    headers.update(my_headers)
+    my_headers = []
+    for item in headers.items():
+        my_headers.append(devtools.fetch.HeaderEntry.from_json({"name": item[0], "value": item[1]}))
+
+    return devtools.fetch.continue_request(request_id=event.request_id, headers=my_headers)
+
+
+cdp_listener = cdp_listener(driver=driver)
+thread = cdp_listener.start_threaded(listeners= {
+                                                "continue":{"listener":all_requests,"at_event":continue_request},
+                                                 })
+driver.get("www.example.com")
+```
+
 ### To export a profile:
 
 go to [https://js.do/kaliiiiiiiiiii/get_profile](https://js.do/kaliiiiiiiiiii/get_profile) in your browser and copy the text.
@@ -121,7 +159,6 @@ Please feel free to open an issue or fork!
 - [x] Add License
 - [x] installer.py script
   - [x] [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
-  - [x] [modheader]((https://github.com/modheader/modheader_selenium))
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
     - [x] Jupyter (Google-Colab)
@@ -165,30 +202,11 @@ Please feel free to open an issue or fork!
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) (Selenium-Webdriver should be used directly)
+* [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
 
 ## Authors
 
 [Aurin Aegerter](mailto:aurinliun@gmx.ch)
-
-## Version History
-
-* patched_driverV1
-  * first version as importable file
-* sel_profilesV2
-  * added custom device metrics
-  * added default.json metrics
-    * Android
-    * Windows
-  * added navigator2profile, driver.get_profile()
-  * added modheader (load modheader json profile)
-  * put everything into folders
-* googleV1 (not released yet!)
-  * first version as importable file
-* selenium-profilesV2.2
-  * installable as module (pip)
-*selenium-profiles V2.2.4 (pre-release, unstable!)
-  * removed undetected-chromedriver dependency
-  * moved parts of driver to `selenium_profiles/scripts`
 
 ## License
 
@@ -227,3 +245,4 @@ Inspiration, code snippets, etc.
 * [example_pypi_package](https://github.com/tomchen/example_pypi_package)
 * [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
+* [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
