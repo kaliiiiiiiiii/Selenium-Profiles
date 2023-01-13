@@ -12,6 +12,9 @@ def exec_cdp(driver, cdp_tools=None):
     # set webdriver js var to false
     cdp_tools.evaluate_on_new_document(read('js/undetected/navigator_webdriver.js'))
 
+    # noinspection PyUnusedLocal
+    x = driver.execute_cdp_cmd('Emulation.setIdleOverride', {'isUserActive': True, 'isScreenUnlocked': True})
+
     def get_cdc_props():  # if true ==> detectable
         return driver.execute_script(read('js/undetected/get_cdc_props.js'))
 
@@ -22,9 +25,10 @@ def exec_cdp(driver, cdp_tools=None):
             return cdp_tools.evaluate_on_document_identifiers
 
 
-def config_options(options):
+def config_options(options, adb=False):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
+    if not adb or adb is None:
+        options.add_experimental_option('useAutomationExtension', False)
     options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
 
     # suppress welcome

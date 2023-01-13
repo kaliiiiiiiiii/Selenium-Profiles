@@ -7,19 +7,20 @@ from selenium.webdriver.common.by import By  # locate elements
 mydriver = mydriver()
 
 
-def test_driver(choose: str, headless: bool = True, modheader: str = False, uc_driver=False):
+def test_driver(choose: str, headless: bool = True, uc_driver=False):
+    import json
     profile = read_json(filename='profiles\\default.json')
     # noinspection PyGlobalUndefined
     global mydriver
     testprofile = profile[choose]
-    testprofile["plugins"]["modheader"] = modheader
-    testprofile["browser"]["headless"] = headless
+    testprofile["options"]["browser"]["headless"] = headless
     driver = mydriver.start(testprofile, uc_driver=uc_driver)
     driver.get('https://browserleaks.com/client-hints')
     useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
-    exported_profile = driver.get_profile(driver)
+    exported_profile = driver.get_profile()
     driver.quit()
-    return {"useragent": useragent, "exported_profile": exported_profile}
+    print(choose+'\n'+useragent+'\n')
+    return {"profile": driver.profile, "exported_profile": exported_profile, "useragent":useragent}
 
 
 class Driver(unittest.TestCase):
@@ -28,15 +29,15 @@ class Driver(unittest.TestCase):
     def test_windows(self):
         global mydriver
         output = test_driver('Windows', headless=True)
-        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'],
-                         output["useragent"])  # add assertion here
+        self.assertEqual(output["exported_profile"]["cdp"]["useragent"],
+                         output["profile"]["cdp"]["useragent"])  # add assertion here
 
     # noinspection PyGlobalUndefined
     def test_android(self):
         global mydriver
-        output = test_driver('Android', headless=False, modheader='[{"headers":[{"enabled":true,"name":"google","value":"\\"x\\""}],"shortTitle":"1","title":"Profile 1","version":2}]')
-        self.assertEqual(mydriver.profile['device']['agent_override']['userAgent'],
-                         output["useragent"])  # add assertion here
+        output = test_driver('Android', headless=False)
+        self.assertEqual(output["exported_profile"]["cdp"]["useragent"],
+                         output["profile"]["cdp"]["useragent"])  # add assertion here
 
 
 if __name__ == '__main__':

@@ -1,15 +1,16 @@
 {
   "Android": {
-  "device":{
-      "mobile": true,
-      "model": "HD1913",
-      "language": "de-CH,de;q=0.9",
-      "touch_device": true,
-      "maxtouchpoints": 5,
-      "hardware_accel": false,
-      "emulation": {"width": 384, "height": 700, "deviceScaleFactor": 10,
+    "options": {
+      "browser": {
+      "gpu": false,
+      "window_size": {"x":384,"y":700}}
+    },
+    "cdp": {
+      "touch": true,
+      "maxtouchpoints": 1,
+      "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 4,
         "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
-      "agent_override": {
+      "useragent": {
                 "platform": "Linux aarch64",
                 "userAgent": "Mozilla/5.0 (Linux; Android 11; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36",
                 "userAgentMetadata": {
@@ -26,34 +27,22 @@
                     "mobile": true,
                     "bitness": "",
                     "wow64": false}
-    }},
-  "browser": {
-      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": false,
-      "pointer_as_touch": false, "mobile_view":  true, "app": false, "touch_events": true,
-      "window_size": {"x": 400, "y": 700}
-    },
-  "chromeoptions": {"arguments": [], "capabilities": [[]]},
-  "cdp_cmd": [[]],
-  "evaluate_on_new_document": null,
-  "plugins": {
-      "selenium-wire": false,
-      "modheader":false,
-      "stealth": false,
-      "buster": false
+      }
     }
-},
+  },
   "IOS": {},
   "Windows": {
-  "device":{
-      "mobile": false,
-      "model": "",
-      "language": "de-CH,de;q=0.9",
-      "touch_device": true,
+    "options": {
+      "browser": {
+      "gpu": false,
+      "window_size": {"x":1024,"y":648}}
+    },
+    "cdp": {
+      "touch": true,
       "maxtouchpoints": 10,
-      "hardware_accel": false,
-      "emulation": {"width": 384, "height": 700, "deviceScaleFactor": 10,
+      "emulation": {"mobile":false,"width": 1024, "height": 648, "deviceScaleFactor": 1,
         "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
-      "agent_override": {
+      "useragent": {
                 "platform": "Win32",
                 "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
                 "userAgentMetadata": {
@@ -71,22 +60,9 @@
                     "mobile": false,
                     "bitness": "64",
                     "wow64": false}
-    }},
-  "browser": {
-      "sandbox": true, "inkognito": true,"headless":false, "proxy": null, "darkmode": false,
-      "pointer_as_touch": false, "mobile_view":  false, "app": false, "touch_events": true,
-      "window_size": {"x": 1024, "y": 648}
-    },
-  "chromeoptions": {"arguments": [], "capabilities": [[]]},
-  "cdp_cmd": [[]],
-  "evaluate_on_new_document": null,
-  "plugins": {
-      "selenium-wire": false,
-      "modheader":false,
-      "stealth": false,
-      "buster": false
+      }
     }
-},
+  },
   "Linux": {},
   "Tablet": {}
 }

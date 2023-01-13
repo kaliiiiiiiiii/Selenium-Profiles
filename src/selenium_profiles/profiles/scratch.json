@@ -1,0 +1,58 @@
+{
+    "cdp": {
+        "touch": true,
+        "maxtouchpoints": 1,
+        "emulation": {
+            "mobile": true,
+            "width": 385,
+            "height": 833,
+            "deviceScaleFactor": 4,
+            "screenOrientation": {
+                "type": "portraitPrimary",
+                "angle": 0
+            }
+        },
+        "useragent": {
+            "platform": "Linux aarch64",
+            "userAgent": "Mozilla/5.0 (Linux; Android 11; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36",
+            "userAgentMetadata": {
+                "brands": [
+                    {
+                        "brand": "Not?A_Brand",
+                        "version": "8"
+                    },
+                    {
+                        "brand": "Chromium",
+                        "version": "108"
+                    },
+                    {
+                        "brand": "Google Chrome",
+                        "version": "108"
+                    }
+                ],
+                "fullVersionList": [
+                    {
+                        "brand": "Not?A_Brand",
+                        "version": "8.0.0.0"
+                    },
+                    {
+                        "brand": "Chromium",
+                        "version": "108.0.5359.79"
+                    },
+                    {
+                        "brand": "Google Chrome",
+                        "version": "108.0.5359.79"
+                    }
+                ],
+                "fullVersion": "108.0.5359.79",
+                "platform": "Android",
+                "platformVersion": "11.0.0",
+                "architecture": "",
+                "model": "HD1913",
+                "mobile": true,
+                "bitness": "",
+                "wow64": false
+            }
+        }
+    }
+}
