@@ -39,12 +39,12 @@ class driver(object):
                         if self.profile["options"]["browser"]["sandbox"] is True:
                             warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
                     else:
-                        self.profile["options"]["browser"].update({"sandbox":True})
+                        self.profile["options"]["browser"].update({"sandbox":False})
                 else:
-                    self.profile["options"].update({"browser":{"sandbox":True}})
+                    self.profile["options"].update({"browser":{"sandbox":False}})
             else:
                 # noinspection PyTypeChecker
-                self.profile.update({"options":{"browser":{"sandbox":True}}})
+                self.profile.update({"options":{"browser":{"sandbox":False}}})
 
         if uc_driver:
             try:
