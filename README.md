@@ -1,4 +1,4 @@
-# Selenium-Profiles V2
+# Selenium-Profiles
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
