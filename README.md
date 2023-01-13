@@ -4,6 +4,7 @@
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
+* [Touch Actions](#Touch_actions)
 
 ### Feel free to test my code!
 
@@ -122,6 +123,45 @@ driver.get("https://modheader.com/headers?product=ModHeader")
 ```
 Don't forget to execute
 `cdp_listener.terminate_all()`
+
+### Touch_actions
+
+Example demonstration script
+```python
+from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.profiles import profiles
+
+from selenium_profiles.scripts.touch_actions import touch_action_chain, mid_location
+
+from selenium.webdriver.common.by import By
+
+
+# Start Driver
+mydriver = mydriver()
+profile = profiles.Android()
+driver = mydriver.start(profile, uc_driver=False)  # or .Android
+
+# initialise touch_actions
+touch_actions = touch_action_chain(driver)
+
+driver.get("https://cps-check.com/de/multi-touch-test")
+
+touch_box = driver.find_element(By.XPATH,'//*[@id="box"]') # Get element
+location = mid_location(touch_box) # get element middle location
+
+# setup actions
+touch_actions.pointer_action.move_to_location(location['x'],location['y'])
+touch_actions.pointer_action.pointer_down()
+
+# perform actions
+touch_actions.perform()
+
+# now you should see a touch indication point on the Website
+
+# quit driver
+input('Press ENTER to quit Driver\n')
+driver.quit()
+```
 
 ### To export a profile:
 
