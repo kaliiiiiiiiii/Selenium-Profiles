@@ -5,3 +5,4 @@ setuptools==65.6.3
 undetected-chromedriver==3.2.1
 trio
 pillow
+selenium-interceptor>=1.0.2

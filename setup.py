@@ -17,7 +17,7 @@ def is_collab():
         return False
 
 
-requirements = ['selenium~=4.6', 'requests~=2.28']
+requirements = ['selenium~=4.6', 'requests~=2.28', 'selenium-interceptor>=1.0.2']
 
 if is_collab():
     requirements.append('PyVirtualDisplay')

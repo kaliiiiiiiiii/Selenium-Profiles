@@ -1,6 +1,5 @@
 import time  # for time.sleep()
 import traceback  # print exception
-import urllib  # for url parsing
 import warnings
 from collections import defaultdict
 
@@ -11,7 +10,7 @@ from selenium_profiles.scripts.cdp_tools import cdp_tools
 from selenium_profiles.scripts.driver_utils import sendkeys
 from selenium_profiles.scripts import undetected
 
-from selenium_profiles.utils.utils import sel_profiles_path, find_chrome_executable  # read txt files
+from selenium_profiles.utils.utils import sel_profiles_path  # read txt files
 
 
 # noinspection PyPep8Naming,GrazieInspection
@@ -30,9 +29,6 @@ class driver(object):
     def start(self, profile: dict, uc_driver: bool = False):
         self.profile = defaultdict(lambda: None)
         self.profile.update(profile)
-
-        #if self.profile["plugins"]["selenium-wire"]:
-        #    warnings.warn("Selenium-wire not supported yet, ignoring")
 
         if is_colab():  # google-colab doesn't support sandbox!
             if self.profile["options"]:
@@ -58,30 +54,16 @@ class driver(object):
             # noinspection PyUnboundLocalVariable
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
-            self.options = webdriver.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
+            self.options = webdriver.ChromeOptions()
 
         # options-manager
         self.options = self.profiles.options.set(options=self.options, options_profile=self.profile["options"])
-
-        # EXTENSIONS
-
-        # # Buster
-        # if self.profile["plugins"]["buster"]:
-        #     import os
-        #     warnings.warn("Buster is deprecated and automating isn't supported!")
-        #     warnings.warn('Only use Buster when Captcha solver needed!')
-        #     if not os.path.isdir(sel_profiles_path() + "files/buster"):
-        #         warnings.warn('Buster not installed & extracted in /buster yet!')
-        #         from selenium_profiles.utils.installer import install_buster
-        #         install_buster()
-        #     self.options.add_argument('--load-extension=' + sel_profiles_path() + "files/buster")
 
         # ACTUAL START
 
         if uc_driver:
             # noinspection PyUnboundLocalVariable
-            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True,
-                                    browser_executable_path=find_chrome_executable())  # start undetected_chromedriver
+            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True)  # start undetected_chromedriver
         else:
             try:
                 # noinspection PyUnresolvedReferences
@@ -120,6 +102,10 @@ class driver(object):
     def add_funcs_to_driver(self):
 
         self.driver.cdp_tools = self.cdp_tools
+
+        # add selenium-interceptor
+        from selenium_interceptor.interceptor import cdp_listener
+        self.driver.cdp_listener = cdp_listener(driver=self.driver)
 
         # add my functions to driver
         self.driver.send_keys = sendkeys
