@@ -26,20 +26,25 @@ class driver(object):
 
         self.profiles = profiles.profiles()
 
+    # noinspection PyUnresolvedReferences
     def start(self, profile: dict, uc_driver: bool = False):
         self.profile = defaultdict(lambda: None)
         self.profile.update(profile)
 
         if is_colab():  # google-colab doesn't support sandbox!
-            if self.profile["options"]:
-                # noinspection PyUnresolvedReferences
-                if self.profile["options"]["sandbox"] is True:
-                    warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
+            # todo: nested default-dict with Lambda: None
+            if "options" in self.profile.keys():
+                if "browser" in self.profile["options"].keys():
+                    if "sandbox" in self.profile["options"]["browser"].keys():
+                        if self.profile["options"]["browser"]["sandbox"] is True:
+                            warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
+                    else:
+                        self.profile["options"]["browser"].update({"sandbox":True})
+                else:
+                    self.profile["options"].update({"browser":{"sandbox":True}})
             else:
                 # noinspection PyTypeChecker
-                self.profile["options"] = {}
-            # noinspection PyUnresolvedReferences
-            self.profile["options"].update({"sandbox":True})
+                self.profile.update({"options":{"browser":{"sandbox":True}}})
 
         if uc_driver:
             try:
