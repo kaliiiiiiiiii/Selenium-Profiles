@@ -85,6 +85,7 @@ Example Profile:
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},
     "useragent": {
                 "platform": "Linux aarch64",
+                "acceptLanguage":"en-US",
                 "userAgent": "Mozilla/5.0 (Linux; Android 11; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36",
                 "userAgentMetadata": {
                     "brands": [{"brand": "Google Chrome", "version": "105"}, {"brand": "Not)A;Brand", "version": "8"},
