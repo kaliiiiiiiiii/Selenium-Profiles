@@ -205,6 +205,8 @@ Please feel free to open an issue or fork!
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [ ] Linux
+- [ ] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
+- [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 
 
 ## Deprecated
