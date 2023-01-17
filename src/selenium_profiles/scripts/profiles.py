@@ -223,13 +223,13 @@ class profiles:
                             options.add_argument('--load-extension=' + extension_path)
                 return options
 
-            def add_auth_proxy(self,host:str, port:int, username:str, password:str, scheme:str or None= "http"):
+            def add_auth_proxy(self,host:str, port:int, username:str or None, password:str or None, scheme:str or None= "http"):
                 from selenium_profiles.scripts.proxy_extension import make_extension
 
                 if not scheme:
                     scheme = "http"
 
-                path = make_extension(host= host, port=port, username= username, password= password, scheme=scheme)
+                path = make_extension(host= host, port=port, username= str(username), password= str(password), scheme=scheme)
                 self.add_extension(extension_paths=[path], options=self.options)
 
     # noinspection PyTypeChecker
