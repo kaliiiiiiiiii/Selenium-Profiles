@@ -6,6 +6,8 @@
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
 * [Touch Actions](#Touch_actions)
 
+for the latest features, have a look at the `dev`branch
+
 ### Feel free to test my code!
 
 ## Getting Started
@@ -83,6 +85,7 @@ Example Profile:
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},
     "useragent": {
                 "platform": "Linux aarch64",
+                "acceptLanguage":"en-US",
                 "userAgent": "Mozilla/5.0 (Linux; Android 11; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36",
                 "userAgentMetadata": {
                     "brands": [{"brand": "Google Chrome", "version": "105"}, {"brand": "Not)A;Brand", "version": "8"},
@@ -202,6 +205,8 @@ Please feel free to open an issue or fork!
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [ ] Linux
+- [ ] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
+- [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 
 
 ## Deprecated
