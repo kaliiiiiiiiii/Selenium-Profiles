@@ -42,6 +42,7 @@ function build_navigator() {
             "emulation": my_screen,
             "useragent": {
                   "platform": a('navigator.platform'),
+                  "acceptLanguage":a('navigator.language') || a('navigator.userLanguage'),
                   "userAgent": a('navigator.userAgent'),
                   "userAgentMetadata": {
                        "brands": window.useragent["brands"],

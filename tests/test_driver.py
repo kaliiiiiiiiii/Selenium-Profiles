@@ -20,8 +20,6 @@ def test_driver(choose: str, headless: bool = True, uc_driver=False):
     exported_profile = driver.get_profile()
     driver.quit()
 
-    del driver.profile["cdp"]["useragent"]['acceptLanguage'] # get_profile doesn't include 'acceptLanguage' yet!
-
     print(choose+'\n'+useragent+'\n')
     return {"profile": driver.profile, "exported_profile": exported_profile, "useragent":useragent}
 
