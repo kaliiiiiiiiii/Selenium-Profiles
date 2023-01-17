@@ -263,3 +263,4 @@ Inspiration, code snippets, etc.
 * [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
 * [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
+* [porxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
