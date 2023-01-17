@@ -11,7 +11,10 @@
       "proxy": null,
       "proxy_method": null
     },
-    "extensions": {"extension_paths": []},
+    "extensions": {
+          "extension_paths": [],
+          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"}
+        },
     "option_args": [],
     "capabilities": [],
     "adb": false,

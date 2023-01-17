@@ -31,9 +31,6 @@ class profiles:
                     incognito = None
 
                 extensions_used = profile["extensions"]
-                if extensions_used:
-                    # noinspection PyUnresolvedReferences
-                    extensions_used = profile["extensions"]["extension_paths"]
 
                 self.device.set(self.options, option_device_profile=profile["device"])
                 self.browser.set(self.options, option_browser_profile=profile["browser"],
@@ -206,16 +203,28 @@ class profiles:
                     profile = defaultdict(lambda : None)
                     profile.update(option_extension_profile)
                     self.options = options
+                    auth_proxy = profile["auth_proxy"]
 
                     self.add_extension(self.options,profile["extension_paths"],incognito=incognito)
+                    if auth_proxy:
+                        # noinspection PyUnresolvedReferences
+                        self.add_auth_proxy(auth_proxy["host"], auth_proxy["port"], auth_proxy["username"], auth_proxy["password"])
                 return self.options
-            def add_extension(self, options, extracted_extension_paths:None or list, incognito:bool = None):
-                if extracted_extension_paths:
+            def add_extension(self, options, extension_paths:None or list, incognito:bool = None):
+                if extension_paths:
                     if incognito:
                         warnings.warn('Incognito might not be compatible with extensions')
-                    for extension_path in extracted_extension_paths:
-                        options.add_argument('--load-extension=' + extension_path)
+                    for extension_path in extension_paths:
+                        if extension_path[-3:] == ".crx" or extension_path[-3:] == ".zip":
+                            options.add_extension(extension_path)
+                        else:
+                            options.add_argument('--load-extension=' + extension_path)
                 return options
+
+            def add_auth_proxy(self,host:str, port:int, username:str, password:str):
+                from selenium_profiles.scripts.proxy_extension import make_extension
+                path = make_extension(host= host, port=port, username= username, password= password)
+                self.add_extension(extension_paths=[path], options=self.options)
 
     # noinspection PyTypeChecker
     class cdp:

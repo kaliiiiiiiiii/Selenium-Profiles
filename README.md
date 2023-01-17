@@ -65,12 +65,15 @@ Example Profile:
       "proxy": null,
       "proxy_method": null
     },
-    "extensions": {"extension_paths": []},
-    "option_args": ["--my-arg1", "..."],
-    "capabilities": [],
-    "adb": false,
-    "adb_package": "com.android.chrome",
-    "use_running_app": true
+      "extensions": {
+          "extension_paths": [],
+          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"}
+        },
+      "option_args": ["--my-arg1", "..."],
+      "capabilities": [],
+      "adb": false,
+      "adb_package": "com.android.chrome",
+      "use_running_app": true
   },
   "cdp": {
     "browser": {

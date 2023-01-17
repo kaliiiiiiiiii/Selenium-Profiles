@@ -12,6 +12,9 @@ def read(filename: str, encoding: str = "utf-8"):
     with open(sel_profiles_path() + filename, encoding=encoding) as f:
         return f.read()
 
+def write(filename: str, content:str, encoding: str = "utf-8"):
+    with open(sel_profiles_path() + filename,"w", encoding=encoding) as f:
+        return f.write(content)
 
 def read_json(filename: str = 'example.json', encoding: str = "utf-8"):
     with open(sel_profiles_path() + filename, 'r', encoding=encoding) as f:
