@@ -203,12 +203,14 @@ class profiles:
                     profile = defaultdict(lambda : None)
                     profile.update(option_extension_profile)
                     self.options = options
-                    auth_proxy = profile["auth_proxy"]
+                    auth_proxy = defaultdict(lambda: None)
+                    # noinspection PyTypeChecker
+                    auth_proxy.update(profile["auth_proxy"])
 
                     self.add_extension(self.options,profile["extension_paths"],incognito=incognito)
                     if auth_proxy:
-                        # noinspection PyUnresolvedReferences
-                        self.add_auth_proxy(auth_proxy["host"], auth_proxy["port"], auth_proxy["username"], auth_proxy["password"])
+                        # noinspection PyUnresolvedReferences,PyTypeChecker
+                        self.add_auth_proxy(auth_proxy["host"], auth_proxy["port"], auth_proxy["username"], auth_proxy["password"], scheme=auth_proxy["scheme"])
                 return self.options
             def add_extension(self, options, extension_paths:None or list, incognito:bool = None):
                 if extension_paths:
@@ -221,9 +223,13 @@ class profiles:
                             options.add_argument('--load-extension=' + extension_path)
                 return options
 
-            def add_auth_proxy(self,host:str, port:int, username:str, password:str):
+            def add_auth_proxy(self,host:str, port:int, username:str, password:str, scheme:str or None= "http"):
                 from selenium_profiles.scripts.proxy_extension import make_extension
-                path = make_extension(host= host, port=port, username= username, password= password)
+
+                if not scheme:
+                    scheme = "http"
+
+                path = make_extension(host= host, port=port, username= username, password= password, scheme=scheme)
                 self.add_extension(extension_paths=[path], options=self.options)
 
     # noinspection PyTypeChecker
