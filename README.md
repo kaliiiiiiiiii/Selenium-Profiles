@@ -5,7 +5,7 @@
 * **Undetected** by Google, Cloudflare, ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
 * [Touch Actions](#Touch_actions)
-* proxies with authentification (experimental)
+* [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 
 for the latest features, have a look at the `dev`branch
 
