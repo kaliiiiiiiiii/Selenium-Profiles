@@ -15,7 +15,7 @@ for the latest features, have a look at the `dev`branch
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows or [Google-Colab](https://colab.research.google.com/) (Linux not tested yet)
+* Windows (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * selenium-profiles
 
@@ -45,7 +45,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### Run with Google-Colab
+#### Run with Google-Colab (not supported with this version anymore..!)
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 ## Profiles
