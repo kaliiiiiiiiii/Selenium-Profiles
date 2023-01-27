@@ -6,7 +6,7 @@
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
 * [Touch Actions](#Touch_actions)
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
-* making single requests using `driver.requests.fetch(url, options)` [syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
+* making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.requests.fetch(url, options)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 
 for the latest features, have a look at the `dev`branch
 
