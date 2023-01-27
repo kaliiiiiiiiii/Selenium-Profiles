@@ -9,6 +9,7 @@ from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.cdp_tools import cdp_tools
 from selenium_profiles.scripts.driver_utils import sendkeys
 from selenium_profiles.scripts import undetected
+from selenium_profiles.scripts.driver_utils import requests, actions
 
 from selenium_profiles.utils.utils import sel_profiles_path  # read txt files
 
@@ -112,9 +113,13 @@ class driver(object):
         from selenium_interceptor.interceptor import cdp_listener
         self.driver.cdp_listener = cdp_listener(driver=self.driver)
 
-        # add my functions to driver
-        self.driver.send_keys = sendkeys
-        self.driver.get_profile =self.get_profile
+        # add my functions to driver$
+
+        self.driver.send_keys = sendkeys # DEPRECATED!
+
+        self.driver.get_profile = self.get_profile
+        self.driver.requests = requests(self.driver)
+        self.driver.actions = actions(self.driver)
 
         # Captcha
         self.driver.solve_captcha = self.solve_captcha
