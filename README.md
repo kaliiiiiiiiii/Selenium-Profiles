@@ -5,6 +5,8 @@
 * **Undetected** by Google, Cloudflare, ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
 * [Touch Actions](#Touch_actions)
+* [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
+* making single requests using `driver.requests.fetch(url, options)` [syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
 
 for the latest features, have a look at the `dev`branch
 
@@ -15,7 +17,7 @@ for the latest features, have a look at the `dev`branch
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows (Linux not tested yet)
+* Windows or [Google-Colab, currently not working](https://colab.research.google.com/) (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
 * selenium-profiles
 
@@ -45,7 +47,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### Run with Google-Colab (not supported with this version anymore..!)
+#### Run with Google-Colab (Currently not working, https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/10)
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 ## Profiles
@@ -65,12 +67,15 @@ Example Profile:
       "proxy": null,
       "proxy_method": null
     },
-    "extensions": {"extension_paths": []},
-    "option_args": ["--my-arg1", "..."],
-    "capabilities": [],
-    "adb": false,
-    "adb_package": "com.android.chrome",
-    "use_running_app": true
+      "extensions": {
+          "extension_paths": [],
+          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"}
+        },
+      "option_args": ["--my-arg1", "..."],
+      "capabilities": [],
+      "adb": false,
+      "adb_package": "com.android.chrome",
+      "use_running_app": true
   },
   "cdp": {
     "browser": {
@@ -134,7 +139,7 @@ Example demonstration script
 from selenium_profiles.driver import driver as mydriver
 from selenium_profiles.profiles import profiles
 
-from selenium_profiles.scripts.touch_actions import touch_action_chain, mid_location
+from selenium_profiles.scripts.driver_utils import actions
 
 from selenium.webdriver.common.by import By
 
@@ -145,19 +150,20 @@ profile = profiles.Android()
 driver = mydriver.start(profile, uc_driver=False)  # or .Android
 
 # initialise touch_actions
-touch_actions = touch_action_chain(driver)
+actions = actions(driver)
 
 driver.get("https://cps-check.com/de/multi-touch-test")
 
 touch_box = driver.find_element(By.XPATH,'//*[@id="box"]') # Get element
-location = mid_location(touch_box) # get element middle location
+location = actions.mid_location(touch_box) # get element middle location
 
 # setup actions
-touch_actions.pointer_action.move_to_location(location['x'],location['y'])
-touch_actions.pointer_action.pointer_down()
+action = actions.touch_action_chain()
+action.pointer_action.move_to_location(location['x'],location['y'])
+action.pointer_action.pointer_down()
 
 # perform actions
-touch_actions.perform()
+action.perform()
 
 # now you should see a touch indication point on the Website
 
@@ -176,7 +182,8 @@ Please feel free to open an issue or fork!
 
 ## Known Bugs
 
-- [click_as_touch makes automation hung](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/1)
+- [click_as_touch makes automation hung](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/1)$
+- Google-Colab currently doesn't work, but [solution](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/10) already available ==> needs implementation
 
 ## Todo
 
@@ -260,3 +267,4 @@ Inspiration, code snippets, etc.
 * [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
 * [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
+* [porxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)

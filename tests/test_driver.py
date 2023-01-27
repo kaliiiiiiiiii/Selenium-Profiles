@@ -19,6 +19,7 @@ def test_driver(choose: str, headless: bool = True, uc_driver=False):
     useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
     exported_profile = driver.get_profile()
     driver.quit()
+
     print(choose+'\n'+useragent+'\n')
     return {"profile": driver.profile, "exported_profile": exported_profile, "useragent":useragent}
 

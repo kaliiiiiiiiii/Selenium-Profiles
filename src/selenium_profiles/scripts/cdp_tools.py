@@ -16,7 +16,6 @@ class cdp_tools(object):
 
     def set_emulation(self, emulation:bool or None) -> (Dict[str, int or Dict[str, str or int or float]]):
         if emulation:
-            warnings.warn('disabling emulation not supported')
             return self.driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
 
     def clear_emulation(self, enabled:bool or None):
