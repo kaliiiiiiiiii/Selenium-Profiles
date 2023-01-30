@@ -186,12 +186,14 @@ Please feel free to open an issue or fork!
 - Google-Colab currently doesn't work, but [solution](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/10) already available ==> needs implementation
 
 ## Todo
-
+- [ ] extensions
+  - [ ] fix adding extensions https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/15
+  - [ ] add optional argument (temporary_file_path) for proxy_auth in case of permission issues (and error-handling)
 - [x] installer.py script
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
     - [x] Windows
-    - [x] Jupyter (Google-Colab)
-    - [x] Linux (not tested yet!)
+    - [ ] Jupyter (Google-Colab)
+    - [x] Linux-all (not tested yet!)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
