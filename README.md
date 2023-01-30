@@ -182,7 +182,7 @@ Please feel free to open an issue or fork!
 
 ## Known Bugs
 
-- [click_as_touch makes automation hung](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/1)$
+- [click_as_touch makes automation hung](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/1)
 - Google-Colab currently doesn't work, but [solution](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/10) already available ==> needs implementation
 
 ## Todo
