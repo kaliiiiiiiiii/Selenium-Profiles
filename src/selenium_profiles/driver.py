@@ -78,7 +78,7 @@ class driver(object):
 
 
         if not (chrome_binary is None):
-                self.options.binary_location = chrome_binary
+            self.options.binary_location = chrome_binary
 
         # ACTUAL START
 
