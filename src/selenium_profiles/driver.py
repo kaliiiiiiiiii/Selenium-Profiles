@@ -4,6 +4,8 @@ import warnings
 from collections import defaultdict
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+
 from selenium_profiles.scripts import profiles
 from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.cdp_tools import cdp_tools
@@ -28,7 +30,7 @@ class driver(object):
         self.profiles = profiles.profiles()
 
     # noinspection PyUnresolvedReferences
-    def start(self, profile: dict, uc_driver: bool = False):
+    def start(self, profile: dict, uc_driver: bool = False, executable_path:str = None, chrome_binary:str=None):
         self.profile = defaultdict(lambda: None)
         self.profile.update(profile)
 
@@ -65,11 +67,24 @@ class driver(object):
         # options-manager
         self.options = self.profiles.options.set(options=self.options, options_profile=self.profile["options"])
 
+        if executable_path is None: # chromedriver path
+            if uc_driver:
+                executable_path = None
+            else:
+                from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
+                executable_path = DEFAULT_EXECUTABLE_PATH
+
+        service = ChromeService(executable_path=executable_path)
+
+
+        if not (chrome_binary is None):
+            self.options.binary_location = chrome_binary
+
         # ACTUAL START
 
         if uc_driver:
             # noinspection PyUnboundLocalVariable
-            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True)  # start undetected_chromedriver
+            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True, driver_executable_path=executable_path)  # start undetected_chromedriver
         else:
             try:
                 # noinspection PyUnresolvedReferences
@@ -82,9 +97,9 @@ class driver(object):
             self.options = undetected.config_options(self.options, adb=adb)
 
             # Actual start of chrome
-            self.driver = webdriver.Chrome(options=self.options)  # start selenium webdriver
+            self.driver = webdriver.Chrome(options=self.options, service=service)  # start selenium webdriver
 
-        self.driver.get('http://motherfuckingwebsite.com/')  # wait browser to start
+        self.driver.get("http://lumtest.com/myip.json")  # wait browser to start
 
         self.cdp_tools = cdp_tools(self.driver)
 

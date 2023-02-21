@@ -205,7 +205,10 @@ class profiles:
                     self.options = options
                     auth_proxy = defaultdict(lambda: None)
                     # noinspection PyTypeChecker
-                    auth_proxy.update(profile["auth_proxy"])
+                    try:
+                        auth_proxy.update(profile["auth_proxy"])
+                    except TypeError: # profile["auth_proxy"] = None
+                        auth_proxy = None
 
                     self.add_extension(self.options,profile["extension_paths"],incognito=incognito)
                     if auth_proxy:
@@ -217,7 +220,7 @@ class profiles:
                     if incognito:
                         warnings.warn('Incognito might not be compatible with extensions')
                     for extension_path in extension_paths:
-                        if extension_path[-3:] == ".crx" or extension_path[-3:] == ".zip":
+                        if extension_path[-4:] == ".crx" or extension_path[-3:] == ".zip":
                             options.add_extension(extension_path)
                         else:
                             options.add_argument('--load-extension=' + extension_path)
