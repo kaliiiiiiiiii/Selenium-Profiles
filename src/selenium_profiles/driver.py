@@ -81,8 +81,7 @@ class driver(object):
 
         if uc_driver:
             # noinspection PyUnboundLocalVariable
-            uc.install(executable_path=executable_path )
-            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True)  # start undetected_chromedriver
+            self.driver = uc.Chrome(use_subprocess=True, options=self.options, keep_alive=True, driver_executable_path=executable_path)  # start undetected_chromedriver
         else:
             try:
                 # noinspection PyUnresolvedReferences
