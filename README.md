@@ -8,7 +8,7 @@
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.requests.fetch(url, options)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 
-for the latest features, have a look at the `dev`branch
+for the latest features, have a look at the `dev` branch
 
 ### Feel free to test my code!
 
@@ -23,7 +23,7 @@ for the latest features, have a look at the `dev`branch
 
 ### Installing
 
-* [Windows] Install [Chrome-Browser](https://www.google.de/chrome/)
+* Install [Google-Chrome](https://www.google.de/chrome/) (or another chromium-based browser)
 * ```pip install selenium-profiles```
 
 ### Start Driver
@@ -187,14 +187,13 @@ Please feel free to open an issue or fork!
 
 ## Todo
 - [ ] extensions
-  - [ ] fix adding extensions https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/15
+  - [x] fix adding extensions https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/15
   - [ ] add optional argument (temporary_file_path) for proxy_auth in case of permission issues (and error-handling)
 - [x] installer.py script
   - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
-    - [x] Windows
-    - [ ] Jupyter (Google-Colab)
-    - [x] Linux-all (not tested yet!)
-  - [ ] [Chrome-Browser](https://www.google.de/chrome/)
+    - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
+    - [ ] google colab
+  - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
@@ -206,7 +205,7 @@ Please feel free to open an issue or fork!
   - [ ] Tablet
 - [ ] test.py script
   - [x] test_driver.py
-    - [x] useragent, profile_export (no error)
+    - [x] assert useragent, profile_export (no error)
       - [x] Windows
       - [x] Android
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
@@ -214,7 +213,7 @@ Please feel free to open an issue or fork!
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [ ] Linux
-- [ ] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
+- [x] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
 - [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 
 
@@ -225,7 +224,7 @@ Please feel free to open an issue or fork!
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
 * [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) (Selenium-Webdriver should be used directly)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
-* [selenium-wire](https://github.com/wkeeling/selenium-wire) (Changing headers now possible without)
+
 
 ## Authors
 
@@ -270,3 +269,4 @@ Inspiration, code snippets, etc.
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
 * [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
 * [porxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
+* [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager)
