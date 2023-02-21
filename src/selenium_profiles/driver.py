@@ -68,14 +68,17 @@ class driver(object):
         self.options = self.profiles.options.set(options=self.options, options_profile=self.profile["options"])
 
         if executable_path is None: # chromedriver path
-            from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
-            executable_path = DEFAULT_EXECUTABLE_PATH
+            if uc_driver:
+                executable_path = None
+            else:
+                from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
+                executable_path = DEFAULT_EXECUTABLE_PATH
 
         service = ChromeService(executable_path=executable_path)
 
 
         if not (chrome_binary is None):
-            self.options.binary_location = chrome_binary
+                self.options.binary_location = chrome_binary
 
         # ACTUAL START
 
