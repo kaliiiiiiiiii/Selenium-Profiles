@@ -17,10 +17,10 @@ def is_collab():
         return False
 
 
-requirements = ['selenium~=4.6', 'requests~=2.28', 'selenium-interceptor>=1.0.2']
+requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver"]
 
 if is_collab():
-    requirements.append('PyVirtualDisplay')
+    requirements.extend(['PyVirtualDisplay', "webdriver-manager"])
 
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
