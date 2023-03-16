@@ -17,9 +17,7 @@ for the latest features, have a look at the `dev` branch
 ### Dependencies
 
 * [Python >= 3.7](https://www.python.org/downloads/)
-* Windows or [Google-Colab, currently not working](https://colab.research.google.com/) (Linux not tested yet)
 * [Chrome-Browser](https://www.google.de/chrome/) installed
-* selenium-profiles
 
 ### Installing
 
@@ -47,7 +45,7 @@ Don't forget to execute
 ```driver.quit()```
 in the End. Else-wise your temporary folder will get flooded! (Windows)
 
-#### Run with Google-Colab (Currently not working, https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/10)
+#### Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
 
 ## Profiles
@@ -189,10 +187,8 @@ Please feel free to open an issue or fork!
 - [ ] extensions
   - [x] fix adding extensions https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/15
   - [ ] add optional argument (temporary_file_path) for proxy_auth in case of permission issues (and error-handling)
-- [x] installer.py script
-  - [ ] [chromedriver](https://chromedriver.chromium.org/downloads)
-    - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
-    - [ ] google colab
+- [ ] installer.py script
+  - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [ ] js-undetectability
@@ -221,7 +217,7 @@ Please feel free to open an issue or fork!
 - [ ] support for 
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
-  - [ ] Linux
+  - [x] Linux
 - [x] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
 - [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 

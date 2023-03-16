@@ -54,7 +54,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.11',
         'License :: Free for non-commercial use',
         'Natural Language :: English',
-        'Operating System :: Microsoft :: Windows',
+        'Operating System :: OS Independent',
         'Framework :: Jupyter',
         'Topic :: Internet',
         'Topic :: Internet :: WWW/HTTP :: Browsers',
