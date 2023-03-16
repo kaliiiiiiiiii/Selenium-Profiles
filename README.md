@@ -195,6 +195,15 @@ Please feel free to open an issue or fork!
     - [ ] google colab
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
+- [ ] js-undetectability
+  - [ ] `navigator.connection`
+  - [ ] `window.chrome`
+  - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
+  - [ ] `window.Notification` permission
+  - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
+  - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
+    - [ ] maybe move to patch_chromedriver ?
+  - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
@@ -222,7 +231,6 @@ Please feel free to open an issue or fork!
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
 * [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
-* [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) (Selenium-Webdriver should be used directly)
 * [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
 
 
