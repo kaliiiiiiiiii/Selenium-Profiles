@@ -204,8 +204,8 @@ class profiles:
                     profile.update(option_extension_profile)
                     self.options = options
                     auth_proxy = defaultdict(lambda: None)
-                    # noinspection PyTypeChecker
                     try:
+                        # noinspection PyTypeChecker
                         auth_proxy.update(profile["auth_proxy"])
                     except TypeError: # profile["auth_proxy"] = None
                         auth_proxy = None
