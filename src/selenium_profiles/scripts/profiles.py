@@ -120,14 +120,14 @@ class profiles:
                 # ==> without Window
                 # only for desktop
                 if headless:
-                    options.add_argument('--headless=chrome')
+                    options.add_argument('--headless=new')
                 if load_images is False:
                     options.add_argument("--blink-settings=imagesEnabled=false")
                 return options
 
             def incognito(self, options, enabled:bool = True, extension_used:bool or None=False):
                 # use Incognito
-                # woking on Android?
+                # working on Android?
                 if enabled:
                     if not extension_used:
                         options.add_argument("--incognito")
@@ -204,8 +204,8 @@ class profiles:
                     profile.update(option_extension_profile)
                     self.options = options
                     auth_proxy = defaultdict(lambda: None)
-                    # noinspection PyTypeChecker
                     try:
+                        # noinspection PyTypeChecker
                         auth_proxy.update(profile["auth_proxy"])
                     except TypeError: # profile["auth_proxy"] = None
                         auth_proxy = None

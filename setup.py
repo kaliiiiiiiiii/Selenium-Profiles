@@ -17,10 +17,10 @@ def is_collab():
         return False
 
 
-requirements = ['selenium~=4.6', 'requests~=2.28', 'selenium-interceptor>=1.0.2']
+requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver"]
 
 if is_collab():
-    requirements.append('PyVirtualDisplay')
+    requirements.extend(['PyVirtualDisplay', "webdriver-manager", "google-colab-shell"])
 
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
@@ -54,7 +54,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.11',
         'License :: Free for non-commercial use',
         'Natural Language :: English',
-        'Operating System :: Microsoft :: Windows',
+        'Operating System :: OS Independent',
         'Framework :: Jupyter',
         'Topic :: Internet',
         'Topic :: Internet :: WWW/HTTP :: Browsers',

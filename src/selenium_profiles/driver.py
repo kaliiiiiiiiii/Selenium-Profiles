@@ -50,16 +50,7 @@ class driver(object):
                 self.profile.update({"options":{"browser":{"sandbox":False}}})
 
         if uc_driver:
-            try:
-                # noinspection PyUnresolvedReferences
-                import undetected_chromedriver as uc  # undetected chromedriver
-            except ImportError:
-                warnings.warn('undetected-chromedriver not installed. Installing..')
-                import os
-                from selenium_profiles.utils.colab_utils import patch_uc
-                os.system('pip install undetected-chromedriver')
-                patch_uc()
-            # noinspection PyUnboundLocalVariable
+            import undetected_chromedriver as uc  # undetected chromedriver
             self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
         else:
             self.options = webdriver.ChromeOptions()
