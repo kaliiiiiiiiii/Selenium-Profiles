@@ -20,7 +20,7 @@ def is_collab():
 requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver"]
 
 if is_collab():
-    requirements.extend(['PyVirtualDisplay', "webdriver-manager"])
+    requirements.extend(['PyVirtualDisplay', "webdriver-manager", "google-colab-shell"])
 
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
