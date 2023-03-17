@@ -192,8 +192,8 @@ Please feel free to open an issue or fork!
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [ ] js-undetectability
-  - [ ] `navigator.connection`
-  - [ ] `window.chrome` (for headless)
+  - [ ] [`navigator.connection`]
+  - [ ] [`window.chrome`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/chrome-runtime.js) (for headless)
   - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
   - [ ] [`window.Notification`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/navigator-permissions.js) permission (for headless)
   - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
