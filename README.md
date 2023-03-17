@@ -198,7 +198,9 @@ Please feel free to open an issue or fork!
   - [ ] [`window.Notification`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/navigator-permissions.js) permission (for headless)
   - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
   - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
-    - [ ] maybe move to patch_chromedriver like in `uc` ? ?
+    - [ ] patch compiled chromedriver
+    - [ ] `removeScriptToEvaluateOnNewDocument` with id=1 [chromedriver-reference](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/chrome/test/chromedriver/chrome/devtools_client_impl.cc#525)
+    - [x] remove using [javascript](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/js/undetected/get_cdc_props.js)
   - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
   - [ ] with wrong version (is:111, emulate:107)
     - [ ] Navigator.userAgent:
