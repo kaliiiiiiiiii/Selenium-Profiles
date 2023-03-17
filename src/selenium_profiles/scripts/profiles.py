@@ -273,7 +273,7 @@ class profiles:
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
             if useragent:
-                return cdp_tools.set_useragent(useragent=useragent)
+                return cdp_tools.set_useragent(useragent=useragent) #todo makes detected..?
         def set_emulation(self, driver, emulation:dict = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
@@ -344,7 +344,7 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
         cdp_tools.define_prop_on_new_document("navigator", "platform", platform)
 
     if max_touch_points:
-        cdp_tools.define_prop_on_new_document('navigator','maxTouchPoints', max_touch_points)
+        cdp_tools.define_prop_on_new_document('navigator','maxTouchPoints', max_touch_points) #todo: necessary?
 
 
     if do_return:

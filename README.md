@@ -193,13 +193,28 @@ Please feel free to open an issue or fork!
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [ ] js-undetectability
   - [ ] `navigator.connection`
-  - [ ] `window.chrome`
+  - [ ] `window.chrome` (for headless)
   - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
-  - [ ] `window.Notification` permission
+  - [ ] `window.Notification` permission (for headless)
   - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
   - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
-    - [ ] maybe move to patch_chromedriver ?
+    - [ ] maybe move to patch_chromedriver like in `uc` ? ?
   - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
+    - [ ] creep-js
+      - [ ] `navigator.defineproperty()` lie [resource](https://github.com/abrahamjuliot/creepjs/issues/147)
+        - [ ] `navigator.platform`:
+        - [ ] `navigator.maxTouchPoints`:
+      - [ ] navigator missing properties `["createHandwritingRecognizer","devicePosture","ml","queryHandwritingRecognizer","storageBuckets"]`
+      - [ ] mime-types
+        - is: `["application/pdf","text/pdf"]`
+        - should: `["application/pdf","application/x-google-chrome-pdf","application/x-nacl","application/x-pnacl"]`
+      - [ ] `ambient-light-sensor` should be granted by default
+      - [ ] with wrong version (is:111, emulate:107)
+        - [ ] Navigator.userAgent:
+          - does not match worker scope
+          - v107 failed CSS features by 2 versions
+          - v107 failed v109 Window features
+          - v107 failed v109 CSS features
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
