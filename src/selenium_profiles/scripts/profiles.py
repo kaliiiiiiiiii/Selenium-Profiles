@@ -334,9 +334,8 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
         platform = None
 
 
-    if platform:
-        cdp_tools.define_prop_on_new_document("navigator", "platform", platform) #todo: will be different in workers:/
-
+    #if platform:
+    #    cdp_tools.define_prop_on_new_document("navigator", "platform", platform) # will be different in workers:/
 
     if do_return:
         return cdp_tools.evaluate_on_document_identifiers

@@ -191,7 +191,7 @@ Please feel free to open an issue or fork!
   - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
-- [ ] js-undetectability
+- [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] [`window.chrome`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/chrome-runtime.js) (for headless)
   - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
@@ -200,15 +200,12 @@ Please feel free to open an issue or fork!
   - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
     - [ ] maybe move to patch_chromedriver like in `uc` ? ?
   - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
-    - [ ] creep-js
-      - [ ] `Object.defineProperty(...)` tampering detected [resource](https://github.com/abrahamjuliot/creepjs/issues/147)
-        - [ ] `navigator.platform`
-      - [ ] with wrong version (is:111, emulate:107)
-        - [ ] Navigator.userAgent:
-          - does not match worker scope
-          - v107 failed CSS features by 2 versions
-          - v107 failed v109 Window features
-          - v107 failed v109 CSS features
+  - [ ] with wrong version (is:111, emulate:107)
+    - [ ] Navigator.userAgent:
+      - does not match worker scope
+      - v107 failed CSS features by 2 versions
+      - v107 failed v109 Window features
+      - v107 failed v109 CSS features
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
