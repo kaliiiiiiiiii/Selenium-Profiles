@@ -202,9 +202,13 @@ Please feel free to open an issue or fork!
   - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
     - [ ] creep-js
       - [ ] `navigator.defineproperty()` lie [resource](https://github.com/abrahamjuliot/creepjs/issues/147)
-        - [ ] `navigator.platform`:
-        - [ ] `navigator.maxTouchPoints`:
-      - [ ] navigator missing properties `["createHandwritingRecognizer","devicePosture","ml","queryHandwritingRecognizer","storageBuckets"]`
+        - [ ] `navigator.platform`
+        - [ ] `navigator.maxTouchPoints`
+      - [ ] navigator missing properties 
+        - [createHandwritingRecognizer, queryHandwritingRecognizer](https://wicg.github.io/handwriting-recognition)
+        - [devicePosture](https://www.w3.org/TR/device-posture/#the-deviceposture-interface)
+        - [ml](https://www.w3.org/TR/webnn/#api-navigator-ml)
+        - [storageBuckets](https://wicg.github.io/storage-buckets/explainer.html#setting-up-buckets)
       - [ ] mime-types
         - is: `["application/pdf","text/pdf"]`
         - should: `["application/pdf","application/x-google-chrome-pdf","application/x-nacl","application/x-pnacl"]`
