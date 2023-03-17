@@ -209,7 +209,7 @@ Please feel free to open an issue or fork!
         - [devicePosture](https://www.w3.org/TR/device-posture/#the-deviceposture-interface)
         - [ml](https://www.w3.org/TR/webnn/#api-navigator-ml)
         - [storageBuckets](https://wicg.github.io/storage-buckets/explainer.html#setting-up-buckets)
-      - [ ] mime-types
+      - [ ] [mime-types](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/media-codecs.js)
         - is: `["application/pdf","text/pdf"]`
         - should: `["application/pdf","application/x-google-chrome-pdf","application/x-nacl","application/x-pnacl"]`
       - [ ] `ambient-light-sensor` should be granted by default
