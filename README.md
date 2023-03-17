@@ -201,18 +201,8 @@ Please feel free to open an issue or fork!
     - [ ] maybe move to patch_chromedriver like in `uc` ? ?
   - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
     - [ ] creep-js
-      - [ ] `navigator.defineproperty()` lie [resource](https://github.com/abrahamjuliot/creepjs/issues/147)
+      - [ ] `Object.defineProperty(...)` tampering detected [resource](https://github.com/abrahamjuliot/creepjs/issues/147)
         - [ ] `navigator.platform`
-        - [ ] `navigator.maxTouchPoints`
-      - [ ] navigator missing properties 
-        - [createHandwritingRecognizer, queryHandwritingRecognizer](https://wicg.github.io/handwriting-recognition)
-        - [devicePosture](https://www.w3.org/TR/device-posture/#the-deviceposture-interface)
-        - [ml](https://www.w3.org/TR/webnn/#api-navigator-ml)
-        - [storageBuckets](https://wicg.github.io/storage-buckets/explainer.html#setting-up-buckets)
-      - [ ] [mime-types](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/media-codecs.js)
-        - is: `["application/pdf","text/pdf"]`
-        - should: `["application/pdf","application/x-google-chrome-pdf","application/x-nacl","application/x-pnacl"]`
-      - [ ] `ambient-light-sensor` should be granted by default
       - [ ] with wrong version (is:111, emulate:107)
         - [ ] Navigator.userAgent:
           - does not match worker scope

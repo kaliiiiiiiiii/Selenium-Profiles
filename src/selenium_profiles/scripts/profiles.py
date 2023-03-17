@@ -333,18 +333,9 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
     except :
         platform = None
 
-    # noinspection PyBroadException
-    try:
-        max_touch_points = profile["cdp"]["maxtouchpoints"]
-    except:
-        max_touch_points = None
-
 
     if platform:
-        cdp_tools.define_prop_on_new_document("navigator", "platform", platform)
-
-    if max_touch_points:
-        cdp_tools.define_prop_on_new_document('navigator','maxTouchPoints', max_touch_points) #todo: necessary?
+        cdp_tools.define_prop_on_new_document("navigator", "platform", platform) #todo: will be different in workers:/
 
 
     if do_return:
