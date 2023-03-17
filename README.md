@@ -195,7 +195,7 @@ Please feel free to open an issue or fork!
   - [ ] `navigator.connection`
   - [ ] `window.chrome` (for headless)
   - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
-  - [ ] `window.Notification` permission (for headless)
+  - [ ] [`window.Notification`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/navigator-permissions.js) permission (for headless)
   - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
   - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
     - [ ] maybe move to patch_chromedriver like in `uc` ? ?
