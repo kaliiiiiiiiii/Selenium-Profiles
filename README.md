@@ -192,9 +192,10 @@ Please feel free to open an issue or fork!
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
+  - [ ] does not match worker scope (Emulation)
+    - `Navigator.userAgent`
+    - `Navigator.platform`
   - [ ] with wrong version (is:111, emulate:107)
-    - [ ] Navigator.userAgent:
-      - does not match worker scope
       - v107 failed CSS features by 2 versions
       - v107 failed v109 Window features
       - v107 failed v109 CSS features
