@@ -46,7 +46,7 @@ driver.quit()  # Execute on the End!
 
 Don't forget to execute
 ```driver.quit()```
-in the End. Else-wise your temporary folder will get flooded! (Windows)
+in the End. Else-wise your temporary folder will get flooded!
 
 #### Run with Google-Colab
 [Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
@@ -192,6 +192,8 @@ Please feel free to open an issue or fork!
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
+  - [ ] fonts don't match platform 
+    - change fonts using extension [font-settings](https://developer.chrome.com/docs/extensions/reference/fontSettings)
   - [ ] does not match worker scope (Emulation)
     - `Navigator.userAgent`
     - `Navigator.platform`
