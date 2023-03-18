@@ -210,7 +210,13 @@ Please feel free to open an issue or fork!
   - [x] test_driver.py
     - [x] assert useragent, profile_export (no error)
       - [x] Windows
+        - [x] useragent-data
+        - [ ] undetected
+          - [ ] headless
       - [x] Android
+       - [x] useragent-data
+       - [ ] undetected
+         - [ ] headless
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
 - [ ] support for 
   - [x] Windows
