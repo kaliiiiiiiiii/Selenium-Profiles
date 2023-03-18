@@ -4,9 +4,10 @@ def make_extension(host:str, port:int, username:str or None = None, password:str
     """
     :param host: ip or url | str
     :param port: int
-    :param username: optional
+    :param username: str, optional
     :param password: optional
     :param scheme: "http" | "https" | "quic" | "socks4" | "socks5"
+    :param temp_dir: str, optional
 
     usage:
 
@@ -16,7 +17,7 @@ def make_extension(host:str, port:int, username:str or None = None, password:str
     password = "my_pass"
     scheme="http"
 
-    auth_proxy = {"host":host,"port":port,"username":user, "password":password, "scheme":scheme}
+    auth_proxy = {"host":host,"port":port,"username":user, "password":password, "scheme":scheme, "temp_dir": "C:/Downloads/proxy_extension"}
 
     profile["options"]["extensions"] = {"auth_proxy":auth_proxy}
     """
