@@ -2,11 +2,12 @@
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
-* **Undetected** by Google, Cloudflare, ..
+* **Undetected** by Google, Cloudflare, creep-js ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
 * [Touch Actions](#Touch_actions)
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.requests.fetch(url, options)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
+* headless unofficially supported
 
 for the latest features, have a look at the `dev` branch
 
@@ -32,7 +33,9 @@ from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
 
 mydriver = mydriver()
-driver = mydriver.start(profiles.Windows(), uc_driver=False)  # or .Android
+profile = profiles.Windows()
+# profile["options"]["browser"]["headless"] = True
+driver = mydriver.start(profile, uc_driver=False)  # or .Android
 
 # get url
 driver.get('https://browserleaks.com/client-hints')  # test client hints
@@ -67,7 +70,7 @@ Example Profile:
     },
       "extensions": {
           "extension_paths": [],
-          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"}
+          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password", "temp_dir": "C:/Downloads/proxy_extension"}
         },
       "option_args": ["--my-arg1", "..."],
       "capabilities": [],
@@ -184,24 +187,11 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
-- [ ] extensions
-  - [x] fix adding extensions https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/15
-  - [ ] add optional argument (temporary_file_path) for proxy_auth in case of permission issues (and error-handling)
 - [ ] installer.py script
   - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
-- [ ] implement headless javascript [headless](https://github.com/microlinkhq/browserless/tree/master/packages/goto/src/evasions)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
-  - [ ] [`window.chrome`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/chrome-runtime.js) (for headless)
-  - [x] [`navigator.maxTouchPoints`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/80fb6d00f246f1e6f72145ac04e04b1854e2dbbf/src/selenium_profiles/scripts/profiles.py#L256)
-  - [ ] [`window.Notification`](https://github.com/microlinkhq/browserless/blob/master/packages/goto/src/evasions/navigator-permissions.js) permission (for headless)
-  - [x] [`navigator.webdriver`](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L13)
-  - [x] [cdc_properties](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L22)
-    - [ ] patch compiled chromedriver
-    - [ ] `removeScriptToEvaluateOnNewDocument` with id=1 [chromedriver-reference](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/chrome/test/chromedriver/chrome/devtools_client_impl.cc#525)
-    - [x] remove using [javascript](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/js/undetected/get_cdc_props.js)
-  - [x] [isUserActive, isScreenUnlocked](https://github.com/kaliiiiiiiiii/Selenium-Profiles/blob/master/src/selenium_profiles/scripts/undetected.py#L16)
   - [ ] with wrong version (is:111, emulate:107)
     - [ ] Navigator.userAgent:
       - does not match worker scope
@@ -226,7 +216,6 @@ Please feel free to open an issue or fork!
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [x] Linux
-- [x] support [proxy with credentials](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699978)
 - [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 
 
