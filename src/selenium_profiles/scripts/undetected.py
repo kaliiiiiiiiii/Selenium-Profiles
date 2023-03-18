@@ -19,7 +19,9 @@ def exec_cdp(driver, cdp_tools=None):
         return driver.execute_script(read('js/undetected/get_cdc_props.js'))
 
     if get_cdc_props():
-        cdp_tools.evaluate_on_new_document(read('js/undetected/remove_cdc_props.js'))
+        # remove cdc-props:)
+        # cdp_tools.evaluate_on_new_document(read('js/undetected/remove_cdc_props.js'))
+        cdp_tools.remove_evaluate_on_document(1)
 
         if do_return:
             return cdp_tools.evaluate_on_document_identifiers

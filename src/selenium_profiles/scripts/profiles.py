@@ -213,7 +213,7 @@ class profiles:
                     self.add_extension(self.options,profile["extension_paths"],incognito=incognito)
                     if auth_proxy:
                         # noinspection PyUnresolvedReferences,PyTypeChecker
-                        self.add_auth_proxy(auth_proxy["host"], auth_proxy["port"], auth_proxy["username"], auth_proxy["password"], scheme=auth_proxy["scheme"])
+                        self.add_auth_proxy(host=auth_proxy["host"], port=auth_proxy["port"], username=auth_proxy["username"], password=auth_proxy["password"], scheme=auth_proxy["scheme"], temp_dir=auth_proxy["temp_dir"])
                 return self.options
             def add_extension(self, options, extension_paths:None or list, incognito:bool = None):
                 if extension_paths:
@@ -226,13 +226,13 @@ class profiles:
                             options.add_argument('--load-extension=' + extension_path)
                 return options
 
-            def add_auth_proxy(self,host:str, port:int, username:str or None, password:str or None, scheme:str or None= "http"):
+            def add_auth_proxy(self,host:str, port:int, username:str or None, password:str or None, scheme:str or None= "http", temp_dir:str = None):
                 from selenium_profiles.scripts.proxy_extension import make_extension
 
                 if not scheme:
                     scheme = "http"
 
-                path = make_extension(host= host, port=port, username= str(username), password= str(password), scheme=scheme)
+                path = make_extension(host= host, port=port, username= str(username), password= str(password), scheme=scheme, temp_dir=temp_dir)
                 self.add_extension(extension_paths=[path], options=self.options)
 
     # noinspection PyTypeChecker
@@ -273,7 +273,7 @@ class profiles:
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
             if useragent:
-                return cdp_tools.set_useragent(useragent=useragent)
+                return cdp_tools.set_useragent(useragent=useragent) #todo makes detected..?
         def set_emulation(self, driver, emulation:dict = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
@@ -333,19 +333,9 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
     except :
         platform = None
 
-    # noinspection PyBroadException
-    try:
-        max_touch_points = profile["cdp"]["maxtouchpoints"]
-    except:
-        max_touch_points = None
 
-
-    if platform:
-        cdp_tools.define_prop_on_new_document("navigator", "platform", platform)
-
-    if max_touch_points:
-        cdp_tools.define_prop_on_new_document('navigator','maxTouchPoints', max_touch_points)
-
+    #if platform:
+    #    cdp_tools.define_prop_on_new_document("navigator", "platform", platform) # will be different in workers:/
 
     if do_return:
         return cdp_tools.evaluate_on_document_identifiers

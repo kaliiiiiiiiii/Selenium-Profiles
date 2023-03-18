@@ -42,7 +42,7 @@
       "touch": true,
       "maxtouchpoints": 10,
       "emulation": {"mobile":false,"width": 1024, "height": 648, "deviceScaleFactor": 1,
-        "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
+        "screenOrientation": {"type": "landscapePrimary", "angle": 0}},
       "useragent": {
                 "platform": "Win32",
                 "acceptLanguage":"en-US",

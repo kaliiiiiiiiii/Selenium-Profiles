@@ -94,6 +94,14 @@ class driver(object):
 
         self.cdp_tools = cdp_tools(self.driver)
 
+        self.cdp_tools.evaluate_on_document_identifiers.update({1: # we know that it is there:)
+                """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
+                window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
+                window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
+                window.cdc_adoQpoasnfa76pfcZLmcfl_Proxy = window.Proxy;
+                window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
+                }) ();"""})
+
         self.cdp_tools.delete_all_cookies()  # delete website cookies
 
         # execute cdp based on profile
