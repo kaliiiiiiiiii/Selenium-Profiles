@@ -8,6 +8,8 @@
     "cdp": {
       "touch": true,
       "maxtouchpoints": 1,
+      "cores": 8,
+      "patch_version": true,
       "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 4,
         "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
       "useragent": {
@@ -41,6 +43,8 @@
     "cdp": {
       "touch": true,
       "maxtouchpoints": 10,
+      "cores": 8,
+      "patch_version": true,
       "emulation": {"mobile":false,"width": 1024, "height": 648, "deviceScaleFactor": 1,
         "screenOrientation": {"type": "landscapePrimary", "angle": 0}},
       "useragent": {
