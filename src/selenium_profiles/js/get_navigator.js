@@ -40,7 +40,7 @@ function build_navigator() {
             "touch": (('ontouchstart' in window) || (maxtouchpoints > 0)),
             "maxtouchpoints": maxtouchpoints,
             "emulation": my_screen,
-            "cores":a("navigator.hardwareConcurrency")
+            "cores":a("navigator.hardwareConcurrency"),
             "useragent": {
                   "platform": a('navigator.platform'),
                   "acceptLanguage":a('navigator.language') || a('navigator.userLanguage'),
