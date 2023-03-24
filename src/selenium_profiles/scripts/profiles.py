@@ -11,7 +11,6 @@ class profiles:
     class options: # webdriver.Chrome or uc.Chrome options
         def __init__(self):
             self.options = None
-            self.device = self.device()
             self.browser = self.browser()
             self.extensions = self.extensions()
 
@@ -32,7 +31,6 @@ class profiles:
 
                 extensions_used = profile["extensions"]
 
-                self.device.set(self.options, option_device_profile=profile["device"])
                 self.browser.set(self.options, option_browser_profile=profile["browser"],
                                  extensions_used=extensions_used, adb=profile["adb"])
                 self.extensions.set(self.options, option_extension_profile=profile["extensions"], incognito=incognito)
@@ -41,39 +39,7 @@ class profiles:
                 # noinspection PyTypeChecker
                 self.adb_remote(self.options, enabled=profile["adb"], package=profile["adb_package"],
                                 use_running_app=profile["use_running_app"])
-
             return self.options
-
-        class device:
-            def __init__(self):
-                self.options = None
-
-            # noinspection PyTypeChecker
-            def set(self,options, option_device_profile:None or dict):
-                if option_device_profile:
-                    # noinspection PyShadowingNames
-                    profile = defaultdict(lambda: None)
-                    profile.update(option_device_profile)
-                    self.options = options
-
-                    self.useragent(self.options,useragent=profile["useragent"])
-                    self.mobile(self.options,enabled=profile["mobile"])
-                return self.options
-            def useragent(self, options, useragent:str=None):
-                # gets overwritten by cdp, if cdp used
-                if useragent:
-                    options.add_argument('--user-agent=' + useragent)
-
-                return options
-
-            def mobile(self, options, enabled:bool or None = False):
-                # not sure, if it changes anything?
-                if enabled:
-                    options.add_argument('--enable-features=enable-nacl')
-                    options.add_argument('--arc-availability=officially-supported')
-                    options.add_argument('--force-device-ownership')
-                    options.add_argument('--use-mobile-user-agent')
-                return options
 
 
         class browser:
@@ -96,7 +62,6 @@ class profiles:
                     self.touch(self.options,enabled=profile["touch"])
                     self.app(self.options, enabled=profile["app"])
                     self.gpu(self.options, enabled=profile["gpu"], adb=adb)
-                    self.mobile_view(self.options, enabled=profile["mobile_view"])
                     self.proxy(self.options, proxy=profile["proxy"], method=profile["proxy_method"])
                 return self.options
 
@@ -159,15 +124,9 @@ class profiles:
                         warnings.warn('Disabling gpu not supported with android.')
                 return options
 
-            def mobile_view(self, options, enabled:bool=False):
-                if enabled:
-                    options.add_argument('--enable-touchview')
-                    warnings.warn('--enable-touchview doesn\t seem to change anything')
-                return options
-
             def proxy(self,options, proxy:str =None, method:str = 'socks5://'):
                 if not method:
-                    method = "'socks5://'"
+                    method = "socks5://"
                 if proxy:
                     options.add_argument('--proxy-server='+method + proxy)
                     print('proxy= "' + method+proxy + '"')
@@ -220,7 +179,7 @@ class profiles:
                     if incognito:
                         warnings.warn('Incognito might not be compatible with extensions')
                     for extension_path in extension_paths:
-                        if extension_path[-4:] == ".crx" or extension_path[-3:] == ".zip":
+                        if extension_path[-4:] == ".crx" or extension_path[-4:] == ".zip":
                             options.add_extension(extension_path)
                         else:
                             options.add_argument('--load-extension=' + extension_path)
@@ -255,7 +214,7 @@ class profiles:
                 browser = self.browser.set(driver, profile["browser"], mobile=mobile)
                 touchpoints = self.set_touchpoints(driver, enabled=profile["touch"], maxpoints=profile["maxtouchpoints"])
                 emulation = self.set_emulation(driver, profile["emulation"])
-                useragent = self.set_useragent(driver, profile["useragent"])
+                useragent = self.set_useragent(driver, profile["useragent"],patch_version=profile["patch_version"])
 
                 cdp_args = profile["cdp_args"]
                 cdp_args_return = []
@@ -269,11 +228,61 @@ class profiles:
                 return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,
                         "cdp_args": cdp_args_return}
 
-        def set_useragent(self, driver, useragent:dict = None):
+        def set_useragent(self, driver, useragent:dict = None, patch_version:str or bool = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
+            useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver=driver)
             if useragent:
-                return cdp_tools.set_useragent(useragent=useragent) #todo makes detected..?
+                return cdp_tools.set_useragent(useragent=useragent)
+
+        def patch_version(self,useragent_profile: dict, version: str or True = True, driver=None):
+            profile = defaultdict(lambda:None)
+            profile.update(useragent_profile)
+
+            if version is True:
+                if driver:
+                    useragent = driver.execute_script("return navigator.userAgent")
+                    import re
+                    version = re.findall("(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+", useragent)
+                    if len(version) != 1:
+                        raise LookupError("Couldn't find Chrome-version in: "+useragent)
+                    else:
+                        version = version[0]
+                else:
+                    raise ValueError("driver needs to be specified to automatically get the Version")
+
+
+            if profile["userAgent"]:
+                import re
+                profile["userAgent"] = re.sub("(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+",
+                                              version.split(".")[0] + ".0.0.0", profile["userAgent"])
+
+            if profile["userAgentMetadata"]:
+                metadata = defaultdict(lambda:None)
+                metadata.update(profile["userAgentMetadata"])
+
+                if metadata["brands"]:
+                    brands = []
+                    for brand in metadata["brands"]:
+                        brand["version"] = version.split(".")[0]
+                        brands.append(brand)
+                    metadata["brands"] = brands
+
+                if metadata["fullVersionList"]:
+                    version_list = []
+                    for i in metadata["fullVersionList"]:
+                        i["version"] = version
+                        version_list.append(i)
+                    metadata["fullVersionList"] = version_list
+
+                if metadata["fullVersion"]:
+                    metadata["fullVersion"] = version
+
+                profile["userAgentMetadata"] = metadata
+
+            return profile
+
+
         def set_emulation(self, driver, emulation:dict = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
@@ -328,10 +337,10 @@ def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
         do_return = True
 
     # noinspection PyBroadException
-    try:
-        platform = profile["cdp"]["useragent"]["platform"]
-    except :
-        platform = None
+    # try:
+    #     platform = profile["cdp"]["useragent"]["platform"]
+    # except :
+    #    platform = None
 
 
     #if platform:

@@ -54,41 +54,44 @@ in the End. Else-wise your temporary folder will get flooded!
 ## Profiles
 
 Example Profile: 
-```json
+```python
+profile = \
 {
   "options": {
     "browser": {
-      "sandbox": true,
+      "sandbox": True,
       "window_size": {"x":1024,"y":648},
-      "headless": false,
-      "load_images": true,
-      "incognito": true,
-      "app": false,
-      "gpu": false,
-      "proxy": null,
-      "proxy_method": null
+      "headless": False,
+      "load_images": True,
+      "incognito": True,
+      "app": False,
+      "touch": True, # 
+      "gpu": False,
+      "proxy": "example-proxy.com:9000", # note: auth not supported
+      "proxy_method": "http://" # optional, default: "socks5://"
     },
       "extensions": {
-          "extension_paths": [],
+          "extension_paths": ["path/to/extension_1"], # directory, .crx or .zip
           "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password", "temp_dir": "C:/Downloads/proxy_extension"}
         },
       "option_args": ["--my-arg1", "..."],
       "capabilities": [],
-      "adb": false,
+      "adb": False,
       "adb_package": "com.android.chrome",
-      "use_running_app": true
+      "use_running_app": True
   },
   "cdp": {
     "browser": {
-      "pointer_as_touch": false,
-      "darkmode": false,
-      "mobile": true
+      "pointer_as_touch": False,
+      "darkmode": False,
+      "mobile": True
     },
-    "touch": true,
+    "touch": True,
     "maxtouchpoints": 5,
     "cdp_args": [],
-    "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 10,
+    "emulation": {"mobile":True,"width": 384, "height": 700, "deviceScaleFactor": 10,
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},
+    "patch_version": True, # to patch automatically, or use "111.0.5563.111"
     "useragent": {
                 "platform": "Linux aarch64",
                 "acceptLanguage":"en-US",
@@ -104,10 +107,11 @@ Example Profile:
                     "platformVersion": "11.0.0",
                     "architecture": "",
                     "model": "HD1913",
-                    "mobile": true,
+                    "mobile": True,
                     "bitness": "",
-                    "wow64": false}
-    }}
+                    "wow64": False}
+    }
+  }
 }
 ```
 
@@ -192,12 +196,11 @@ Please feel free to open an issue or fork!
   - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
-  - [ ] fonts don't match platform 
-    - change fonts using extension [font-settings](https://developer.chrome.com/docs/extensions/reference/fontSettings)
+  - [ ] fonts don't match platform
   - [ ] does not match worker scope (Emulation)
     - `Navigator.userAgent`
     - `Navigator.platform`
-  - [ ] with wrong version (is:111, emulate:107)
+  - [x] with wrong version (is:111, emulate:107) fixed with "patch_version"
       - v107 failed CSS features by 2 versions
       - v107 failed v109 Window features
       - v107 failed v109 CSS features
