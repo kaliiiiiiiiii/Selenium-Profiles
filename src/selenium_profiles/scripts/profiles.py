@@ -252,33 +252,34 @@ class profiles:
                     raise ValueError("driver needs to be specified to automatically get the Version")
 
 
-            if profile["userAgent"]:
-                import re
-                profile["userAgent"] = re.sub("(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+",
-                                              version.split(".")[0] + ".0.0.0", profile["userAgent"])
+            if type(version) == str:
+                if profile["userAgent"]:
+                    import re
+                    profile["userAgent"] = re.sub("(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+",
+                                                  version.split(".")[0] + ".0.0.0", profile["userAgent"])
 
-            if profile["userAgentMetadata"]:
-                metadata = defaultdict(lambda:None)
-                metadata.update(profile["userAgentMetadata"])
+                if profile["userAgentMetadata"]:
+                    metadata = defaultdict(lambda: None)
+                    metadata.update(profile["userAgentMetadata"])
 
-                if metadata["brands"]:
-                    brands = []
-                    for brand in metadata["brands"]:
-                        brand["version"] = version.split(".")[0]
-                        brands.append(brand)
-                    metadata["brands"] = brands
+                    if metadata["brands"]:
+                        brands = []
+                        for brand in metadata["brands"]:
+                            brand["version"] = version.split(".")[0]
+                            brands.append(brand)
+                        metadata["brands"] = brands
 
-                if metadata["fullVersionList"]:
-                    version_list = []
-                    for i in metadata["fullVersionList"]:
-                        i["version"] = version
-                        version_list.append(i)
-                    metadata["fullVersionList"] = version_list
+                    if metadata["fullVersionList"]:
+                        version_list = []
+                        for i in metadata["fullVersionList"]:
+                            i["version"] = version
+                            version_list.append(i)
+                        metadata["fullVersionList"] = version_list
 
-                if metadata["fullVersion"]:
-                    metadata["fullVersion"] = version
+                    if metadata["fullVersion"]:
+                        metadata["fullVersion"] = version
 
-                profile["userAgentMetadata"] = metadata
+                    profile["userAgentMetadata"] = metadata
 
             return profile
 
@@ -288,6 +289,12 @@ class profiles:
             cdp_tools = cdp_tools(driver)
 
             if emulation:
+
+                if not "screenWidth" in emulation.keys():
+                    emulation.update({"screenWidth":emulation["width"]})
+                if not "screenHeight" in emulation.keys():
+                    emulation.update({"screenHeight":emulation["height"]})
+
                 return cdp_tools.set_emulation(emulation=emulation)
 
         def set_touchpoints(self, driver, enabled:bool=True, maxpoints:int=10):
