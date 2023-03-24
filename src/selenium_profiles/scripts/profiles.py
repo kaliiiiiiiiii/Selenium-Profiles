@@ -215,6 +215,7 @@ class profiles:
                 touchpoints = self.set_touchpoints(driver, enabled=profile["touch"], maxpoints=profile["maxtouchpoints"])
                 emulation = self.set_emulation(driver, profile["emulation"])
                 useragent = self.set_useragent(driver, profile["useragent"],patch_version=profile["patch_version"])
+                cores = self.set_cores(driver, cores_count=profile["cores"])
 
                 cdp_args = profile["cdp_args"]
                 cdp_args_return = []
@@ -225,7 +226,7 @@ class profiles:
                         for args in cdp_args:
                             cdp_args_return.append(driver.execute_cdp_cmd(args[0], args[1]))
 
-                return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,
+                return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,"cores":cores,
                         "cdp_args": cdp_args_return}
 
         def set_useragent(self, driver, useragent:dict = None, patch_version:str or bool = None):
@@ -306,6 +307,12 @@ class profiles:
             cdp_tools = cdp_tools(driver)
 
             return cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
+
+        def set_cores(self, driver, cores_count:int or None = 8):
+            from selenium_profiles.scripts.cdp_tools import cdp_tools
+            cdp_tools = cdp_tools(driver)
+            if cores_count:
+                return cdp_tools.set_cores(cores_count=cores_count)
 
         # noinspection PyTypeChecker
         class browser:

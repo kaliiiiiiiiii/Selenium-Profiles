@@ -88,6 +88,7 @@ profile = \
     },
     "touch": True,
     "maxtouchpoints": 5,
+    "cores":8,
     "cdp_args": [],
     "emulation": {"mobile":True,"width": 384, "height": 700, "deviceScaleFactor": 10,
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},

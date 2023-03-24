@@ -23,7 +23,12 @@ class cdp_tools(object):
             self.driver.execute_cdp_cmd("Emulation.clearDeviceMetricsOverride", {})
 
     def set_useragent(self, useragent) -> Dict[str, str or Dict[str, str or bool or List[Dict[str, str]]]] or None:
-        return self.driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
+        if useragent:
+            return self.driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
+
+    def set_cores(self, cores_count:int or None=8):
+        if cores_count:
+            return self.driver.execute_cdp_cmd("Emulation.setHardwareConcurrencyOverride", {"hardwareConcurrency":cores_count})
 
     # BROWSER
 
