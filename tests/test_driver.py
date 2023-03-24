@@ -13,6 +13,7 @@ def test_driver(choose: str, headless: bool = True, uc_driver=False):
     # noinspection PyGlobalUndefined
     global mydriver
     testprofile = profile[choose]
+    testprofile["cdp"]["patch_version"] = None # don't change version :)
     testprofile["options"]["browser"]["headless"] = headless
     driver = mydriver.start(testprofile, uc_driver=uc_driver)
     driver.get('https://browserleaks.com/client-hints')

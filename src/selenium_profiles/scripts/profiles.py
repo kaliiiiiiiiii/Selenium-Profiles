@@ -266,14 +266,16 @@ class profiles:
                     if metadata["brands"]:
                         brands = []
                         for brand in metadata["brands"]:
-                            brand["version"] = version.split(".")[0]
+                            if not (brand["brand"] == "Not=A?Brand" or brand["brand"] == "Not)A;Brand"):
+                                brand["version"] = version.split(".")[0]
                             brands.append(brand)
                         metadata["brands"] = brands
 
                     if metadata["fullVersionList"]:
                         version_list = []
                         for i in metadata["fullVersionList"]:
-                            i["version"] = version
+                            if not (i["brand"] == "Not=A?Brand" or i["brand"] == "Not)A;Brand"):
+                                i["version"] = version
                             version_list.append(i)
                         metadata["fullVersionList"] = version_list
 
