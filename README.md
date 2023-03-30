@@ -1,5 +1,7 @@
 # Selenium-Profiles
 
+[![Downloads](https://static.pepy.tech/badge/selenium-profiles)](https://pepy.tech/project/selenium-profiles) ![](https://img.shields.io/pypi/v/selenium-profiles.svg?color=3399EE)
+
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, creep-js ..
