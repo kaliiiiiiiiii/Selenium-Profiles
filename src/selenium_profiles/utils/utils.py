@@ -29,7 +29,7 @@ def read_json(filename: str = 'example.json', encoding: str = "utf-8",sel_root=T
         path = sel_profiles_path() + filename
     else:
         path = filename
-    with open(sel_profiles_path() + filename, 'r', encoding=encoding) as f:
+    with open(path, 'r', encoding=encoding) as f:
         return json.load(f)
 
 
