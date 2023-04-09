@@ -237,9 +237,7 @@ Please feel free to open an issue or fork!
 ## Deprecated
 
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
-* [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
-* [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
 
 
 ## Authors

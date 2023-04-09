@@ -31,37 +31,79 @@ class actions(object):
         return {'x': element.location_once_scrolled_into_view['x'] + (element.rect["width"] / 2),
                 'y': element.location_once_scrolled_into_view['y'] + (element.rect["height"] / 2)}
 
-class requests(object):
+class requests:
     def __init__(self, driver):
         self.driver = driver
-    def fetch(self, url: str, options: dict or None = None):
+        self.methods = ["GET","HEAD" "POST", "PUT", "DELETE","OPTIONS"] # TRACE, CONNECT exluded here
+        self.supported_credentials = ["omit", "same-origin", "include"]
+        self.modes = ["cors", "no-cors", "same-origin"]
+        self.cache_values = ["default", "no-store", "reload", "no-cache", "force-cache", "only-if-cached"]
+        self.redirect_values = ["follow", "error"] # "manual" excluded here
+        self.referrer_policies = ["no-referrer", "no-referrer-when-downgrade", "same-origin", "origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin", "unsafe-url"]
+        self.priorities = ["high", "low", "auto"]
+    def fetch(self, url: str,
+              method="GET",
+              headers:dict=None,
+              body:str or object=None,
+              mode:str=None,
+              credentials:str="same-origin",
+              cache:str="no-cache",
+              redirect="follow",
+              referrer=None,
+              referer_policy = None,
+              priority="high"
+                    ):
         import json
-        if options is None:
-            options = {'headers': {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                'accept-language': 'de,de-DE;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6,fr;q=0.5,de-CH;q=0.4',
-                'cache-control': 'no-cache',
-                'pragma': 'no-cache',
-                'sec-ch-ua': "'Not_A Brand';v='99', 'Microsoft Edge';v='109', 'Chromium';v='109'",
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': "'Windows'",
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'none',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                "cookie": ''
-            },
-                'referrerPolicy': 'strict-origin-when-cross-origin',
-                'body': None,
-                'method': 'GET'
-            }
+        from selenium_profiles.utils.utils import read
+        import codecs
+
+        options = {}
+        if method:
+            self.check_cmd(method, self.methods)
+            options["method"] = method
+        if headers:
+            options["headers"] = headers
+        if body:
+            if method in ["GET", "HEAD"]:
+                raise ValueError("body can't be used with GET or HEAD method")
+            options["body"] = body
+        if mode:
+            self.check_cmd(mode, self.modes)
+            options["mode"] = mode
+        if credentials:
+            self.check_cmd(credentials, self.supported_credentials)
+            options["credentials"] = credentials
+        if cache:
+            self.check_cmd(cache, self.cache_values)
+            options["cache"] = cache
+        if redirect:
+            self.check_cmd(redirect, self.redirect_values)
+            options["redirect"] = redirect
+        if referrer:
+            options["referrer"] = referrer
+        if referer_policy:
+            self.check_cmd(referer_policy,self.referrer_policies)
+            options['referrerPolicy'] = referer_policy
+        if priority:
+            options["priority"] = priority
+
+
+
         options = json.dumps(options)
-        js = """
-            var done = arguments[0];
-            fetch('%s', %s,).then(response=>response.json())
-                            .then(data=>{ done(data) })
-                        """ % (url, options)
+        url = json.dumps(url)
+        js = read("js/fetch.js", sel_root=True) % (url, options)
+        response = self.driver.execute_async_script(js)
+        if response["status"] == "200":
+            response = response["value"]
+            response["content"] = codecs.decode(response["HEX"], "hex")
+            response["text"] = response["content"].decode("utf-8")
+            del response["HEX"]
+        elif response["status"] == "error":
+            raise Exception(response["stack"])
 
         # https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax
-        return self.driver.execute_async_script(js)
+        return response
+
+    def check_cmd(self, value, values):
+        if value not in values:
+            raise ValueError("got "+str(value)+" , but expected "+str(values))

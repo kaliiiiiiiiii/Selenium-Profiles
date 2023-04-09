@@ -9,6 +9,10 @@ function copyToClipboard(text){
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
     };
 
+function is_done(value){
+    if(done){done(value)}else{copyToClipboard(JSON.stringify(value))}
+}
+
 function a(elem, replace=null){ // replace non_existing variables with null
     try{elem = eval(elem)}
     catch{elem = replace};
@@ -75,5 +79,5 @@ navigator.userAgentData.getHighEntropyValues( // get useragent
     .then((values) => {
         my_profile = build_navigator(values);
         console.log(my_profile)
-        if(done){done(my_profile)} else{copyToClipboard(JSON.stringify(my_profile));}
+        is_done(my_profile)
     });
