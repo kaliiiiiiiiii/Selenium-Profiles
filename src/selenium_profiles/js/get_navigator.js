@@ -1,3 +1,5 @@
+try{var done = arguments[0]}catch{var done=undefined} // we're executing with selenium
+
 function roundHalf(num) { // round to half int
     if (typeof num === 'number') {return Math.round(num*2)/2}
     else {return null}
@@ -14,7 +16,7 @@ function a(elem, replace=null){ // replace non_existing variables with null
      if (typeof elem !== 'undefined') {return elem} else {return replace};
 };
 
-function build_navigator() {
+function build_navigator(useragent) {
     wow64 = a(navigator.userAgent.indexOf('WOW64')>-1);
 
     maxtouchpoints = a('window.navigator.maxTouchPoints');
@@ -46,15 +48,15 @@ function build_navigator() {
                   "acceptLanguage":a('navigator.language') || a('navigator.userLanguage'),
                   "userAgent": a('navigator.userAgent'),
                   "userAgentMetadata": {
-                       "brands": window.useragent["brands"],
-                       "fullVersionList": window.useragent["fullVersionList"],
-                       "fullVersion": window.useragent["uaFullVersion"],
-                       "platform": window.useragent["platform"],
-                       "platformVersion": window.useragent["platformVersion"],
-                       "architecture": window.useragent["architecture"],
-                       "model": window.useragent["model"],
-                       "mobile": window.useragent["mobile"],
-                       "bitness": window.useragent["bitness"],
+                       "brands": useragent["brands"],
+                       "fullVersionList": useragent["fullVersionList"],
+                       "fullVersion": useragent["uaFullVersion"],
+                       "platform": useragent["platform"],
+                       "platformVersion": useragent["platformVersion"],
+                       "architecture": useragent["architecture"],
+                       "model": useragent["model"],
+                       "mobile": useragent["mobile"],
+                       "bitness": useragent["bitness"],
                        "wow64": window.wow64}
                   }
             }
@@ -63,7 +65,6 @@ function build_navigator() {
  }
 
 console.log('Getting Profile..')
-window.useragent_set = false;
 navigator.userAgentData.getHighEntropyValues( // get useragent
     ["architecture",
     "model",
@@ -72,12 +73,7 @@ navigator.userAgentData.getHighEntropyValues( // get useragent
     "uaFullVersion",
     "fullVersionList"])
     .then((values) => {
-        window.useragent = values;
-        console.log(values);
-        window.useragent = build_navigator();
-        window.useragent_set = true
-        return window.useragent;
-        //copyToClipboard(JSON.stringify(window.navigator()));
+        my_profile = build_navigator(values);
+        console.log(my_profile)
+        if(done){done(my_profile)} else{copyToClipboard(JSON.stringify(my_profile));}
     });
-
-

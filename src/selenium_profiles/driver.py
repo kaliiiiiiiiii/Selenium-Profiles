@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium_profiles.scripts import profiles
 from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.cdp_tools import cdp_tools
-from selenium_profiles.scripts.driver_utils import sendkeys
 from selenium_profiles.scripts import undetected
 from selenium_profiles.scripts.driver_utils import requests, actions
 
@@ -127,16 +126,11 @@ class driver(object):
         from selenium_interceptor.interceptor import cdp_listener
         self.driver.cdp_listener = cdp_listener(driver=self.driver)
 
-        # add my functions to driver$
-
-        self.driver.send_keys = sendkeys # DEPRECATED!
+        # add my functions to driver
 
         self.driver.get_profile = self.get_profile
         self.driver.requests = requests(self.driver)
         self.driver.actions = actions(self.driver)
-
-        # Captcha
-        self.driver.solve_captcha = self.solve_captcha
 
         # patch cookie functions
         self.driver.get_cookies = self.cdp_tools.get_cookies
@@ -152,36 +146,4 @@ class driver(object):
     def get_profile(self):
         from selenium_profiles.utils.utils import read
         js = read('js/get_navigator.js')
-        # noinspection PyBroadException
-        self.driver.execute_script(js)
-        time.sleep(1)
-        return self.driver.execute_script('return window.useragent')
-
-    def solve_captcha(self):
-        from selenium.webdriver.common.by import By  # locate elements
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.webdriver.support.ui import WebDriverWait
-
-        # noinspection PyBroadException
-        try:
-            wait = WebDriverWait(self.driver, 5)  # driver 5s timeout
-            #  click on captcha
-            wait.until(EC.frame_to_be_available_and_switch_to_it(
-                (By.CSS_SELECTOR, "iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
-            wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
-            self.driver.switch_to.default_content()
-            # click on audio
-            WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
-                (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
-            time.sleep(2)
-            self.driver.find_element(By.XPATH, '//*[@id="recaptcha-audio-button"]').click()
-            self.driver.switch_to.default_content()
-        except:
-            # check "try again later"
-            WebDriverWait(self.driver, 4).until(EC.frame_to_be_available_and_switch_to_it(
-                (By.CSS_SELECTOR, "iframe[name^='c-'][src^='https://www.google.com/recaptcha/api2/bframe?']")))
-            self.driver.find_element(By.CSS_SELECTOR,
-                                     "a[href='https://developers.google.com/recaptcha/docs/faq#my-computer-or-network-may-be-sending-automated-queries']")
-            traceback.print_exc()
-            warnings.warn("Captcha could not be solved!")
-            self.driver.switch_to.default_content()
+        return self.driver.execute_async_script(js)

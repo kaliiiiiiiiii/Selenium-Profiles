@@ -65,13 +65,3 @@ class requests(object):
 
         # https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax
         return self.driver.execute_async_script(js)
-
-
-# DEPRECATED
-
-def sendkeys(self, keys):  # send keys without specific Element
-    action = ActionChains(self.driver)
-    action.send_keys(str(keys))
-    action.perform()
-    warnings.warn(
-        "sendkeys is deprecated and will be removed, use selenium_profiles.scripts.driver_utils.actions.sendkeys instead")
