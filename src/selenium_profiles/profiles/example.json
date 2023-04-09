@@ -8,8 +8,7 @@
       "incognito": true,
       "app": false,
       "gpu": false,
-      "proxy": null,
-      "proxy_method": null
+      "proxy": null
     },
     "extensions": {
           "extension_paths": [],

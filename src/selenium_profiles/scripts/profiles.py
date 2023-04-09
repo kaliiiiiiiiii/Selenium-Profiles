@@ -62,7 +62,7 @@ class profiles:
                     self.touch(self.options,enabled=profile["touch"])
                     self.app(self.options, enabled=profile["app"])
                     self.gpu(self.options, enabled=profile["gpu"], adb=adb)
-                    self.proxy(self.options, proxy=profile["proxy"], method=profile["proxy_method"])
+                    self.proxy(self.options, proxy=profile["proxy"])
                 return self.options
 
 
@@ -70,8 +70,6 @@ class profiles:
             def sandbox(self,options, enabled:bool=True):
                 if enabled is False:
                     options.arguments.extend(["--no-sandbox", "--test-type"])
-                    options.add_argument('--enable-privacy-sandbox-ads-apis')
-                    warnings.warn('Might be more likely to get detected with sandbox set to False!')
                 return options
 
             # noinspection PyDefaultArgument
@@ -121,15 +119,12 @@ class profiles:
                         options.add_argument('--disable-gpu')
                         options.add_argument('--override-use-software-gl-for-tests')
                     else:
-                        warnings.warn('Disabling gpu not supported with android.')
+                        warnings.warn('Disabling gpu not supported when running on android hardware.')
                 return options
 
-            def proxy(self,options, proxy:str =None, method:str = 'socks5://'):
-                if not method:
-                    method = "socks5://"
+            def proxy(self,options, proxy:str =None):
                 if proxy:
-                    options.add_argument('--proxy-server='+method + proxy)
-                    print('proxy= "' + method+proxy + '"')
+                    options.add_argument('--proxy-server='+proxy)
                 return options
 
         def extend_options(self, options, input_options: list = None):
@@ -341,26 +336,3 @@ class profiles:
                 from selenium_profiles.scripts.cdp_tools import cdp_tools
                 cdp_tools = cdp_tools(driver)
                 return cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)
-
-
-# noinspection PyShadowingNames
-def exec_js_evaluators(profile: dict, driver, cdp_tools=None):
-    if cdp_tools:
-        do_return = False
-    else:
-        from selenium_profiles.scripts.cdp_tools import cdp_tools
-        cdp_tools = cdp_tools(driver)
-        do_return = True
-
-    # noinspection PyBroadException
-    # try:
-    #     platform = profile["cdp"]["useragent"]["platform"]
-    # except :
-    #    platform = None
-
-
-    #if platform:
-    #    cdp_tools.define_prop_on_new_document("navigator", "platform", platform) # will be different in workers:/
-
-    if do_return:
-        return cdp_tools.evaluate_on_document_identifiers

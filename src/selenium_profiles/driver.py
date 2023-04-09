@@ -1,5 +1,3 @@
-import time  # for time.sleep()
-import traceback  # print exception
 import warnings
 from collections import defaultdict
 
@@ -105,8 +103,6 @@ class driver(object):
 
         # execute cdp based on profile
         self.profiles.cdp.set(driver=self.driver, cdp_profile=self.profile["cdp"])
-
-        profiles.exec_js_evaluators(self.profile, self.driver, self.cdp_tools)
 
         if not uc_driver:
             undetected.exec_cdp(self.driver, self.cdp_tools)

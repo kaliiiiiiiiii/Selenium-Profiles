@@ -69,8 +69,7 @@ profile = \
       "app": False,
       "touch": True, # 
       "gpu": False,
-      "proxy": "example-proxy.com:9000", # note: auth not supported
-      "proxy_method": "http://" # optional, default: "socks5://"
+      "proxy": "http://example-proxy.com:9000", # note: auth not supported
     },
       "extensions": {
           "extension_paths": ["path/to/extension_1"], # directory, .crx or .zip
