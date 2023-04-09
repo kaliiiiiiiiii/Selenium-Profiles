@@ -145,10 +145,9 @@ Example demonstration script
 ```python
 from selenium_profiles.driver import driver as mydriver
 from selenium_profiles.profiles import profiles
-
-from selenium_profiles.scripts.driver_utils import actions
-
 from selenium.webdriver.common.by import By
+
+from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 
 # Start Driver
@@ -157,22 +156,23 @@ profile = profiles.Android()
 driver = mydriver.start(profile, uc_driver=False)  # or .Android
 
 # initialise touch_actions
-actions = actions(driver)
+chain = TouchActionChain(driver)
 
 driver.get("https://cps-check.com/de/multi-touch-test")
 
 touch_box = driver.find_element(By.XPATH,'//*[@id="box"]') # Get element
-location = actions.mid_location(touch_box) # get element middle location
 
-# setup actions
-action = actions.touch_action_chain()
-action.pointer_action.move_to_location(location['x'],location['y'])
-action.pointer_action.pointer_down()
+
+
+chain.touch_and_hold(touch_box)
+chain.pause(10)
+chain.release(touch_box)
 
 # perform actions
-action.perform()
+chain.perform()
 
-# now you should see a touch indication point on the Website
+# now you should see a touch indication
+# point on the Website for 10 seconds
 
 # quit driver
 input('Press ENTER to quit Driver\n')

@@ -99,8 +99,6 @@ class driver(object):
                 window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
                 }) ();"""})
 
-        self.cdp_tools.delete_all_cookies()  # delete website cookies
-
         # execute cdp based on profile
         self.profiles.cdp.set(driver=self.driver, cdp_profile=self.profile["cdp"])
 
@@ -141,5 +139,5 @@ class driver(object):
 
     def get_profile(self):
         from selenium_profiles.utils.utils import read
-        js = read('js/get_navigator.js')
+        js = read('js/export_profile.js')
         return self.driver.execute_async_script(js)

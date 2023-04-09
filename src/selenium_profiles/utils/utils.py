@@ -1,6 +1,6 @@
 import json
-import warnings
 import os
+
 import selenium_profiles
 
 
@@ -40,3 +40,7 @@ def write_json(obj: dict or list, filename: str = "out.json", encoding: str = "u
         path = filename
     with open(path, "w", encoding=encoding) as outfile:
         outfile.write(json.dumps(obj))
+
+def check_cmd(value, values):
+    if value not in values:
+        raise ValueError("got " + str(value) + " , but expected " + str(values))
