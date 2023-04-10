@@ -20,6 +20,7 @@ def exec_cdp(driver, cdp_tools=None):
 
     if get_cdc_props():
         # remove cdc-props:)
+
         # cdp_tools.evaluate_on_new_document(read('js/undetected/remove_cdc_props.js'))
         cdp_tools.remove_evaluate_on_document(1)
 
@@ -27,13 +28,19 @@ def exec_cdp(driver, cdp_tools=None):
             return cdp_tools.evaluate_on_document_identifiers
 
 
-def config_options(options, adb=False):
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+def config_options(options, adb=False, dublicate_policy="warn-replace"):
+    from selenium_profiles.scripts.profiles import profiles
+    manager = profiles.options(options)
+    if "excludeSwitches" in options.experimental_options.keys():
+        if "enable-automation" not in options.experimental_options["excludeSwitches"]:
+            manager.Options.experimental_options["excludeSwitches"].append("enable-automation")
+    else:
+        manager.update_experimental_options({"excludeSwitches": ["enable-automation"]}, dublicate_policy=dublicate_policy)
     if not adb or adb is None:
-        options.add_experimental_option('useAutomationExtension', False)
-    options.arguments.extend(["--disable-blink-features=AutomationControlled", "--disable-blink-features"])
+        manager.update_experimental_options({'useAutomationExtension': False}, dublicate_policy=dublicate_policy)
+    manager.extend_arguments(["--disable-blink-features=AutomationControlled", "--disable-blink-features"], dublicate_policy="warn-add")
 
     # suppress welcome
-    options.arguments.extend(["--no-default-browser-check", "--no-first-run"])
+    manager.extend_arguments(["--no-default-browser-check", "--no-first-run"], dublicate_policy="warn-add")
 
-    return options
+    return manager.Options

@@ -30,14 +30,16 @@ for the latest features, have a look at the `dev` branch
 ### Start Driver
 
 ```python
-from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
 
-mydriver = mydriver()
+
 profile = profiles.Windows()
 # profile["options"]["browser"]["headless"] = True
-driver = mydriver.start(profile, uc_driver=False)  # or .Android
+
+mydriver = Chrome(profile, uc_driver=False)
+driver = mydriver.start()  # or .Android
 
 # get url
 driver.get('https://browserleaks.com/client-hints')  # test client hints
@@ -77,6 +79,7 @@ profile = \
                 },
       "args": ["--my-arg1", ...],
       "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
+      "experimental_options":{"option1":"value1", "option2":"value2"},
       "adb": False,
       "adb_package": "com.android.chrome",
       "use_running_app": True
@@ -122,13 +125,13 @@ profile = \
 
 from selenium_interceptor.interceptor import cdp_listener
 
-from selenium_profiles import driver as mydriver
+from selenium_profiles import webdriver
 from selenium_profiles.profiles import profiles
 
-mydriver = mydriver()
 profile = profiles.Windows()
+mydriver = webdriver.Chrome(profile)
 
-driver = mydriver.start(profile)
+driver = mydriver.start()
 
 cdp_listener = cdp_listener(driver=driver)
 cdp_listener.specify_headers({"sec-ch-ua-platform":"Android"})
@@ -143,7 +146,7 @@ Don't forget to execute
 
 Example demonstration script
 ```python
-from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.webdriver import Chrome, ChromeOptions
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By
 
@@ -151,9 +154,11 @@ from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 
 # Start Driver
-mydriver = mydriver()
+options = ChromeOptions()
+options.add_argument("--disable-sandbox")
 profile = profiles.Android()
-driver = mydriver.start(profile, uc_driver=False)  # or .Android
+mydriver = Chrome(profile, uc_driver=False, options=ChromeOptions)
+driver = mydriver.start()  # or .Android
 
 # initialise touch_actions
 chain = TouchActionChain(driver)

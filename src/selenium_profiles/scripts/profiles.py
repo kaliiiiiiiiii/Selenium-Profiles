@@ -6,8 +6,7 @@ from selenium_profiles.utils.utils import check_cmd, valid_key
 
 class profiles:
     def __init__(self):
-        self.cdp = self.cdp()
-
+        pass
     class options:  # webdriver.Chrome or uc.Chrome options
         # noinspection PyDefaultArgument
         def __init__(self, options, options_profile: dict or None=None, dublicate_policy: str = "warn-add", safe_dublicates:list=["--add-extension"]):
@@ -26,19 +25,23 @@ class profiles:
             self.dublicates = defaultdict(lambda:set())
             self.safe_dublicates = safe_dublicates
 
-            self.options = options
 
-            self.profile_keys = ["sandbox","window_size", "headless","load_images", "incognito", "touch", "app","gpu",
-                                 "proxy","args","capabilities","adb","adb_package","use_running_app",
+            self.Options = options
+            self.to_capabilities = self.Options.to_capabilities
+
+            self._profile_keys = ["sandbox", "window_size", "headless", "load_images", "incognito", "touch", "app", "gpu",
+                                 "proxy","args","capabilities","experimental_options","adb","adb_package","use_running_app",
                                  "extension_paths", "auth_proxy"
-                                 ]
+                                  ]
+            self._supported_dublicate_policies = ["raise", "replace", "warn-replace",
+                                                 "skip", "warn-skip", "add", "warn-add"]
 
             self.apply(options_profile)
         def apply(self, options_profile):
             profile = defaultdict(lambda :None)
             profile.update(options_profile)
 
-            valid_key(profile.keys(), self.profile_keys, "options_profile => profile['options']")
+            valid_key(profile.keys(), self._profile_keys, "options_profile => profile['options']")
             # libs
             self.sandbox(enabled=profile["sandbox"], adb=profile["adb"])
             self.window_size(profile["window_size"], adb=profile["adb"])
@@ -49,11 +52,12 @@ class profiles:
             self.gpu(profile["gpu"],adb=profile["adb"])
             self.proxy(profile["proxy"])
             self.extend_arguments(profile["args"])
-            self.extend_capabilities(profile["capabilities"])
+            self.update_capabilities(profile["capabilities"])
+            self.update_experimental_options(profile["experimental_options"])
             self.adb_remote(profile["adb"], package=profile["adb_package"], use_running_app=profile["use_running_app"])
             self.add_extensions(profile["extension_paths"], adb=profile["adb"])
             self.auth_proxy(profile["auth_proxy"])
-            return self.options
+            return self.Options
 
         # noinspection PyIncorrectDocstring
         def sandbox(self, enabled: bool or None = None, adb:bool or None=None):
@@ -159,9 +163,9 @@ class profiles:
             if package is None:  # default
                 package = 'com.android.chrome'
             if enabled:
-                self.options.add_experimental_option('androidPackage', package)
+                self.update_experimental_options({'androidPackage': package})
                 if use_running_app or use_running_app is None:
-                    self.options.add_experimental_option('androidUseRunningApp', True)
+                    self.update_experimental_options({'androidUseRunningApp': True})
 
         def warn_adb_unsupported(self, adb:bool or None, methdod:str):
             if adb:
@@ -182,6 +186,13 @@ class profiles:
                     raise ValueError("Proxies specified in options don't allow authentification")
                 self.add_argument('--proxy-server=' + proxy)
 
+
+
+
+
+
+        ## tools ##
+
         def extend_arguments(self, my_args: list = None, dublicate_policy=None):
 
             if my_args:
@@ -193,20 +204,18 @@ class profiles:
             :param my_option: argument to add
             :param dublicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
             """
-            supported_dublicate_policies = ["raise", "replace", "warn-replace",
-                                            "skip", "warn-skip", "add", "warn-add"]
 
             if dublicate_policy:
                 policy = dublicate_policy
             else:
                 policy = self.dublicate_policy
 
-            check_cmd(policy, supported_dublicate_policies)
+            check_cmd(policy, self._supported_dublicate_policies)
             my_arg = my_option.split("=")[0]
             dublicates_found = False
             # iterateover current options
-            if self.options.arguments:
-                for i, option in list(enumerate(self.options.arguments)):
+            if self.Options.arguments:
+                for i, option in list(enumerate(self.Options.arguments)):
                     arg = option.split("=")[0]
 
                     if my_arg == arg:  # got dublicate
@@ -219,9 +228,9 @@ class profiles:
                                 self.dublicates[arg].update({my_option, option})
                                 # replace
                                 if policy == "replace":
-                                    self.options.arguments[i] = my_option
+                                    self.Options.arguments[i] = my_option
                                 elif policy == "warn-replace":
-                                    self.options.arguments[i] = my_option
+                                    self.Options.arguments[i] = my_option
                                     warnings.warn(f"found dublicate for {my_option}: {option} , replacing")
                                 # skipp
                                 elif policy == "skip":
@@ -233,34 +242,97 @@ class profiles:
                                 elif policy == "raise":
                                     raise ValueError(f"found dublicate for {my_option}: {option}")
                     else:
-                        self.options.arguments.append(my_option)
+                        self.Options.arguments.append(my_option)
+                        return
 
                 # add
                 if dublicates_found: # we only want to add them once:)
                     if my_arg in self.safe_dublicates:
-                        self.options.arguments.append(my_option)
+                        self.Options.arguments.append(my_option)
                         return
                     if policy == "add":
-                        self.options.arguments.append(my_option)
+                        self.Options.arguments.append(my_option)
                     elif policy == "warn-add":
-                        self.options.arguments.append(my_option)
+                        self.Options.arguments.append(my_option)
                         warnings.warn(f"found dublicates for {my_option}: {self.dublicates[my_arg]} , adding")
 
             else: # first option to add
-                self.options.arguments.append(my_option)
+                self.Options.arguments.append(my_option)
 
 
-        def extend_capabilities(self, capabilities: dict or None = None):
+        def update_capabilities(self, capabilities: dict or None = None, dublicate_policy=None):
             """
+            :param dublicate_policy: self._supported_dublicate_policies
             :param capabilities: dict of {"capability":value}
 
             handling of dublicates not implemented yet!
             """
+            if dublicate_policy:
+                policy = dublicate_policy
+            else:
+                policy = self.dublicate_policy
+
 
             if capabilities:
-                for cap, value in capabilities.items(): # todo: dublicates?
-                    self.options.set_capability(cap, value)
+                check_cmd(policy, self._supported_dublicate_policies)
+                for cap, value in capabilities.items():
+                    if cap in self.Options.capabilities.keys():
+                        dublicate = self.Options.capabilities[cap]
+                        if policy == "replace":
+                            self.Options.set_capability(cap, value=value)
+                        elif policy == "warn-replace":
+                            self.Options.set_capability(cap, value=value)
+                            warnings.warn(f"got dublicate for {cap}: {dublicate} , replacing")
+                        # skipp
+                        elif policy == "skip":
+                            pass
+                        elif policy == "warn-skip":
+                            warnings.warn(f"got dublicate for {cap}: {dublicate}, skipping")
+                        elif policy =="add" or policy == "warn-add":
+                            warnings.warn(f"got dublicate for {cap}: {dublicate} ,policy is {policy}, but capabilties need to be unique, skipping")
+                        # raise
+                        elif policy == "raise":
+                            raise ValueError(f"got dublicate for {cap}: {dublicate}")
+                    else:
+                        self.Options.set_capability(cap, value=value)
+        def update_experimental_options(self, experimental_options: dict or None = None, dublicate_policy=None):
+            """
+            :param experimental_options: dict of {"experimental_option":value}
+            :param dublicate_policy: self._supported_dublicate_policies
+            """
+            if dublicate_policy:
+                policy = dublicate_policy
+            else:
+                policy = self.dublicate_policy
 
+
+            if experimental_options:
+                check_cmd(policy, self._supported_dublicate_policies)
+                for key, value in experimental_options.items():
+                    if key in self.Options.experimental_options.keys():
+                        dublicate = self.Options.experimental_options[key]
+                        if policy == "replace":
+                            self.Options.add_experimental_option(key, value=value)
+                        elif policy == "warn-replace":
+                            self.Options.add_experimental_option(key, value=value)
+                            warnings.warn(f"got dublicate for {key}: {dublicate} , replacing")
+                        # skipp
+                        elif policy == "skip":
+                            pass
+                        elif policy == "warn-skip":
+                            warnings.warn(f"got dublicate for {key}: {dublicate}, skipping")
+                        elif policy =="add" or policy == "warn-add":
+                            warnings.warn(f"got dublicate for {key}: {dublicate} ,policy is {policy}, but experimental_options need to be unique, skipping")
+                        # raise
+                        elif policy == "raise":
+                            raise ValueError(f"got dublicate for {key}: {dublicate}")
+                    else:
+                        self.Options.add_experimental_option(key, value=value)
+
+
+
+
+        # extensions
         def add_extensions(self, extension_paths: None or list=None, adb:bool or None = None):
             """
             :param adb: adding extensions not supported when running on Android hardware
@@ -277,7 +349,7 @@ class profiles:
                         if os.path.isfile(extension_path):
                             if not(file_type == ".crx" or file_type == ".zip"):
                                 warnings.warn("Extension-file isn't *.zip or *.crx")
-                            self.options.add_extension(extension_path)
+                            self.Options.add_extension(extension_path)
                         elif os.path.isdir(extension_path):
                             self.add_argument('--load-extension=' + extension_path)
                     else:
@@ -326,47 +398,58 @@ class profiles:
 
     # noinspection PyTypeChecker
     class cdp:
-        def __init__(self):
-            self.browser = self.browser()
+        def __init__(self, driver, cdp_tools=None):
+            self._driver = driver
 
-        def set(self, driver, cdp_profile: bool or None = None):
+            if not cdp_tools:
+                from selenium_profiles.scripts.cdp_tools import cdp_tools
+                cdp_tools = cdp_tools(self._driver)
+
+            self.cdp_tools = cdp_tools
+            self.browser = self.browser(self._driver, self.cdp_tools)
+
+        def apply(self, cdp_profile: bool or None = None):
             if cdp_profile:
                 # noinspection PyShadowingNames
                 profile = defaultdict(lambda: None)
                 profile.update(cdp_profile)
 
+                # is mobile ?
                 try:
                     # noinspection PyUnresolvedReferences
                     mobile = profile["emulation"]["mobile"]
                 except KeyError:
                     mobile = False
+                except TypeError:
+                    mobile = False
 
-                browser = self.browser.set(driver, profile["browser"], mobile=mobile)
-                touchpoints = self.set_touchpoints(driver, enabled=profile["touch"],
+                # libs
+                browser = self.browser.apply(profile["browser"], mobile=mobile)
+                touchpoints = self.set_touchpoints(enabled=profile["touch"],
                                                    maxpoints=profile["maxtouchpoints"])
-                emulation = self.set_emulation(driver, profile["emulation"])
-                useragent = self.set_useragent(driver, profile["useragent"], patch_version=profile["patch_version"])
-                cores = self.set_cores(driver, cores_count=profile["cores"])
+                emulation = self.set_emulation(profile["emulation"])
+                useragent = self.set_useragent(profile["useragent"], patch_version=profile["patch_version"])
+                cores = self.set_cores(cores_count=profile["cores"])
 
-                cdp_args = profile["cdp_args"]
+                # execute list of cdp args
                 cdp_args_return = []
-
+                cdp_args = profile["cdp_args"]
+                if not cdp_args:
+                    cdp_args = {}
                 if cdp_args:
                     # noinspection PyUnresolvedReferences
                     if cdp_args[0]:
-                        for args in cdp_args:
-                            cdp_args_return.append(driver.execute_cdp_cmd(args[0], args[1]))
+                        for arg, value in cdp_args.items():
+                            cdp_args_return.append(self._driver.execute_cdp_cmd(arg, value))
 
                 return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,
                         "cores": cores,
                         "cdp_args": cdp_args_return}
 
-        def set_useragent(self, driver, useragent: dict = None, patch_version: str or bool = None):
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(driver)
-            useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver=driver)
+        def set_useragent(self, useragent: dict = None, patch_version: str or bool = None):
+            useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver = self._driver)
             if useragent:
-                return cdp_tools.set_useragent(useragent=useragent)
+                return self.cdp_tools.set_useragent(useragent=useragent)
 
         def patch_version(self, useragent_profile: dict, version: str or True = True, driver=None):
             """
@@ -423,9 +506,7 @@ class profiles:
 
             return profile
 
-        def set_emulation(self, driver, emulation: dict = None):
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(driver)
+        def set_emulation(self, emulation: dict = None):
 
             if emulation:
 
@@ -434,46 +515,39 @@ class profiles:
                 if not "screenHeight" in emulation.keys():
                     emulation.update({"screenHeight": emulation["height"]})
 
-                return cdp_tools.set_emulation(emulation=emulation)
+                return self.cdp_tools.set_emulation(emulation=emulation)
 
-        def set_touchpoints(self, driver, enabled: bool = True, maxpoints: int = 10):
+        def set_touchpoints(self, enabled: bool = True, maxpoints: int = 10):
             if maxpoints is None:
                 maxpoints = 10
             if enabled is None:
                 enabled = True
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(driver)
 
-            return cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
+            return self.cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
 
-        def set_cores(self, driver, cores_count: int or None = 8):
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(driver)
+        def set_cores(self, cores_count: int or None = 8):
             if cores_count:
-                return cdp_tools.set_cores(cores_count=cores_count)
+                return self.cdp_tools.set_cores(cores_count=cores_count)
 
         # noinspection PyTypeChecker
         class browser:
 
-            def __init__(self):
-                pass
+            def __init__(self, driver, cdp_tools):
+                self._driver = driver
+                self._cdp_tools = cdp_tools
 
-            def set(self, driver, browser_cdp_profile, mobile=None):
+            def apply(self, browser_cdp_profile, mobile=None):
                 if browser_cdp_profile:
                     # noinspection PyShadowingNames
                     profile = defaultdict(lambda: None)
                     profile.update(browser_cdp_profile)
 
-                    pointer_as_touch = self.pointer_as_touch(driver, enabled=profile["pointer_as_touch"], mobile=mobile)
-                    darkmode = self.darkmode(driver, profile["darkmode"], mobile=profile["mobile"])
+                    pointer_as_touch = self.pointer_as_touch(enabled=profile["pointer_as_touch"], mobile=mobile)
+                    darkmode = self.darkmode(profile["darkmode"], mobile=profile["mobile"])
                     return {"pointer_as_touch": pointer_as_touch, "darkmode": darkmode}
 
-            def pointer_as_touch(self, driver, enabled: None or bool = True, mobile: None or bool = True):
-                from selenium_profiles.scripts.cdp_tools import cdp_tools
-                cdp_tools = cdp_tools(driver)
-                return cdp_tools.pointer_as_touch(mobile, enabled)
+            def pointer_as_touch(self, enabled: None or bool = True, mobile: None or bool = True):
+                return self._cdp_tools.pointer_as_touch(mobile, enabled)
 
-            def darkmode(self, driver, enabled: bool = True, mobile: bool = False):
-                from selenium_profiles.scripts.cdp_tools import cdp_tools
-                cdp_tools = cdp_tools(driver)
-                return cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)
+            def darkmode(self, enabled: bool = True, mobile: bool = False):
+                return self._cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)

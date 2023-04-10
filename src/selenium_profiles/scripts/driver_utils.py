@@ -62,7 +62,7 @@ class requests:
         response = self.driver.execute_async_script(js)
         if response["status"] == "200":
             response = response["value"]
-            response["content"] = codecs.decode(response["HEX"], "hex", errors="replace")
+            response["content"] = codecs.decode(response["HEX"], "hex")
             response["text"] = response["content"].decode("utf-8", errors="replace")
             del response["HEX"]
         elif response["status"] == "error":
@@ -74,10 +74,10 @@ class requests:
 
 class actions(object):
     def __init__(self, driver):
-        self.driver = driver
+        self._driver = driver
     def sendkeys(self, keys):  # send keys without specific Element
         from selenium.webdriver.common.action_chains import ActionChains
-        action = ActionChains(self.driver)
+        action = ActionChains(self._driver)
         action.send_keys(str(keys))
         action.perform()
 
