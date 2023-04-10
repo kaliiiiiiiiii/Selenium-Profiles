@@ -84,19 +84,16 @@ profile = \
       "args": ["--my-arg1", ...],
       "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
       "experimental_options":{"option1":"value1", "option2":"value2"},
-      "adb": False,
+      "adb": False, # run on harware device over ADB
       "adb_package": "com.android.chrome",
       "use_running_app": True
   },
   "cdp": {
-    "browser": {
-      "pointer_as_touch": False,
-      "darkmode": False,
-      "mobile": True
-    },
     "touch": True,
+    "darkmode":None,
     "maxtouchpoints": 5,
     "cores":8,
+    "pinter_as_touch":None, # not recommended, makes driver hang
     "cdp_args": [],
     "emulation": {"mobile":True,"width": 384, "height": 700, "deviceScaleFactor": 10,
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},
@@ -208,8 +205,6 @@ Please feel free to open an issue or fork!
     - `Navigator.userAgent`
     - `Navigator.platform`
     - `navigator.hardwareConcurrency`
-- [x] Mobile emulation
-  - [ ] click_as touch makes code hung
 - [x] default metrics
   - [x] Android
   - [x] Windows
@@ -228,13 +223,10 @@ Please feel free to open an issue or fork!
        - [ ] undetected
          - [ ] headless
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
-- [ ] support for 
+- [X] support for 
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [x] Linux
-- [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
-  - [x] options
-  - [ ] cdp
 
 
 ## Deprecated

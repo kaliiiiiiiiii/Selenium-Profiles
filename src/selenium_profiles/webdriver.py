@@ -1,17 +1,20 @@
-from selenium_profiles.scripts.profiles import profiles
-
 # noinspection PyUnresolvedReferences
 from selenium.webdriver import ChromeOptions
 
 
-# noinspection PyPep8Naming,GrazieInspection
-class Chrome(profiles):
-    def __init__(self, profile: dict = None, chrome_binary:str=None, executable_path:str = None, options = None, uc_driver: bool = False):
+#
+class Chrome:
+    # noinspection PyUnusedLocal,PyDefaultArgument
+    def __init__(self, profile: dict = None, chrome_binary:str=None, executable_path:str = None,
+                 options = None,dublicate_policy: str = "warn-add", safe_dublicates: list = ["--add-extension"],
+                 uc_driver: bool = False):
+        self.cdp = None
         self.started = None
         from collections import defaultdict
         from selenium.webdriver.chrome.service import Service as ChromeService
         from selenium_profiles.utils.colab_utils import is_colab
         from selenium_profiles.scripts.cdp_tools import cdp_tools
+        from selenium_profiles.scripts.profiles import options as options_handler
 
 
         # initial attributes
@@ -55,7 +58,7 @@ class Chrome(profiles):
             options = webdriver.ChromeOptions()
 
         # options-manager
-        self.options = super().options(options, self.profile["options"])
+        self.options = options_handler(options, self.profile["options"], dublicate_policy=dublicate_policy, safe_dublicates=safe_dublicates)
 
         # executable-path for chromedriver
         if executable_path is None:  # chromedriver path
@@ -73,6 +76,9 @@ class Chrome(profiles):
 
     def start(self):
         from selenium_profiles.scripts import undetected
+
+        if self.started:
+            raise TypeError("webdriver.Chrome() object can't be re-used")
 
         if self.uc_driver:
             # noinspection PyUnboundLocalVariable
@@ -112,7 +118,8 @@ class Chrome(profiles):
 
         # execute cdp based on profile
         # noinspection PyAttributeOutsideInit
-        self.cdp = self.cdp(self.driver, self.cdp_tools)
+        from selenium_profiles.scripts.profiles import cdp as cdp_handler
+        self.cdp = cdp_handler(self.driver, self.cdp_tools)
         self.cdp.apply(cdp_profile=self.profile["cdp"])
 
         if not self.uc_driver:
@@ -139,7 +146,6 @@ class Chrome(profiles):
         utils.__setattr__("cdp_listener", cdp_listener(driver=self.driver))
 
         # add my functions
-        utils.__setattr__("cdp_tools", self.cdp_tools)
         utils.__setattr__("get_profile", self.get_profile)
         utils.__setattr__("export_profile", self.export_profile)
         utils.__setattr__("get_profile", self.get_profile)

@@ -16,14 +16,11 @@
     "adb_package": "com.android.chrome"
   },
   "cdp": {
-    "browser": {
-      "pointer_as_touch": false,
-      "darkmode": false,
-      "mobile": true
-    },
+    "pointer_as_touch": false,
+    "darkmode": false,
     "touch": true,
     "maxtouchpoints": 5,
-    "cdp_args": [],
+    "cdp_args": {},
     "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 10,
         "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
     "useragent": {

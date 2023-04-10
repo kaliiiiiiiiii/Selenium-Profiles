@@ -29,8 +29,8 @@ def exec_cdp(driver, cdp_tools=None):
 
 
 def config_options(options, adb=False, dublicate_policy="warn-replace"):
-    from selenium_profiles.scripts.profiles import profiles
-    manager = profiles.options(options)
+    from selenium_profiles.scripts.profiles import options as option_manager
+    manager = option_manager(options)
     if "excludeSwitches" in options.experimental_options.keys():
         if "enable-automation" not in options.experimental_options["excludeSwitches"]:
             manager.Options.experimental_options["excludeSwitches"].append("enable-automation")
