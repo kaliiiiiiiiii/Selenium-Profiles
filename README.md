@@ -206,6 +206,7 @@ Please feel free to open an issue or fork!
     - `Navigator.userAgent`
     - `Navigator.platform`
     - `navigator.hardwareConcurrency`
+- [ ] allow passing seleniumwire-options => [discussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/36)
 - [x] default metrics
   - [x] Android
   - [x] Windows
