@@ -1,17 +1,10 @@
 import setuptools
-
-
-def is_colab():
-    import sys
-    if 'google.colab' in sys.modules:
-        return True
-    else:
-        return False
+import sys
 
 
 requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver"]
 
-if is_colab():
+if 'google.colab' in sys.modules: # we're on google-colab
     requirements.extend(['PyVirtualDisplay', "webdriver-manager", "google-colab-shell"])
 
 with open('README.md', 'r', encoding='utf-8') as fh:
