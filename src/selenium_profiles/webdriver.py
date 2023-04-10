@@ -32,9 +32,9 @@ class Chrome(profiles):
                     if self.profile["options"]["sandbox"] is True:
                         import warnings
                         warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
-                    else:
-                        # noinspection PyUnresolvedReferences
-                        self.profile["options"].update({"sandbox": False})
+                else:
+                     # noinspection PyUnresolvedReferences
+                     self.profile["options"].update({"sandbox": False})
             else:
                 # noinspection PyTypeChecker
                 self.profile.update({"options": {"sandbox": False}})
