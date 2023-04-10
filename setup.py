@@ -1,17 +1,9 @@
 import setuptools
 
 
-# noinspection SpellCheckingInspection
-def is_collab():
+def is_colab():
     import sys
-    # noinspection PyBroadException
-    try:
-        # noinspection PyPackageRequirements
-        import google.colab
-        cimport = True
-    except:
-        cimport = False
-    if ('google.colab' in sys.modules) and cimport:
+    if 'google.colab' in sys.modules:
         return True
     else:
         return False
@@ -19,7 +11,7 @@ def is_collab():
 
 requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver"]
 
-if is_collab():
+if is_colab():
     requirements.extend(['PyVirtualDisplay', "webdriver-manager", "google-colab-shell"])
 
 with open('README.md', 'r', encoding='utf-8') as fh:
