@@ -1,5 +1,6 @@
 # noinspection PyUnresolvedReferences
 from selenium.webdriver import ChromeOptions
+import warnings
 
 
 #
@@ -15,6 +16,7 @@ class Chrome:
         from selenium_profiles.utils.colab_utils import is_colab
         from selenium_profiles.scripts.cdp_tools import cdp_tools
         from selenium_profiles.scripts.profiles import options as options_handler
+        from selenium_profiles.utils.utils import valid_key
 
 
         # initial attributes
@@ -22,6 +24,8 @@ class Chrome:
         self.executable_path = executable_path
         self.cdp_tools = cdp_tools
 
+
+        valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
         self.profile = defaultdict(lambda: None)
         self.profile.update(profile)
 
@@ -70,9 +74,8 @@ class Chrome:
 
         # chrome executable path
         if not (chrome_binary is None):
+            # noinspection PyUnresolvedReferences
             self.options.Options.binary_location = chrome_binary
-
-        super().__init__()
 
     def start(self):
         from selenium_profiles.scripts import undetected
@@ -135,6 +138,14 @@ class Chrome:
 
         class utils(object):
             pass
+            def apply(self, profile:dict):
+                from selenium_profiles.utils.utils import valid_key
+                valid_key(profile.keys(),["cdp", "options"], "profile (selenium-profiles)")
+                if "options" in profile.keys():
+                    warnings.warn('profile["options"] can\'t be applied when driver allready started')
+                if "cdp" in profile.keys():
+                    # noinspection PyUnresolvedReferences
+                    self.cdp.apply(profile)
 
         utils = utils()
 
