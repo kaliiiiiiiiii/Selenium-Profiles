@@ -15,6 +15,7 @@ class profiles:
             :param options:  for example ChromeOptions()
             :param options_profile: # profile["options"] for a Selenium-Profiles profile
             :param dublicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+            exact dublicates always get removed with a warning
             """
             if not options_profile:
                 options_profile = {}
@@ -368,6 +369,12 @@ class profiles:
                 return cdp_tools.set_useragent(useragent=useragent)
 
         def patch_version(self, useragent_profile: dict, version: str or True = True, driver=None):
+            """
+            :param useragent_profile: profile["cdp"]["useragent"]
+            :param version: string or True (and driver specified => automatically get version)
+            :param driver: driver object to authomatically get the version
+            :return: patched useragent_profile => profile["cdp"]["useragent"]
+            """
             profile = defaultdict(lambda: None)
             profile.update(useragent_profile)
 
@@ -381,7 +388,7 @@ class profiles:
                     else:
                         version = version[0]
                 else:
-                    raise ValueError("driver needs to be specified to automatically get the Version")
+                    raise ValueError("driver or version needs to be specified")
 
             if type(version) == str:
                 if profile["userAgent"]:
