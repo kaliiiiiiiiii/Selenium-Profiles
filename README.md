@@ -60,23 +60,23 @@ Example Profile:
 profile = \
 {
   "options": {
-    "browser": {
       "sandbox": True,
       "window_size": {"x":1024,"y":648},
       "headless": False,
       "load_images": True,
       "incognito": True,
+      "touch": True,
       "app": False,
-      "touch": True, # 
       "gpu": False,
-      "proxy": "http://example-proxy.com:9000", # note: auth not supported
-    },
-      "extensions": {
-          "extension_paths": ["path/to/extension_1"], # directory, .crx or .zip
-          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password", "temp_dir": "C:/Downloads/proxy_extension"}
-        },
-      "option_args": ["--my-arg1", "..."],
-      "capabilities": [],
+      "proxy": "http://example-proxy.com:9000", # note: auth not supported,
+      "extension_paths": ["path/to/extension_1", ...], # directory, .crx or .zip
+      "auth_proxy": {
+            "host":"host", "port":9000,
+            "username":"user", "password":"password", 
+            "temp_dir": "C:/Downloads/proxy_extension"
+                },
+      "args": ["--my-arg1", ...],
+      "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
       "adb": False,
       "adb_package": "com.android.chrome",
       "use_running_app": True

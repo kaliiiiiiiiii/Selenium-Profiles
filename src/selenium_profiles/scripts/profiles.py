@@ -2,199 +2,333 @@ import warnings
 from collections import defaultdict
 from typing import Dict  # define types in functions
 
+from selenium_profiles.utils.utils import check_cmd, valid_key
 
 class profiles:
     def __init__(self):
         self.cdp = self.cdp()
-        self.options = self.options()
 
-    class options: # webdriver.Chrome or uc.Chrome options
-        def __init__(self):
-            self.options = None
-            self.browser = self.browser()
-            self.extensions = self.extensions()
+    class options:  # webdriver.Chrome or uc.Chrome options
+        # noinspection PyDefaultArgument
+        def __init__(self, options, options_profile: dict or None=None, dublicate_policy: str = "warn-add", safe_dublicates:list=["--add-extension"]):
+            """
+            :param options:  for example ChromeOptions()
+            :param options_profile: # profile["options"] for a Selenium-Profiles profile
+            :param dublicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+            """
+            if not options_profile:
+                options_profile = {}
+            self.profile = defaultdict(lambda: None)
+            self.profile.update(options_profile)
 
-        # set options based on profile["options"] dict
-        def set(self, options, options_profile: dict or None):
+            self.dublicate_policy = dublicate_policy
+            self.dublicates = defaultdict(lambda:set())
+            self.safe_dublicates = safe_dublicates
+
             self.options = options
-            if options_profile:
-                # noinspection PyShadowingNames
-                profile = defaultdict(lambda: None)
-                profile.update(options_profile)
-                try:
-                    # noinspection PyUnresolvedReferences
-                    incognito = profile["browser"]["incognito"]
-                except KeyError:  # doesn't exist..
-                    incognito = None
-                except  TypeError:
-                    incognito = None
 
-                extensions_used = profile["extensions"]
+            self.profile_keys = ["sandbox","window_size", "headless","load_images", "incognito", "touch", "app","gpu",
+                                 "proxy","args","capabilities","adb","adb_package","use_running_app",
+                                 "extension_paths", "auth_proxy"
+                                 ]
 
-                self.browser.set(self.options, option_browser_profile=profile["browser"],
-                                 extensions_used=extensions_used, adb=profile["adb"])
-                self.extensions.set(self.options, option_extension_profile=profile["extensions"], incognito=incognito)
-                self.extend_options(self.options, profile["option_args"])
-                self.extend_capabilities(self.options, capabilities=profile["capabilities"])
-                # noinspection PyTypeChecker
-                self.adb_remote(self.options, enabled=profile["adb"], package=profile["adb_package"],
-                                use_running_app=profile["use_running_app"])
+            self.apply(options_profile)
+        def apply(self, options_profile):
+            profile = defaultdict(lambda :None)
+            profile.update(options_profile)
+
+            valid_key(profile.keys(), self.profile_keys, "options_profile => profile['options']")
+            # libs
+            self.sandbox(enabled=profile["sandbox"], adb=profile["adb"])
+            self.window_size(profile["window_size"], adb=profile["adb"])
+            self.headless(profile["headless"],profile["load_images"])
+            self.incognito(profile["incognito"],profile["extensions"])
+            self.touch(profile["touch"])
+            self.app(profile["app"],adb=profile["adb"])
+            self.gpu(profile["gpu"],adb=profile["adb"])
+            self.proxy(profile["proxy"])
+            self.extend_arguments(profile["args"])
+            self.extend_capabilities(profile["capabilities"])
+            self.adb_remote(profile["adb"], package=profile["adb_package"], use_running_app=profile["use_running_app"])
+            self.add_extensions(profile["extension_paths"], adb=profile["adb"])
+            self.auth_proxy(profile["auth_proxy"])
             return self.options
 
+        # noinspection PyIncorrectDocstring
+        def sandbox(self, enabled: bool or None = None, adb:bool or None=None):
+            """
+            :param enabled: defaults to True
+            """
+            if enabled is False:
+                self.warn_adb_unsupported(adb, "disabling sandbox")
+                self.extend_arguments(["--no-sandbox", "--test-type"])
 
-        class browser:
-            def __init__(self):
-                self.options = None
+        # noinspection PyDefaultArgument
+        def window_size(self, size: Dict[str, str] or None = None, adb:bool or None = None):
+            """
+            :param size: defaults to default
+            :param adb: warning
+            """
+            if size:
+                self.warn_adb_unsupported(adb, "setting window_size")
+                if "x" not in size.keys():
+                    raise ValueError("value 'x' is required for specifying window_size")
+                if "y" not in size.keys():
+                    raise ValueError("value 'y' is required for specifying window_size")
+                valid_key(size.keys(), ["x", "y"], 'profile_options window_size => profile["options"]["window_size]')
+                self.add_argument("--window-size=" + str(size['x']) + "," + str(size['y']))
 
-            # noinspection PyTypeChecker
-            def set(self, options, option_browser_profile: dict or None, extensions_used:bool=None, adb:bool=None):
-                if option_browser_profile:
-                    # noinspection PyShadowingNames
-                    profile = defaultdict(lambda: None)
-                    profile.update({'window_size':defaultdict(lambda: None)})
-                    profile.update(option_browser_profile)
-                    self.options = options
+        # noinspection PyIncorrectDocstring
+        def headless(self, headless: bool or None = None, load_images: bool or None = None, adb:bool or None=None):
+            """
+            :param headless: defaults to False
+            :param load_images: defaults to True
+            """
 
-                    self.sandbox(self.options, enabled=profile["sandbox"])
-                    self.window_size(self.options,size=profile["window_size"])
-                    self.headless(self.options,headless=profile["headless"],load_images=profile["load_images"])
-                    self.incognito(self.options,enabled=profile["incognito"],extension_used=extensions_used)
-                    self.touch(self.options,enabled=profile["touch"])
-                    self.app(self.options, enabled=profile["app"])
-                    self.gpu(self.options, enabled=profile["gpu"], adb=adb)
-                    self.proxy(self.options, proxy=profile["proxy"])
-                return self.options
+            if headless:
+                self.warn_adb_unsupported(adb, "enabling headless")
+                self.add_argument('--headless=new')
+            if load_images is False:
+                self.warn_adb_unsupported(adb, "disabling images")
+                self.add_argument("--blink-settings=imagesEnabled=false")
+
+        # noinspection PyIncorrectDocstring
+        def incognito(self,enabled: bool or None = False, extension_used: bool or None = None, adb:bool or None=None):
+            """
+            :param enabled: incognito defaults to False
+            :param extension_used: defaults to False
+
+            prints warning if extensions are used
+            """
+            if enabled:
+                self.warn_adb_unsupported(adb, "enabling incognito")
+                if extension_used:
+                    warnings.warn('Incognito is rarely working with Extensions.')
+                self.add_argument("--incognito")
 
 
 
-            def sandbox(self,options, enabled:bool=True):
-                if enabled is False:
-                    options.arguments.extend(["--no-sandbox", "--test-type"])
-                return options
+        def touch(self, enabled: bool or None = None):
+            """
+            :param enabled: defaults to default
+            """
 
-            # noinspection PyDefaultArgument
-            def window_size(self,options,size:Dict[str,str] or None = {"x":1024,"y":648}):
-                # only for Desktop
-                if size:
-                    options.add_argument("--window-size=" + str(size['x']) + "," + str(size['y']))
-                return options
+            if enabled is False:
+                self.add_argument("--touch-events=disabled")
+            elif enabled is True:
+                self.add_argument("--touch-events=enabled")
 
-            def headless(self,options, headless:bool = False, load_images:bool = True):
-                # ==> without Window
-                # only for desktop
-                if headless:
-                    options.add_argument('--headless=new')
-                if load_images is False:
-                    options.add_argument("--blink-settings=imagesEnabled=false")
-                return options
+        # noinspection PyIncorrectDocstring
+        def app(self,enabled: bool or None = None, adb:bool or None = None):
+            """
+            :param enabled: defaults to False
 
-            def incognito(self, options, enabled:bool = True, extension_used:bool or None=False):
-                # use Incognito
-                # working on Android?
-                if enabled:
-                    if not extension_used:
-                        options.add_argument("--incognito")
-                    else:
-                        warnings.warn('Incognito not working with Extensions!, disabling Incognito')
-                return options
+            disables some Desktop window features
+            """
 
-            def touch(self, options, enabled: bool = True):
-                if enabled:
-                    options.add_argument("--touch-events=enabled")
-                elif enabled is False:
-                    options.add_argument("--touch-events=disabled")
-                return options
+            if enabled is True:
+                self.warn_adb_unsupported(adb, "enabling app view")
+                self.add_argument('--app')
+                self.add_argument('--force-app-mode')
 
-            def app(self, options, enabled:bool=False):
-                if enabled:
-                    options.add_argument('--app')
-                    options.add_argument('--force-app-mode')
-                return options
+        def gpu(self, enabled: bool or None = None, adb: bool or None = None):
+            """
+            disables GPU for Chrome
+            :param enabled: defaults to True
+            :param adb: defaults to False
 
-            def gpu(self, options, enabled=False, adb:bool=None):
-                if enabled is None:
-                    enabled=True
-                if not enabled:
-                    if not adb or adb is None:
-                        options.add_argument('--disable-gpu')
-                        options.add_argument('--override-use-software-gl-for-tests')
-                    else:
-                        warnings.warn('Disabling gpu not supported when running on android hardware.')
-                return options
+            Not supported on Android Hardware
+            """
 
-            def proxy(self,options, proxy:str =None):
-                if proxy:
-                    options.add_argument('--proxy-server='+proxy)
-                return options
+            if enabled is False:
+                if not adb:
+                    self.add_argument('--disable-gpu')
+                    self.add_argument('--override-use-software-gl-for-tests')
+                else:
+                    warnings.warn('Disabling GPU not supported when running on Android hardware, skipping')
 
-        def extend_options(self, options, input_options: list = None):
-            if input_options:
-                for arg in input_options:
-                    options.add_argument(arg)
-            return options
+        def adb_remote(self, enabled: bool or None = None, package: str or None = None,
+                       use_running_app: bool = None):
+            """
+            :param enabled: defaults to False
+            :param package: defaults to 'com.android.chrome'
+            :param use_running_app: defaults to True
+            """
 
-        def extend_capabilities(self, options, capabilities:list or None=None):
-            if capabilities:
-                for cap in capabilities:
-                    options.set_capability(cap[0], cap[1])
-            return options
-
-        def adb_remote(self, options,enabled:bool or None=True, package:str='com.android.chrome', use_running_app:bool=None):
-            if package is None: # default
+            if package is None:  # default
                 package = 'com.android.chrome'
             if enabled:
-                options.add_experimental_option('androidPackage', package)
+                self.options.add_experimental_option('androidPackage', package)
                 if use_running_app or use_running_app is None:
-                    options.add_experimental_option('androidUseRunningApp', True)
+                    self.options.add_experimental_option('androidUseRunningApp', True)
 
-        class extensions:
-            def __init__(self):
-                self.options = None
+        def warn_adb_unsupported(self, adb:bool or None, methdod:str):
+            if adb:
+                warnings.warn(f"specifying {methdod} not supported on Android hardware")
 
-            def set(self, options, option_extension_profile: None or dict, incognito:bool=None):
-                if option_extension_profile:
-                    # noinspection PyShadowingNames
-                    profile = defaultdict(lambda : None)
-                    profile.update(option_extension_profile)
-                    self.options = options
-                    auth_proxy = defaultdict(lambda: None)
-                    try:
-                        # noinspection PyTypeChecker
-                        auth_proxy.update(profile["auth_proxy"])
-                    except TypeError: # profile["auth_proxy"] = None
-                        auth_proxy = None
 
-                    self.add_extension(self.options,profile["extension_paths"],incognito=incognito)
-                    if auth_proxy:
-                        # noinspection PyUnresolvedReferences,PyTypeChecker
-                        self.add_auth_proxy(host=auth_proxy["host"], port=auth_proxy["port"], username=auth_proxy["username"], password=auth_proxy["password"], scheme=auth_proxy["scheme"], temp_dir=auth_proxy["temp_dir"])
-                return self.options
-            def add_extension(self, options, extension_paths:None or list, incognito:bool = None):
-                if extension_paths:
-                    if incognito:
-                        warnings.warn('Incognito might not be compatible with extensions')
-                    for extension_path in extension_paths:
-                        if extension_path[-4:] == ".crx" or extension_path[-4:] == ".zip":
-                            options.add_extension(extension_path)
+
+        def proxy(self, proxy: str = None):
+            """
+            :param proxy: scheme://host:port => https://example.com:9000
+            """
+            supported_schemes = ["http", "https", "socks4", "socks5"]
+
+            if proxy:
+                scheme = proxy.split("://")
+                check_cmd(scheme, supported_schemes)
+                if "@" in proxy:
+                    raise ValueError("Proxies specified in options don't allow authentification")
+                self.add_argument('--proxy-server=' + proxy)
+
+        def extend_arguments(self, my_args: list = None, dublicate_policy=None):
+
+            if my_args:
+                for arg in my_args:
+                    self.add_argument(arg, dublicate_policy=dublicate_policy)
+
+        def add_argument(self, my_option: str, dublicate_policy=None):
+            """
+            :param my_option: argument to add
+            :param dublicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+            """
+            supported_dublicate_policies = ["raise", "replace", "warn-replace",
+                                            "skip", "warn-skip", "add", "warn-add"]
+
+            if dublicate_policy:
+                policy = dublicate_policy
+            else:
+                policy = self.dublicate_policy
+
+            check_cmd(policy, supported_dublicate_policies)
+            my_arg = my_option.split("=")[0]
+            dublicates_found = False
+            # iterateover current options
+            if self.options.arguments:
+                for i, option in list(enumerate(self.options.arguments)):
+                    arg = option.split("=")[0]
+
+                    if my_arg == arg:  # got dublicate
+                        if my_option == option:
+                            warnings.warn(f"exact dublicate found for {my_option}, skipping")
+                            return
                         else:
-                            options.add_argument('--load-extension=' + extension_path)
-                return options
+                            dublicates_found = True
+                            if my_arg not in self.safe_dublicates:
+                                self.dublicates[arg].update({my_option, option})
+                                # replace
+                                if policy == "replace":
+                                    self.options.arguments[i] = my_option
+                                elif policy == "warn-replace":
+                                    self.options.arguments[i] = my_option
+                                    warnings.warn(f"found dublicate for {my_option}: {option} , replacing")
+                                # skipp
+                                elif policy == "skip":
+                                    pass
+                                elif policy == "warn-skip":
+                                    warnings.warn(f"found dublicate for {my_option}: {option}, skipping")
 
-            def add_auth_proxy(self,host:str, port:int, username:str or None, password:str or None, scheme:str or None= "http", temp_dir:str = None):
-                from selenium_profiles.scripts.proxy_extension import make_extension
+                                # raise
+                                elif policy == "raise":
+                                    raise ValueError(f"found dublicate for {my_option}: {option}")
+                    else:
+                        self.options.arguments.append(my_option)
+
+                # add
+                if dublicates_found: # we only want to add them once:)
+                    if my_arg in self.safe_dublicates:
+                        self.options.arguments.append(my_option)
+                        return
+                    if policy == "add":
+                        self.options.arguments.append(my_option)
+                    elif policy == "warn-add":
+                        self.options.arguments.append(my_option)
+                        warnings.warn(f"found dublicates for {my_option}: {self.dublicates[my_arg]} , adding")
+
+            else: # first option to add
+                self.options.arguments.append(my_option)
+
+
+        def extend_capabilities(self, capabilities: dict or None = None):
+            """
+            :param capabilities: dict of {"capability":value}
+
+            handling of dublicates not implemented yet!
+            """
+
+            if capabilities:
+                for cap, value in capabilities.items(): # todo: dublicates?
+                    self.options.set_capability(cap, value)
+
+        def add_extensions(self, extension_paths: None or list=None, adb:bool or None = None):
+            """
+            :param adb: adding extensions not supported when running on Android hardware
+            :param extension_paths: list of paths to add extension from
+            """
+
+            import os
+            if extension_paths:
+                if adb:
+                    raise ValueError("adding extensions not supported when running on Android hardware")
+                for extension_path in extension_paths:
+                    file_type = extension_path[-4:]
+                    if os.path.exists(extension_path):
+                        if os.path.isfile(extension_path):
+                            if not(file_type == ".crx" or file_type == ".zip"):
+                                warnings.warn("Extension-file isn't *.zip or *.crx")
+                            self.options.add_extension(extension_path)
+                        elif os.path.isdir(extension_path):
+                            self.add_argument('--load-extension=' + extension_path)
+                    else:
+                        raise LookupError("Extension-path doesn't exsist")
+
+        def auth_proxy(self, config:dict = None):
+            """
+            :param config: dict =>
+            {
+            host: str
+            port: int
+            username: str | optional
+            password: str | optional
+            scheme: str | optional
+            temp_dir: str | optional
+            }
+            """
+            from selenium_profiles.scripts.proxy_extension import make_extension
+
+            if config:
+                auth_proxy = defaultdict(lambda: None)
+                auth_proxy.update(config)
+
+                valid_key(auth_proxy.keys(), ["host", "port", "username", "password", "scheme", "temp_dir"],
+                          'profile_options auth_proxy => profile["options"]["auth_proxy"]')
+
+                host = auth_proxy["host"]
+                port = auth_proxy["port"]
+                username = auth_proxy["username"]
+                password = auth_proxy["password"]
+                scheme = auth_proxy["scheme"]
+                temp_dir = auth_proxy["temp_dir"]
+
+                if not host:
+                    raise ValueError("value 'host' is required")
+                if not port:
+                    raise ValueError("value 'port' is required")
 
                 if not scheme:
                     scheme = "http"
 
-                path = make_extension(host= host, port=port, username= str(username), password= str(password), scheme=scheme, temp_dir=temp_dir)
-                self.add_extension(extension_paths=[path], options=self.options)
+                # noinspection PyTypeChecker
+                path = make_extension(host=host, port=port, username=str(username), password=str(password),
+                                      scheme=scheme, temp_dir=temp_dir)
+                self.add_extensions(extension_paths=[path])
 
     # noinspection PyTypeChecker
     class cdp:
         def __init__(self):
             self.browser = self.browser()
 
-        def set(self, driver, cdp_profile:bool or None = None):
+        def set(self, driver, cdp_profile: bool or None = None):
             if cdp_profile:
                 # noinspection PyShadowingNames
                 profile = defaultdict(lambda: None)
@@ -207,9 +341,10 @@ class profiles:
                     mobile = False
 
                 browser = self.browser.set(driver, profile["browser"], mobile=mobile)
-                touchpoints = self.set_touchpoints(driver, enabled=profile["touch"], maxpoints=profile["maxtouchpoints"])
+                touchpoints = self.set_touchpoints(driver, enabled=profile["touch"],
+                                                   maxpoints=profile["maxtouchpoints"])
                 emulation = self.set_emulation(driver, profile["emulation"])
-                useragent = self.set_useragent(driver, profile["useragent"],patch_version=profile["patch_version"])
+                useragent = self.set_useragent(driver, profile["useragent"], patch_version=profile["patch_version"])
                 cores = self.set_cores(driver, cores_count=profile["cores"])
 
                 cdp_args = profile["cdp_args"]
@@ -221,18 +356,19 @@ class profiles:
                         for args in cdp_args:
                             cdp_args_return.append(driver.execute_cdp_cmd(args[0], args[1]))
 
-                return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,"cores":cores,
+                return {"browser": browser, "touchpoints": touchpoints, "emulation": emulation, "useragent": useragent,
+                        "cores": cores,
                         "cdp_args": cdp_args_return}
 
-        def set_useragent(self, driver, useragent:dict = None, patch_version:str or bool = None):
+        def set_useragent(self, driver, useragent: dict = None, patch_version: str or bool = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
             useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver=driver)
             if useragent:
                 return cdp_tools.set_useragent(useragent=useragent)
 
-        def patch_version(self,useragent_profile: dict, version: str or True = True, driver=None):
-            profile = defaultdict(lambda:None)
+        def patch_version(self, useragent_profile: dict, version: str or True = True, driver=None):
+            profile = defaultdict(lambda: None)
             profile.update(useragent_profile)
 
             if version is True:
@@ -241,12 +377,11 @@ class profiles:
                     import re
                     version = re.findall("(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+", useragent)
                     if len(version) != 1:
-                        raise LookupError("Couldn't find Chrome-version in: "+useragent)
+                        raise LookupError("Couldn't find Chrome-version in: " + useragent)
                     else:
                         version = version[0]
                 else:
                     raise ValueError("driver needs to be specified to automatically get the Version")
-
 
             if type(version) == str:
                 if profile["userAgent"]:
@@ -281,31 +416,30 @@ class profiles:
 
             return profile
 
-
-        def set_emulation(self, driver, emulation:dict = None):
+        def set_emulation(self, driver, emulation: dict = None):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
 
             if emulation:
 
                 if not "screenWidth" in emulation.keys():
-                    emulation.update({"screenWidth":emulation["width"]})
+                    emulation.update({"screenWidth": emulation["width"]})
                 if not "screenHeight" in emulation.keys():
-                    emulation.update({"screenHeight":emulation["height"]})
+                    emulation.update({"screenHeight": emulation["height"]})
 
                 return cdp_tools.set_emulation(emulation=emulation)
 
-        def set_touchpoints(self, driver, enabled:bool=True, maxpoints:int=10):
+        def set_touchpoints(self, driver, enabled: bool = True, maxpoints: int = 10):
             if maxpoints is None:
                 maxpoints = 10
             if enabled is None:
-                enabled=True
+                enabled = True
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
 
             return cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
 
-        def set_cores(self, driver, cores_count:int or None = 8):
+        def set_cores(self, driver, cores_count: int or None = 8):
             from selenium_profiles.scripts.cdp_tools import cdp_tools
             cdp_tools = cdp_tools(driver)
             if cores_count:
@@ -317,22 +451,22 @@ class profiles:
             def __init__(self):
                 pass
 
-            def set(self,driver, browser_cdp_profile, mobile=None):
+            def set(self, driver, browser_cdp_profile, mobile=None):
                 if browser_cdp_profile:
                     # noinspection PyShadowingNames
                     profile = defaultdict(lambda: None)
                     profile.update(browser_cdp_profile)
 
                     pointer_as_touch = self.pointer_as_touch(driver, enabled=profile["pointer_as_touch"], mobile=mobile)
-                    darkmode = self.darkmode(driver, profile["darkmode"],mobile=profile["mobile"])
+                    darkmode = self.darkmode(driver, profile["darkmode"], mobile=profile["mobile"])
                     return {"pointer_as_touch": pointer_as_touch, "darkmode": darkmode}
 
-            def pointer_as_touch(self,driver, enabled:None or bool=True, mobile:None or bool=True):
+            def pointer_as_touch(self, driver, enabled: None or bool = True, mobile: None or bool = True):
                 from selenium_profiles.scripts.cdp_tools import cdp_tools
                 cdp_tools = cdp_tools(driver)
                 return cdp_tools.pointer_as_touch(mobile, enabled)
 
-            def darkmode(self,driver,enabled:bool=True, mobile:bool=False):
+            def darkmode(self, driver, enabled: bool = True, mobile: bool = False):
                 from selenium_profiles.scripts.cdp_tools import cdp_tools
                 cdp_tools = cdp_tools(driver)
                 return cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)

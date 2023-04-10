@@ -1,20 +1,16 @@
 {
   "options": {
-    "browser": {
-      "sandbox": true,
-      "window_size": {"x":1024,"y":648},
-      "headless": false,
-      "load_images": true,
-      "incognito": true,
-      "app": false,
-      "gpu": false,
-      "proxy": null
-    },
-    "extensions": {
-          "extension_paths": [],
-          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"}
-        },
-    "option_args": [],
+    "sandbox": true,
+    "window_size": {"x":1024,"y":648},
+    "headless": false,
+    "load_images": true,
+    "incognito": true,
+    "app": false,
+    "gpu": false,
+    "proxy": null,
+    "extension_paths": [],
+    "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password"},
+    "args": [],
     "capabilities": [],
     "adb": false,
     "adb_package": "com.android.chrome"
@@ -29,7 +25,7 @@
     "maxtouchpoints": 5,
     "cdp_args": [],
     "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 10,
-        "screenOrientation": {"type": "portrait-primary", "angle": 0}},
+        "screenOrientation": {"type": "portraitPrimary", "angle": 0}},
     "useragent": {
                 "platform": "Linux aarch64",
                 "acceptLanguage":"en-US",

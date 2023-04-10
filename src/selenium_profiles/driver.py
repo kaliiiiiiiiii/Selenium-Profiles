@@ -17,7 +17,6 @@ from selenium_profiles.utils.utils import sel_profiles_path  # read txt files
 class driver(object):
     def __init__(self):
         # initial attributes
-        # noinspection SpellCheckingInspection
         self.returnnavigator = None
         self.profile = None
         self.driver = None
@@ -25,40 +24,39 @@ class driver(object):
         self.options = None
 
         self.profiles = profiles.profiles()
-
-    # noinspection PyUnresolvedReferences
-    def start(self, profile: dict, uc_driver: bool = False, executable_path:str = None, chrome_binary:str=None):
+    def start(self, profile: dict, uc_driver: bool = False, executable_path:str = None, chrome_binary:str=None, chrome_options = None):
         self.profile = defaultdict(lambda: None)
         self.profile.update(profile)
 
         if is_colab():  # google-colab doesn't support sandbox!
             # todo: nested default-dict with Lambda: None
-            if "options" in self.profile.keys():
-                if "browser" in self.profile["options"].keys():
-                    if "sandbox" in self.profile["options"]["browser"].keys():
-                        if self.profile["options"]["browser"]["sandbox"] is True:
-                            warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling..')
+            if self.profile["options"]:
+                # noinspection PyUnresolvedReferences
+                if 'sandbox' in self.profile["options"].keys():
+                    # noinspection PyUnresolvedReferences
+                    if self.profile["options"]["sandbox"] is True:
+                        warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
                     else:
-                        self.profile["options"]["browser"].update({"sandbox":False})
-                else:
-                    self.profile["options"].update({"browser":{"sandbox":False}})
+                        # noinspection PyUnresolvedReferences
+                        self.profile["options"].update({"sandbox":False})
             else:
                 # noinspection PyTypeChecker
-                self.profile.update({"options":{"browser":{"sandbox":False}}})
-
-        if uc_driver:
-            import undetected_chromedriver as uc  # undetected chromedriver
-            self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
+                self.profile.update({"options":{"sandbox":False}})
+        if chrome_options:
+            self.options = chrome_options
         else:
-            self.options = webdriver.ChromeOptions()
+            if uc_driver:
+                import undetected_chromedriver as uc  # undetected chromedriver
+                self.options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/
+            else:
+                self.options = webdriver.ChromeOptions()
 
         # options-manager
-        self.options = self.profiles.options.set(options=self.options, options_profile=self.profile["options"])
+        profile_options =self.profiles.options(self.options, self.profile["options"])
+        self.options = profile_options.options
 
         if executable_path is None: # chromedriver path
-            if uc_driver:
-                executable_path = None
-            else:
+            if not uc_driver:
                 from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
                 executable_path = DEFAULT_EXECUTABLE_PATH
 

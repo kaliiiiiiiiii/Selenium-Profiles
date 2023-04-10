@@ -14,7 +14,7 @@ def test_driver(choose: str, headless: bool = True, uc_driver=False):
     global mydriver
     testprofile = profile[choose]
     testprofile["cdp"]["patch_version"] = None # don't change version :)
-    testprofile["options"]["browser"]["headless"] = headless
+    testprofile["options"]["headless"] = headless
     driver = mydriver.start(testprofile, uc_driver=uc_driver)
     driver.get('https://browserleaks.com/client-hints')
     useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
