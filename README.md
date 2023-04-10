@@ -33,12 +33,14 @@ for the latest features, have a look at the `dev` branch
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
+from selenium.webdriver import ChromeOptions
 
 
 profile = profiles.Windows()
-# profile["options"]["browser"]["headless"] = True
+options = ChromeOptions()
+mydriver = Chrome(profile, options=options, uc_driver=False)
+# mydriver.options.add_argument("--headless=new")
 
-mydriver = Chrome(profile, uc_driver=False)
 driver = mydriver.start()  # or .Android
 
 # get url
@@ -53,7 +55,9 @@ Don't forget to execute
 in the End. Else-wise your temporary folder will get flooded!
 
 #### Run with Google-Colab
-[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
+__[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: master@google-colab/selenium_profiles.ipynb)__
+
+[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/dev/google-colab/selenium_profiles.ipynb) (file: dev@google-colab/selenium_profiles.ipynb)
 
 ## Profiles
 
@@ -155,7 +159,6 @@ from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 # Start Driver
 options = ChromeOptions()
-options.add_argument("--disable-sandbox")
 profile = profiles.Android()
 mydriver = Chrome(profile, uc_driver=False, options=ChromeOptions)
 driver = mydriver.start()  # or .Android
@@ -198,19 +201,13 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
-- [ ] installer.py script
-  - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
-  - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] fonts don't match platform
-  - [ ] does not match worker scope (Emulation)
+  - [ ] does not match worker scope (Emulation) [crbug#1358491](https://bugs.chromium.org/p/chromium/issues/detail?id=1358491)
     - `Navigator.userAgent`
     - `Navigator.platform`
-  - [x] with wrong version (is:111, emulate:107) fixed with "patch_version"
-      - v107 failed CSS features by 2 versions
-      - v107 failed v109 Window features
-      - v107 failed v109 CSS features
+    - `navigator.hardwareConcurrency`
 - [x] Mobile emulation
   - [ ] click_as touch makes code hung
 - [x] default metrics
@@ -236,6 +233,8 @@ Please feel free to open an issue or fork!
   - [x] Jupyter Notebook (Google-Colab)
   - [x] Linux
 - [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
+  - [x] options
+  - [ ] cdp
 
 
 ## Deprecated
