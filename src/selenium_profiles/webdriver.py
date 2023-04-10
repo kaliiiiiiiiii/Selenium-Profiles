@@ -145,7 +145,7 @@ class Chrome:
                     warnings.warn('profile["options"] can\'t be applied when driver allready started')
                 if "cdp" in profile.keys():
                     # noinspection PyUnresolvedReferences
-                    self.cdp.apply(profile)
+                    self.cdp.apply(profile["cdp"])
 
         utils = utils()
 
