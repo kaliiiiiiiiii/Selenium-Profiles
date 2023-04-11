@@ -80,9 +80,6 @@ class Chrome:
         # process kwargs
 
         if uc_driver:
-            # uc-driver specific args
-            self.kwargs.update({"use_subprocess":True,"keep_alive":True}) # todo:needed?
-
             if self.executable_path:
                 self.kwargs.update({"driver_executable_path":self.executable_path})
         else:
