@@ -1,13 +1,12 @@
 {
   "Android": {
     "options": {
-      "browser": {
       "gpu": false,
-      "window_size": {"x":384,"y":700}}
+      "window_size": {"x":384,"y":700}
     },
     "cdp": {
       "touch": true,
-      "maxtouchpoints": 1,
+      "maxtouchpoints": 10,
       "cores": 8,
       "patch_version": true,
       "emulation": {"mobile":true,"width": 384, "height": 700, "deviceScaleFactor": 4,
@@ -36,9 +35,8 @@
   "IOS": {},
   "Windows": {
     "options": {
-      "browser": {
       "gpu": false,
-      "window_size": {"x":1024,"y":648}}
+      "window_size": {"x":1024,"y":648}
     },
     "cdp": {
       "touch": true,

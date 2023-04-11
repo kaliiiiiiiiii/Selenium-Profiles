@@ -5,11 +5,13 @@
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, creep-js ..
-* [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
+* [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
 * [Touch Actions](#Touch_actions)
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.requests.fetch(url, options)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
+* apply profile on allready running driver with `driver.profiles.apply(profiles.Android())`
+* use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
 for the latest features, have a look at the `dev` branch
 
@@ -30,17 +32,21 @@ for the latest features, have a look at the `dev` branch
 ### Start Driver
 
 ```python
-from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
+from selenium.webdriver import ChromeOptions
 
-mydriver = mydriver()
+
 profile = profiles.Windows()
-# profile["options"]["browser"]["headless"] = True
-driver = mydriver.start(profile, uc_driver=False)  # or .Android
+options = ChromeOptions()
+mydriver = Chrome(profile, options=options, uc_driver=False)
+# mydriver.options.add_argument("--headless=new")
+
+driver = mydriver.start()  # or .Android
 
 # get url
-driver.get('https://browserleaks.com/client-hints')  # test client hints
+driver.get('https://abrahamjuliot.github.io/creepjs/')  # test client hints
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
@@ -51,7 +57,9 @@ Don't forget to execute
 in the End. Else-wise your temporary folder will get flooded!
 
 #### Run with Google-Colab
-[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: google-colab/selenium_profiles.ipynb)
+__[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: master@google-colab/selenium_profiles.ipynb)__
+
+[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/dev/google-colab/selenium_profiles.ipynb) (file: dev@google-colab/selenium_profiles.ipynb)
 
 ## Profiles
 
@@ -60,35 +68,31 @@ Example Profile:
 profile = \
 {
   "options": {
-    "browser": {
       "sandbox": True,
       "window_size": {"x":1024,"y":648},
       "headless": False,
       "load_images": True,
       "incognito": True,
+      "touch": True,
       "app": False,
-      "touch": True, # 
       "gpu": False,
-      "proxy": "example-proxy.com:9000", # note: auth not supported
-      "proxy_method": "http://" # optional, default: "socks5://"
-    },
-      "extensions": {
-          "extension_paths": ["path/to/extension_1"], # directory, .crx or .zip
-          "auth_proxy": {"host":"host","port":9000,"username":"user", "password":"password", "temp_dir": "C:/Downloads/proxy_extension"}
-        },
-      "option_args": ["--my-arg1", "..."],
-      "capabilities": [],
-      "adb": False,
+      "proxy": "http://example-proxy.com:9000", # note: auth not supported,
+      "extension_paths": ["path/to/extension_1", ...], # directory, .crx or .zip
+      "auth_proxy": {
+            "host":"host", "port":9000,
+            "username":"user", "password":"password", 
+            "temp_dir": "C:/Downloads/proxy_extension"
+                },
+      "args": ["--my-arg1", ...],
+      "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
+      "experimental_options":{"option1":"value1", "option2":"value2"},
+      "adb": False, # run on harware device over ADB
       "adb_package": "com.android.chrome",
       "use_running_app": True
   },
   "cdp": {
-    "browser": {
-      "pointer_as_touch": False,
-      "darkmode": False,
-      "mobile": True
-    },
     "touch": True,
+    "darkmode":None,
     "maxtouchpoints": 5,
     "cores":8,
     "cdp_args": [],
@@ -119,61 +123,64 @@ profile = \
 ```
 
 ### Modify-headers
+
+using selenium-wire
 ```python
-
-from selenium_interceptor.interceptor import cdp_listener
-
-from selenium_profiles import driver as mydriver
+from selenium_profiles import webdriver
 from selenium_profiles.profiles import profiles
 
-mydriver = mydriver()
-profile = profiles.Windows()
+profile = profiles.Android()
 
-driver = mydriver.start(profile)
+mydriver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
+driver = mydriver.start()
 
-cdp_listener = cdp_listener(driver=driver)
-cdp_listener.specify_headers({"sec-ch-ua-platform":"Android"})
-thread = cdp_listener.start_threaded(listener={"listener": cdp_listener.requests, "at_event": cdp_listener.modify_headers})
+def interceptor(request):
+    request.headers['New-Header'] = 'Some Value'
+driver.request_interceptor = interceptor
 
-driver.get("https://modheader.com/headers?product=ModHeader")
+# checkout headers
+driver.get("https://httpbin.org/headers")
+
+input("Press ENTER to quit..")
+driver.quit()
+exit()
 ```
-Don't forget to execute
-`cdp_listener.terminate_all()`
 
 ### Touch_actions
 
 Example demonstration script
 ```python
-from selenium_profiles.driver import driver as mydriver
+from selenium_profiles.webdriver import Chrome, ChromeOptions
 from selenium_profiles.profiles import profiles
-
-from selenium_profiles.scripts.driver_utils import actions
-
 from selenium.webdriver.common.by import By
+
+from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 
 # Start Driver
-mydriver = mydriver()
+options = ChromeOptions()
 profile = profiles.Android()
-driver = mydriver.start(profile, uc_driver=False)  # or .Android
+mydriver = Chrome(profile, uc_driver=False, options=ChromeOptions)
+driver = mydriver.start()  # or .Android
 
 # initialise touch_actions
-actions = actions(driver)
+chain = TouchActionChain(driver)
 
 driver.get("https://cps-check.com/de/multi-touch-test")
 
 touch_box = driver.find_element(By.XPATH,'//*[@id="box"]') # Get element
-location = actions.mid_location(touch_box) # get element middle location
 
-# setup actions
-action = actions.touch_action_chain()
-action.pointer_action.move_to_location(location['x'],location['y'])
-action.pointer_action.pointer_down()
+
+
+chain.touch_and_hold(touch_box)
+chain.pause(10)
+chain.release(touch_box)
 
 # perform actions
-action.perform()
+chain.perform()
 
-# now you should see a touch indication point on the Website
+# now you should see a touch indication
+# point on the Website for 10 seconds
 
 # quit driver
 input('Press ENTER to quit Driver\n')
@@ -194,21 +201,14 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
-- [ ] installer.py script
-  - [ ] bump to [webdriver-manager](https://pypi.org/project/webdriver-manager/)
-  - [ ] [Chrome-Browser](https://www.google.de/chrome/) (silent install)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] fonts don't match platform
-  - [ ] does not match worker scope (Emulation)
+  - [ ] does not match worker scope (Emulation) [crbug#1358491](https://bugs.chromium.org/p/chromium/issues/detail?id=1358491)
     - `Navigator.userAgent`
     - `Navigator.platform`
-  - [x] with wrong version (is:111, emulate:107) fixed with "patch_version"
-      - v107 failed CSS features by 2 versions
-      - v107 failed v109 Window features
-      - v107 failed v109 CSS features
-- [x] Mobile emulation
-  - [ ] click_as touch makes code hung
+    - `navigator.hardwareConcurrency`
+- [ ] allow passing seleniumwire-options => [discussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/36)
 - [x] default metrics
   - [x] Android
   - [x] Windows
@@ -227,19 +227,16 @@ Please feel free to open an issue or fork!
        - [ ] undetected
          - [ ] headless
 - [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
-- [ ] support for 
+- [X] support for 
   - [x] Windows
   - [x] Jupyter Notebook (Google-Colab)
   - [x] Linux
-- [ ] add error handling for [invalid keys](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4699462) in profile
 
 
 ## Deprecated
 
 * [Stealth method]((https://github.com/diprajpatra/selenium-stealth)) (Detected by Google)
-* [Selenium-Wire](https://github.com/wkeeling/selenium-wire) (proxy, no https)
 * [buster captcha solver](https://github.com/dessant/buster) | [wontfix](https://github.com/kaliiiiiiiiii/Selenium_Profiles/issues/3)
-* [Modheader-Selenium](https://github.com/modheader/modheader_selenium) (Changing headers now possible without)
 
 
 ## Authors
