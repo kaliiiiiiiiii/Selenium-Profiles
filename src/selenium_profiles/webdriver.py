@@ -5,12 +5,10 @@ import warnings
 
 #
 class Chrome:
-    # noinspection PyUnusedLocal,PyDefaultArgument
+    # noinspection PyDefaultArgument
     def __init__(self, profile: dict = None, chrome_binary:str=None, executable_path:str = None,
                  options = None,dublicate_policy: str = "warn-add", safe_dublicates: list = ["--add-extension"],
-                 uc_driver: bool = False):
-        self.cdp = None
-        self.started = None
+                 uc_driver: bool or None = None, seleniumwire_options:dict or bool or None = None):
         from collections import defaultdict
         from selenium.webdriver.chrome.service import Service as ChromeService
         from selenium_profiles.utils.colab_utils import is_colab
@@ -20,10 +18,15 @@ class Chrome:
 
 
         # initial attributes
+        self.cdp = None
+        self._started = None
+        self.kwargs = {}
+
         self.uc_driver = uc_driver
+        self.seleniumwire_options = seleniumwire_options
         self.executable_path = executable_path
         self.cdp_tools = cdp_tools
-
+        self.chrome_binary = chrome_binary
 
         valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
         self.profile = defaultdict(lambda: None)
@@ -46,49 +49,45 @@ class Chrome:
                 # noinspection PyTypeChecker
                 self.profile.update({"options": {"sandbox": False}})
 
-        # default chrome_options
-
-        if uc_driver:
-           import undetected_chromedriver as uc  # undetected chromedriver
-           self.driver = uc.Chrome
-           if not options:
-               options = uc.ChromeOptions()  # selenium.webdriver options, https://peter.sh/experiments/chromium-command-line-switches/$
+        # import webdriver
+        if self.uc_driver:
+            if self.seleniumwire_options:
+                import seleniumwire.undetected_chromedriver as webdriver
+            else:
+                import undetected_chromedriver as webdriver
         else:
-            from selenium import webdriver
-            self.driver = webdriver.Chrome
+            if self.seleniumwire_options:
+                from seleniumwire import webdriver
+            else:
+                from selenium import webdriver
 
+        if type(self.seleniumwire_options) is dict:
+            self.kwargs.update({"seleniumwire_options":self.seleniumwire_options})
+
+        self.driver = webdriver.Chrome
         if not options:
-            from selenium import webdriver
             options = webdriver.ChromeOptions()
+
+
 
         # options-manager
         self.options = options_handler(options, self.profile["options"], dublicate_policy=dublicate_policy, safe_dublicates=safe_dublicates)
 
-        # executable-path for chromedriver
-        if executable_path is None:  # chromedriver path
-            if not uc_driver:
-                from selenium.webdriver.chrome.service import DEFAULT_EXECUTABLE_PATH
-                executable_path = DEFAULT_EXECUTABLE_PATH
-
-        self.service = ChromeService(executable_path=executable_path)
-
         # chrome executable path
-        if not (chrome_binary is None):
-            # noinspection PyUnresolvedReferences
+        if not self.chrome_binary :
             self.options.Options.binary_location = chrome_binary
 
-    def start(self):
-        from selenium_profiles.scripts import undetected
+        # process kwargs
 
-        if self.started:
-            raise TypeError("webdriver.Chrome() object can't be re-used")
+        if uc_driver:
+            # uc-driver specific args
+            self.kwargs.update({"use_subprocess":True,"keep_alive":True}) # todo:needed?
 
-        if self.uc_driver:
-            # noinspection PyUnboundLocalVariable
-            self.driver = self.driver(use_subprocess=True, options=self.options.Options, keep_alive=True,
-                                      driver_executable_path=self.executable_path)  # start undetected_chromedriver
-            self.started = True
+            if self.executable_path:
+                self.kwargs.update({"driver_executable_path":self.executable_path})
         else:
+            # detectability options
+            from selenium_profiles.scripts import undetected
 
             # is adb used ?
             try:
@@ -99,16 +98,28 @@ class Chrome:
             except KeyError:
                 adb = None
 
-
-            # undetected-options
             self.options.Options = undetected.config_options(self.options.Options, adb=adb)
 
-            # Actual start of chrome
-            self.driver = self.driver(options=self.options.Options, service=self.service)  # start selenium webdriver
-            self.started = True
+            # chromedriver path
+            if self.executable_path:
+                self.kwargs.update({"service": ChromeService(executable_path=self.executable_path)})
+
+        # add options to kwargs
+        self.kwargs.update({"options": self.options.Options})
+
+    def start(self):
+
+        if self._started:
+            raise TypeError("webdriver.Chrome() object can't be re-used")
+
+        # Actual start of chrome
+        self.driver = self.driver(**self.kwargs)
+        self._started = True
+
+
+        # cdp tools
 
         self.driver.get("http://lumtest.com/myip.json")  # wait browser to start
-
         self.cdp_tools = self.cdp_tools(self.driver)
 
         self.cdp_tools.evaluate_on_document_identifiers.update({1: # we know that it is there:)
@@ -119,15 +130,13 @@ class Chrome:
                 window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
                 }) ();"""})
 
-        # execute cdp based on profile
-        # noinspection PyAttributeOutsideInit
         from selenium_profiles.scripts.profiles import cdp as cdp_handler
         self.cdp = cdp_handler(self.driver, self.cdp_tools)
         self.cdp.apply(cdp_profile=self.profile["cdp"])
 
         if not self.uc_driver:
+            from selenium_profiles.scripts import undetected
             undetected.exec_cdp(self.driver, self.cdp_tools)
-
 
         self.add_funcs_to_driver()
 
@@ -136,9 +145,14 @@ class Chrome:
 
     def add_funcs_to_driver(self):
 
+        # add selenium-profiles utils to driver
         class utils(object):
             pass
             def apply(self, profile:dict):
+                """
+                apply options after driver allready started
+                :param profile: selenium-profiles options
+                """
                 from selenium_profiles.utils.utils import valid_key
                 valid_key(profile.keys(),["cdp", "options"], "profile (selenium-profiles)")
                 if "options" in profile.keys():
@@ -172,14 +186,14 @@ class Chrome:
         actions.__setattr__("TouchActionChain", TouchActionChain)
         utils.__setattr__("actions", actions)
 
-        # patch cookie functions
+        self.driver.profiles = utils
+
+        # patch driver functions
         self.driver.get_cookies = self.cdp_tools.get_cookies
         self.driver.add_cookie = self.cdp_tools.add_cookie
         self.driver.get_cookie = self.cdp_tools.get_cookie
         self.driver.delete_cookie = self.cdp_tools.delete_cookie
         self.driver.delete_all_cookies = self.cdp_tools.delete_all_cookies
-
-        self.driver.profiles = utils
 
     def export_profile(self, to_path=None):
         import shutil
@@ -203,5 +217,5 @@ class Chrome:
         return self.driver.execute_async_script(js)
 
     def ensure_started(self):
-        if not self.started:
+        if not self._started:
             raise TypeError("driver needs to be started first :)")

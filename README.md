@@ -5,12 +5,13 @@
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
 * **Undetected** by Google, Cloudflare, creep-js ..
-* [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor)
+* [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
 * [Touch Actions](#Touch_actions)
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.requests.fetch(url, options)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
 * apply profile on allready running driver with `driver.profiles.apply(profiles.Android())`
+* use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
 for the latest features, have a look at the `dev` branch
 
@@ -45,7 +46,7 @@ mydriver = Chrome(profile, options=options, uc_driver=False)
 driver = mydriver.start()  # or .Android
 
 # get url
-driver.get('https://browserleaks.com/client-hints')  # test client hints
+driver.get('https://abrahamjuliot.github.io/creepjs/')  # test client hints
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
@@ -94,7 +95,6 @@ profile = \
     "darkmode":None,
     "maxtouchpoints": 5,
     "cores":8,
-    "pinter_as_touch":None, # not recommended, makes driver hang
     "cdp_args": [],
     "emulation": {"mobile":True,"width": 384, "height": 700, "deviceScaleFactor": 10,
         "screenOrientation": {"type": "portrait-primary", "angle": 0}},
@@ -123,26 +123,28 @@ profile = \
 ```
 
 ### Modify-headers
+
+using selenium-wire
 ```python
-
-from selenium_interceptor.interceptor import cdp_listener
-
 from selenium_profiles import webdriver
 from selenium_profiles.profiles import profiles
 
-profile = profiles.Windows()
-mydriver = webdriver.Chrome(profile)
+profile = profiles.Android()
 
+mydriver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
 driver = mydriver.start()
 
-cdp_listener = cdp_listener(driver=driver)
-cdp_listener.specify_headers({"sec-ch-ua-platform":"Android"})
-thread = cdp_listener.start_threaded(listener={"listener": cdp_listener.requests, "at_event": cdp_listener.modify_headers})
+def interceptor(request):
+    request.headers['New-Header'] = 'Some Value'
+driver.request_interceptor = interceptor
 
-driver.get("https://modheader.com/headers?product=ModHeader")
+# checkout headers
+driver.get("https://httpbin.org/headers")
+
+input("Press ENTER to quit..")
+driver.quit()
+exit()
 ```
-Don't forget to execute
-`cdp_listener.terminate_all()`
 
 ### Touch_actions
 

@@ -6,3 +6,4 @@ undetected-chromedriver==3.4.6
 trio
 pillow
 selenium-interceptor>=1.0.2
+selenium-wire
