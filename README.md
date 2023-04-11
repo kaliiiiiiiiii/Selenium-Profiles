@@ -46,7 +46,7 @@ mydriver = Chrome(profile, options=options, uc_driver=False)
 driver = mydriver.start()  # or .Android
 
 # get url
-driver.get('https://abrahamjuliot.github.io/creepjs/')  # test client hints
+driver.get('https://abrahamjuliot.github.io/creepjs/')  # test fingerprint
 
 input("Press ENTER to exit: ")
 driver.quit()  # Execute on the End!
