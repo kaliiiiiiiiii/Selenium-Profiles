@@ -356,7 +356,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
         supported_schemes = ["http", "https", "socks4", "socks5"]
 
         if proxy:
-            scheme = proxy.split("://")
+            scheme = proxy.split("://")[0]
             check_cmd(scheme, supported_schemes)
             if "@" in proxy:
                 raise ValueError("Proxies specified in options don't allow authentification")
