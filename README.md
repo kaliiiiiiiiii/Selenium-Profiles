@@ -201,6 +201,7 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
+- [ ] dynamic proxies [issue](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/52)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] fonts don't match platform
