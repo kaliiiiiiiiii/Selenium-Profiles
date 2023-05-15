@@ -208,6 +208,7 @@ Please feel free to open an issue or fork!
     - `Navigator.userAgent`
     - `Navigator.platform`
     - `navigator.hardwareConcurrency`
+  - [ ] emulation leak on new tabs [diskussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/50)
   - [ ] [selenium-detector](https://github.com/HMaker/HMaker.github.io/blob/master/selenium-detector/chromedriver.js)
     - [ ] Either Devtools Console is open or CDP Runtime Domain is enabled => patch javascript onjects using a Proxy?
     - [ ] [document.$cdc_asdjflasutopfhvcZLmcfl_](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/js/call_function.js;l=219)
