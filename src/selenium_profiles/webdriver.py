@@ -16,38 +16,8 @@ def Chrome(profile: dict = None,
            uc_driver: bool or None = None, seleniumwire_options:dict or bool or None = None, base_driver=None,
            **kwargs):
 
-    if not profile:
-        profile = {}
-
-    valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
     if base_driver and (uc_driver or seleniumwire_options):
         raise ValueError("uc_driver or seleniumwire can't be used with base_driver specified")
-
-    if type(seleniumwire_options) is dict:
-        kwargs.update({"seleniumwire_options": seleniumwire_options})
-    elif not (type(seleniumwire_options) is bool or seleniumwire_options is None):
-        raise ValueError("Expected NoneType, dict or bool")
-
-    defdict = defaultdict(lambda: None)
-    defdict.update(profile)
-    profile = defdict
-
-    # sandbox handling for google-colab
-    if is_colab():
-        # todo: nested default-dict with Lambda: None
-        if profile["options"]:
-            # noinspection PyUnresolvedReferences
-            if 'sandbox' in profile["options"].keys():
-                # noinspection PyUnresolvedReferences
-                if profile["options"]["sandbox"] is True:
-                    warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
-            else:
-                # noinspection PyUnresolvedReferences
-                profile["options"].update({"sandbox": False})
-        else:
-            # noinspection PyTypeChecker
-            profile.update({"options": {"sandbox": False}})
-
 
     # import webdriver
     if uc_driver:
@@ -78,6 +48,36 @@ def Chrome(profile: dict = None,
                  _uc_driver: bool or None = None, _seleniumwire_options:dict or bool or None = None, **_kwargs):
 
             from selenium_profiles.scripts.profiles import cdp as cdp_handler
+
+            if not _profile:
+                _profile = {}
+
+            valid_key(_profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
+
+            if type(_seleniumwire_options) is dict:
+                kwargs.update({"seleniumwire_options": _seleniumwire_options})
+            elif not (type(_seleniumwire_options) is bool or _seleniumwire_options is None):
+                raise ValueError("Expected NoneType, dict or bool")
+
+            defdict = defaultdict(lambda: None)
+            defdict.update(_profile)
+            _profile = defdict
+
+            # sandbox handling for google-colab
+            if is_colab():
+                # todo: nested default-dict with Lambda: None
+                if _profile["options"]:
+                    # noinspection PyUnresolvedReferences
+                    if 'sandbox' in _profile["options"].keys():
+                        # noinspection PyUnresolvedReferences
+                        if _profile["options"]["sandbox"] is True:
+                            warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
+                    else:
+                        # noinspection PyUnresolvedReferences
+                        _profile["options"].update({"sandbox": False})
+                else:
+                    # noinspection PyTypeChecker
+                    _profile.update({"options": {"sandbox": False}})
 
             # options-manager
             options_manager = options_handler(_options, _profile["options"], duplicate_policy=_duplicate_policy,
