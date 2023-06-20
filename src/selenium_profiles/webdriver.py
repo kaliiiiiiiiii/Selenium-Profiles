@@ -154,12 +154,13 @@ class profiles:
         if cdp_tools:
             self.cdp_tools = cdp_tools
         else:
+            from selenium_profiles.scripts.cdp_tools import cdp_tools
             self.cdp_tools = cdp_tools(self._driver)
 
         if cdp_manager:
             self.cdp_manager = cdp_manager
         else:
-            self.cdp_manager = cdp_handler(self, self.cdp_tools)
+            self.cdp_manager = cdp_handler(self._driver, self.cdp_tools)
 
         self.cdp_listener = cdp_listener(driver=self._driver)
         self.actions = actions(self._driver)
