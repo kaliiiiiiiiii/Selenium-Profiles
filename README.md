@@ -211,7 +211,7 @@ Please feel free to open an issue or fork!
     - `navigator.hardwareConcurrency`
   - [ ] emulation leak on new tabs [diskussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/50)
   - [ ] [selenium-detector](https://github.com/HMaker/HMaker.github.io/blob/master/selenium-detector/chromedriver.js)
-    - [ ] Either Devtools Console is open or CDP Runtime Domain is enabled => patch javascript onjects using a Proxy?
+    - [ ] Either Devtools Console is open or CDP Runtime Domain is enabled => patch javascript objects using a Proxy or disable CDP.Runtime domain?
     - [ ] [document.$cdc_asdjflasutopfhvcZLmcfl_](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/js/call_function.js;l=219)
     - [ ] [`document.$chrome_asyncScriptInfo`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/chrome/web_view_impl.cc;l=1586-1597;drc=2e14a3ac178ee87aa9154e5a15dcd986af1b6059)
     - [ ] driver.execute_script() usage (needs hook on called element)
