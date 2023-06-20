@@ -86,7 +86,7 @@ class cdp:
         """
         :param useragent_profile: profile["cdp"]["useragent"]
         :param version: string or True (and driver specified => automatically get version)
-        :param driver: driver object to authomatically get the version
+        :param driver: driver object to automatically get the version
         :return: patched useragent_profile => profile["cdp"]["useragent"]
         """
         profile = defaultdict(lambda: None)
@@ -187,22 +187,22 @@ class cdp:
 
 class options:  # webdriver.Chrome or uc.Chrome options
     # noinspection PyDefaultArgument,PyShadowingNames
-    def __init__(self, options, options_profile: dict or None = None, dublicate_policy: str = "warn-add",
-                 safe_dublicates: list = ["--add-extension"]):
+    def __init__(self, options, options_profile: dict or None = None, duplicate_policy: str = "warn-add",
+                 safe_duplicates: list = ["--add-extension"]):
         """
         :param options:  for example ChromeOptions()
         :param options_profile: # profile["options"] for a Selenium-Profiles profile
-        :param dublicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
-        exact dublicates always get removed with a warning
+        :param duplicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+        exact duplicates always get removed with a warning
         """
         if not options_profile:
             options_profile = {}
         self.profile = defaultdict(lambda: None)
         self.profile.update(options_profile)
 
-        self.dublicate_policy = dublicate_policy
-        self.dublicates = defaultdict(lambda: set())
-        self.safe_dublicates = safe_dublicates
+        self.duplicate_policy = duplicate_policy
+        self.duplicates = defaultdict(lambda: set())
+        self.safe_duplicates = safe_duplicates
 
         self.Options = options
         self.to_capabilities = self.Options.to_capabilities
@@ -212,7 +212,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
                               "use_running_app",
                               "extension_paths", "auth_proxy"
                               ]
-        self._supported_dublicate_policies = ["raise", "replace", "warn-replace",
+        self._supported_duplicate_policies = ["raise", "replace", "warn-replace",
                                               "skip", "warn-skip", "add", "warn-add"]
 
         self.apply(options_profile)
@@ -345,9 +345,9 @@ class options:  # webdriver.Chrome or uc.Chrome options
             if use_running_app or use_running_app is None:
                 self.update_experimental_options({'androidUseRunningApp': True})
 
-    def warn_adb_unsupported(self, adb: bool or None, methdod: str):
+    def warn_adb_unsupported(self, adb: bool or None, method: str):
         if adb:
-            warnings.warn(f"specifying {methdod} not supported on Android hardware")
+            warnings.warn(f"specifying {method} not supported on Android hardware")
 
     def proxy(self, proxy: str = None):
         """
@@ -364,139 +364,139 @@ class options:  # webdriver.Chrome or uc.Chrome options
 
     ## tools ##
 
-    def extend_arguments(self, my_args: list = None, dublicate_policy=None):
+    def extend_arguments(self, my_args: list = None, duplicate_policy=None):
 
         if my_args:
             for arg in my_args:
-                self.add_argument(arg, dublicate_policy=dublicate_policy)
+                self.add_argument(arg, duplicate_policy=duplicate_policy)
 
-    def add_argument(self, my_option: str, dublicate_policy=None):
+    def add_argument(self, my_option: str, duplicate_policy=None):
         """
         :param my_option: argument to add
-        :param dublicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+        :param duplicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
         """
 
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
-        check_cmd(policy, self._supported_dublicate_policies)
+        check_cmd(policy, self._supported_duplicate_policies)
         my_arg = my_option.split("=")[0]
-        dublicates_found = False
+        duplicates_found = False
         # iterateover current options
         if self.Options.arguments:
             for i, option in list(enumerate(self.Options.arguments)):
                 arg = option.split("=")[0]
 
-                if my_arg == arg:  # got dublicate
+                if my_arg == arg:  # got duplicate
                     if my_option == option:
-                        warnings.warn(f"exact dublicate found for {my_option}, skipping")
+                        warnings.warn(f"exact duplicate found for {my_option}, skipping")
                         return
                     else:
-                        dublicates_found = True
-                        if my_arg not in self.safe_dublicates:
-                            self.dublicates[arg].update({my_option, option})
+                        duplicates_found = True
+                        if my_arg not in self.safe_duplicates:
+                            self.duplicates[arg].update({my_option, option})
                             # replace
                             if policy == "replace":
                                 self.Options.arguments[i] = my_option
                             elif policy == "warn-replace":
                                 self.Options.arguments[i] = my_option
-                                warnings.warn(f"found dublicate for {my_option}: {option} , replacing")
+                                warnings.warn(f"found duplicate for {my_option}: {option} , replacing")
                             # skipp
                             elif policy == "skip":
                                 pass
                             elif policy == "warn-skip":
-                                warnings.warn(f"found dublicate for {my_option}: {option}, skipping")
+                                warnings.warn(f"found duplicate for {my_option}: {option}, skipping")
 
                             # raise
                             elif policy == "raise":
-                                raise ValueError(f"found dublicate for {my_option}: {option}")
+                                raise ValueError(f"found duplicate for {my_option}: {option}")
                 else:
                     self.Options.arguments.append(my_option)
                     return
 
             # add
-            if dublicates_found:  # we only want to add them once:)
-                if my_arg in self.safe_dublicates:
+            if duplicates_found:  # we only want to add them once:)
+                if my_arg in self.safe_duplicates:
                     self.Options.arguments.append(my_option)
                     return
                 if policy == "add":
                     self.Options.arguments.append(my_option)
                 elif policy == "warn-add":
                     self.Options.arguments.append(my_option)
-                    warnings.warn(f"found dublicates for {my_option}: {self.dublicates[my_arg]} , adding")
+                    warnings.warn(f"found duplicates for {my_option}: {self.duplicates[my_arg]} , adding")
 
         else:  # first option to add
             self.Options.arguments.append(my_option)
 
-    def update_capabilities(self, capabilities: dict or None = None, dublicate_policy=None):
+    def update_capabilities(self, capabilities: dict or None = None, duplicate_policy=None):
         """
-        :param dublicate_policy: self._supported_dublicate_policies
+        :param duplicate_policy: self._supported_duplicate_policies
         :param capabilities: dict of {"capability":value}
 
-        handling of dublicates not implemented yet!
+        handling of duplicates not implemented yet!
         """
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
         if capabilities:
-            check_cmd(policy, self._supported_dublicate_policies)
+            check_cmd(policy, self._supported_duplicate_policies)
             for cap, value in capabilities.items():
                 if cap in self.Options.capabilities.keys():
-                    dublicate = self.Options.capabilities[cap]
+                    duplicate = self.Options.capabilities[cap]
                     if policy == "replace":
                         self.Options.set_capability(cap, value=value)
                     elif policy == "warn-replace":
                         self.Options.set_capability(cap, value=value)
-                        warnings.warn(f"got dublicate for {cap}: {dublicate} , replacing")
+                        warnings.warn(f"got duplicate for {cap}: {duplicate} , replacing")
                     # skipp
                     elif policy == "skip":
                         pass
                     elif policy == "warn-skip":
-                        warnings.warn(f"got dublicate for {cap}: {dublicate}, skipping")
+                        warnings.warn(f"got duplicate for {cap}: {duplicate}, skipping")
                     elif policy == "add" or policy == "warn-add":
                         warnings.warn(
-                            f"got dublicate for {cap}: {dublicate} ,policy is {policy}, but capabilties need to be unique, skipping")
+                            f"got duplicate for {cap}: {duplicate} ,policy is {policy}, but capabilties need to be unique, skipping")
                     # raise
                     elif policy == "raise":
-                        raise ValueError(f"got dublicate for {cap}: {dublicate}")
+                        raise ValueError(f"got duplicate for {cap}: {duplicate}")
                 else:
                     self.Options.set_capability(cap, value=value)
 
-    def update_experimental_options(self, experimental_options: dict or None = None, dublicate_policy=None):
+    def update_experimental_options(self, experimental_options: dict or None = None, duplicate_policy=None):
         """
         :param experimental_options: dict of {"experimental_option":value}
-        :param dublicate_policy: self._supported_dublicate_policies
+        :param duplicate_policy: self._supported_duplicate_policies
         """
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
         if experimental_options:
-            check_cmd(policy, self._supported_dublicate_policies)
+            check_cmd(policy, self._supported_duplicate_policies)
             for key, value in experimental_options.items():
                 if key in self.Options.experimental_options.keys():
-                    dublicate = self.Options.experimental_options[key]
+                    duplicate = self.Options.experimental_options[key]
                     if policy == "replace":
                         self.Options.add_experimental_option(key, value=value)
                     elif policy == "warn-replace":
                         self.Options.add_experimental_option(key, value=value)
-                        warnings.warn(f"got dublicate for {key}: {dublicate} , replacing")
+                        warnings.warn(f"got duplicate for {key}: {duplicate} , replacing")
                     # skipp
                     elif policy == "skip":
                         pass
                     elif policy == "warn-skip":
-                        warnings.warn(f"got dublicate for {key}: {dublicate}, skipping")
+                        warnings.warn(f"got duplicate for {key}: {duplicate}, skipping")
                     elif policy == "add" or policy == "warn-add":
                         warnings.warn(
-                            f"got dublicate for {key}: {dublicate} ,policy is {policy}, but experimental_options need to be unique, skipping")
+                            f"got duplicate for {key}: {duplicate} ,policy is {policy}, but experimental_options need to be unique, skipping")
                     # raise
                     elif policy == "raise":
-                        raise ValueError(f"got dublicate for {key}: {dublicate}")
+                        raise ValueError(f"got duplicate for {key}: {duplicate}")
                 else:
                     self.Options.add_experimental_option(key, value=value)
 
@@ -521,7 +521,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
                     elif os.path.isdir(extension_path):
                         self.add_argument('--load-extension=' + extension_path)
                 else:
-                    raise LookupError("Extension-path doesn't exsist")
+                    raise LookupError("Extension-path doesn't exist")
 
     def auth_proxy(self, config: dict = None):
         """

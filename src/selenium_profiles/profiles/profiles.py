@@ -7,7 +7,7 @@ def return_profile(platform: str):
     return profile  # yet supported: "Android", "Windows"
 
 
-# noinspection PyPep8Naming
+
 def Windows():
     return return_profile("Windows")
 

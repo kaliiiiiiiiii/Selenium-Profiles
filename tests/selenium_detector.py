@@ -5,10 +5,16 @@ from selenium.webdriver.common.by import By
 # Start Driver
 
 profile = profiles.Windows()  # or .Android
-mydriver = Chrome(profile, uc_driver=False)
-driver = mydriver.start()
+driver = Chrome(profile, uc_driver=False)
+
+def click(x,y):
+    driver.execute_cdp_cmd("Input.dispatchMouseEvent",{"type":"mousePressed", "x":x, "y":y})
+    driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": x, "y": y})
+
 
 driver.get("https://hmaker.github.io/selenium-detector/")
+driver.execute_cdp_cmd("Runtime.disable",{})
+
 
 driver.find_element(By.CSS_SELECTOR, '#chromedriver-token').send_keys(
     driver.execute_script('return window.token')

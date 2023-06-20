@@ -10,7 +10,7 @@
 * [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.profiles.fetch(url)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
-* apply profile on allready running driver with `driver.profiles.apply(profiles.Android())`
+* apply profile on already running driver with `driver.profiles.apply(profiles.Android())`
 * use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
 for the latest features, have a look at the `dev` branch
@@ -35,15 +35,15 @@ for the latest features, have a look at the `dev` branch
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
-from selenium.webdriver import ChromeOptions
+from seleniumwire import webdriver
 
 
-profile = profiles.Windows()
-options = ChromeOptions()
-mydriver = Chrome(profile, options=options, uc_driver=False)
-# mydriver.options.add_argument("--headless=new")
-
-driver = mydriver.start()  # or .Android
+profile = profiles.Windows() # or .Android
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
+driver = Chrome(profile, options=options, base_driver=webdriver.Chrome,
+                uc_driver=False
+                )
 
 # get url
 driver.get('https://abrahamjuliot.github.io/creepjs/')  # test fingerprint
@@ -131,8 +131,7 @@ from selenium_profiles.profiles import profiles
 
 profile = profiles.Android()
 
-mydriver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
-driver = mydriver.start()
+driver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
 
 def interceptor(request):
     request.headers['New-Header'] = 'Some Value'
@@ -150,18 +149,19 @@ exit()
 
 Example demonstration script
 ```python
-from selenium_profiles.webdriver import Chrome, ChromeOptions
+from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ChromeOptions
 
 from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 
 # Start Driver
 options = ChromeOptions()
-profile = profiles.Android()
-mydriver = Chrome(profile, uc_driver=False, options=ChromeOptions)
-driver = mydriver.start()  # or .Android
+profile = profiles.Android() # or .Windows()
+
+driver = Chrome(profile, uc_driver=False, options=options)
 
 # initialise touch_actions
 chain = TouchActionChain(driver)
@@ -289,5 +289,5 @@ Inspiration, code snippets, etc.
 * [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
 * [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
-* [porxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
+* [proxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
 * [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager)
