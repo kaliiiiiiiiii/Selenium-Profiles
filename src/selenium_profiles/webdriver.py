@@ -5,140 +5,136 @@ from selenium_profiles.utils.utils import valid_key
 from selenium.webdriver.chrome.service import Service as ChromeService
 
 from selenium_profiles.utils.colab_utils import is_colab
-from selenium_profiles.scripts.cdp_tools import cdp_tools
 from selenium_profiles.scripts.profiles import options as options_handler
 
 
-# noinspection PyDefaultArgument
-def Chrome(profile: dict = None,
-           chrome_binary:str=None, executable_path:str = None,
-           options = None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
-           uc_driver: bool or None = None, seleniumwire_options:dict or bool or None = None, base_driver=None,
-           **kwargs):
+class Base:pass
 
-    if base_driver and (uc_driver or seleniumwire_options):
-        raise ValueError("uc_driver or seleniumwire can't be used with base_driver specified")
 
-    # import webdriver
-    if uc_driver:
-        if seleniumwire_options:
-            import seleniumwire.undetected_chromedriver as webdriver
+class Chrome(Base):
+
+    # noinspection PyDefaultArgument
+    def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
+                 options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
+                 base_driver=None, uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, **kwargs):
+
+        from selenium_profiles.scripts.profiles import cdp as cdp_handler
+        from selenium_profiles.scripts.cdp_tools import cdp_tools
+
+        if base_driver and (uc_driver or seleniumwire_options):
+            raise ValueError("uc_driver or seleniumwire can't be used with base_driver specified")
+
+        # import webdriver
+        if uc_driver:
+            if seleniumwire_options:
+                import seleniumwire.undetected_chromedriver as webdriver
+            else:
+                import undetected_chromedriver as webdriver
         else:
-            import undetected_chromedriver as webdriver
-    else:
-        if seleniumwire_options:
-            from seleniumwire import webdriver
-        else:
-            from selenium import webdriver
+            if seleniumwire_options:
+                from seleniumwire import webdriver
+            else:
+                from selenium import webdriver
 
-    if not base_driver:
-        base_driver = webdriver.Chrome
+        if not base_driver:
+            base_driver = webdriver.Chrome
 
-    if not options:
-        if webdriver:
-            options = webdriver.ChromeOptions()
-        else:
-            from selenium.webdriver import ChromeOptions
-            options = ChromeOptions()
+        if not options:
+            if webdriver:
+                options = webdriver.ChromeOptions()
+            else:
+                from selenium.webdriver import ChromeOptions
+                options = ChromeOptions()
 
-    class _Chrome(base_driver):
-        # noinspection PyDefaultArgument
-        def __init__(self, _profile: dict = None, _chrome_binary:str=None, _executable_path:str = None,
-                 _options = None,_duplicate_policy: str = "warn-add", _safe_duplicates: list = ["--add-extension"],
-                 _uc_driver: bool or None = None, _seleniumwire_options:dict or bool or None = None, **_kwargs):
+        Chrome.__bases__ = (Chrome.__base__, base_driver,)
 
-            from selenium_profiles.scripts.profiles import cdp as cdp_handler
+        if not profile:
+            profile = {}
 
-            if not _profile:
-                _profile = {}
+        valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
 
-            valid_key(_profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
+        if type(seleniumwire_options) is dict:
+            kwargs.update({"seleniumwire_options": seleniumwire_options})
+        elif not (type(seleniumwire_options) is bool or seleniumwire_options is None):
+            raise ValueError("Expected NoneType, dict or bool")
 
-            if type(_seleniumwire_options) is dict:
-                kwargs.update({"seleniumwire_options": _seleniumwire_options})
-            elif not (type(_seleniumwire_options) is bool or _seleniumwire_options is None):
-                raise ValueError("Expected NoneType, dict or bool")
+        defdict = defaultdict(lambda: None)
+        defdict.update(profile)
+        profile = defdict
 
-            defdict = defaultdict(lambda: None)
-            defdict.update(_profile)
-            _profile = defdict
-
-            # sandbox handling for google-colab
-            if is_colab():
-                # todo: nested default-dict with Lambda: None
-                if _profile["options"]:
+        # sandbox handling for google-colab
+        if is_colab():
+            # todo: nested default-dict with Lambda: None
+            if profile["options"]:
+                # noinspection PyUnresolvedReferences
+                if 'sandbox' in profile["options"].keys():
                     # noinspection PyUnresolvedReferences
-                    if 'sandbox' in _profile["options"].keys():
-                        # noinspection PyUnresolvedReferences
-                        if _profile["options"]["sandbox"] is True:
-                            warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
-                    else:
-                        # noinspection PyUnresolvedReferences
-                        _profile["options"].update({"sandbox": False})
+                    if profile["options"]["sandbox"] is True:
+                        warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
                 else:
-                    # noinspection PyTypeChecker
-                    _profile.update({"options": {"sandbox": False}})
+                    # noinspection PyUnresolvedReferences
+                    profile["options"].update({"sandbox": False})
+            else:
+                # noinspection PyTypeChecker
+                profile.update({"options": {"sandbox": False}})
 
-            # options-manager
-            options_manager = options_handler(_options, _profile["options"], duplicate_policy=_duplicate_policy,
-                                              safe_duplicates=_safe_duplicates)
+        # options-manager
+        options_manager = options_handler(options, profile["options"], duplicate_policy=duplicate_policy,
+                                          safe_duplicates=safe_duplicates)
 
-            # chrome executable path
-            if not chrome_binary:
-                options_manager.Options.binary_location = chrome_binary
+        # chrome executable path
+        if not chrome_binary:
+            options_manager.Options.binary_location = chrome_binary
+
+        # chromedriver path
+        if uc_driver:
+            if executable_path:
+                kwargs.update({"driver_executable_path": executable_path})
+        else:
+            # detectability options
+            from selenium_profiles.scripts import undetected
+
+            # is adb used ?
+            try:
+                # noinspection PyUnresolvedReferences
+                adb = profile["options"]["adb"]
+            except TypeError:
+                adb = None
+            except KeyError:
+                adb = None
+
+            options_manager.Options = undetected.config_options(options_manager.Options, adb=adb)
 
             # chromedriver path
-            if uc_driver:
-                if executable_path:
-                    _kwargs.update({"driver_executable_path": self.executable_path})
-            else:
-                # detectability options
-                from selenium_profiles.scripts import undetected
+            if executable_path:
+                kwargs.update({"service": ChromeService(executable_path=executable_path)})
 
-                # is adb used ?
-                try:
-                    # noinspection PyUnresolvedReferences
-                    adb = _profile["options"]["adb"]
-                except TypeError:
-                    adb = None
-                except KeyError:
-                    adb = None
+        # add options to kwargs
+        kwargs.update({"options": options_manager.Options})
 
-                options_manager.Options = undetected.config_options(options_manager.Options, adb=adb)
+        # Actual start of chrome
+        super().__init__(**kwargs)
+        # cdp tools
 
-                # chromedriver path
-                if executable_path:
-                    _kwargs.update({"service": ChromeService(executable_path=self.executable_path)})
+        self.get("chrome://version/")  # wait browser to start
 
-            # add options to kwargs
-            _kwargs.update({"options": options_manager.Options})
+        cdp_tools = cdp_tools(self)
+        cdp_tools.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
+                                                                """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Proxy = window.Proxy;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
+                                                                }) ();"""})
 
-            # Actual start of chrome
-            super().__init__(**_kwargs)
-            # cdp tools
+        cdp_manager = cdp_handler(self, cdp_tools)
+        cdp_manager.apply(cdp_profile=profile["cdp"])
 
-            self.get("chrome://version/")  # wait browser to start
+        if not uc_driver:
+            from selenium_profiles.scripts import undetected
+            undetected.exec_cdp(self, cdp_tools)
 
-            _cdp_tools = cdp_tools(self)
-            _cdp_tools.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
-                   """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
-                   window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
-                   window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
-                   window.cdc_adoQpoasnfa76pfcZLmcfl_Proxy = window.Proxy;
-                   window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
-                   }) ();"""})
-
-            cdp_manager = cdp_handler(self, _cdp_tools)
-            cdp_manager.apply(cdp_profile=profile["cdp"])
-
-            if not uc_driver:
-                from selenium_profiles.scripts import undetected
-                undetected.exec_cdp(self, _cdp_tools)
-
-            self.profiles = profiles(self, _profile,cdp_tools=cdp_tools,cdp_manager=cdp_manager)
-
-    driver = _Chrome(_profile=profile,_chrome_binary=chrome_binary,_executable_path=executable_path,_options=options, _duplicate_policy=duplicate_policy, _safe_duplicates=safe_duplicates, _uc_driver=uc_driver, _seleniumwire_options=seleniumwire_options, **kwargs)
-    return driver
+        self.profiles = profiles(self, profile, cdp_tools=cdp_tools, cdp_manager=cdp_manager)
 
 class profiles:
     # noinspection PyShadowingNames
