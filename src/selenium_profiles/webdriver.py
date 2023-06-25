@@ -22,6 +22,10 @@ class Chrome(BaseDriver):
         from selenium_profiles.scripts.profiles import cdp as cdp_handler
         from selenium_profiles.scripts.cdp_tools import cdp_tools
 
+        import seleniumwire.undetected_chromedriver as wire_uc_webdriver
+        import undetected_chromedriver as uc_webdriver
+        from seleniumwire import webdriver as wire_webdriver
+
         if not base_drivers:
             base_drivers = tuple()
 
@@ -29,12 +33,12 @@ class Chrome(BaseDriver):
         webdriver = None
         if uc_driver:
             if seleniumwire_options:
-                import seleniumwire.undetected_chromedriver as webdriver
+                webdriver = wire_uc_webdriver
             else:
-                import undetected_chromedriver as webdriver
+                webdriver = uc_webdriver
         else:
             if seleniumwire_options:
-                from seleniumwire import webdriver
+                webdriver = wire_webdriver
 
         if webdriver:
             base_drivers = (webdriver.Chrome,) + base_drivers
@@ -46,17 +50,12 @@ class Chrome(BaseDriver):
                 from selenium.webdriver import ChromeOptions
                 options = ChromeOptions()
 
-        chrome_base_included = False
-        for b_driver in base_drivers:
-            if b_driver.__base__ == Chrome.__base__:
-                chrome_base_included = True
-
+        if len(base_drivers) > 1:
+            warnings.warn("More than one base_driver might not initialize correctly, seems buggy.\n Also, you might try different order")
         if (len(base_drivers) == 1) and (base_drivers[0] == Chrome.__base__):
             pass # got selenium.webdriver.Chrome as BaseDriver
-        elif chrome_base_included:
+        else :
             Chrome.__bases__ = base_drivers
-        else:
-            Chrome.__bases__ = (Chrome.__base__, ) + base_drivers
 
         if not profile:
             profile = {}
@@ -96,7 +95,7 @@ class Chrome(BaseDriver):
         if not chrome_binary:
             options_manager.Options.binary_location = chrome_binary
 
-        if (undetected_chromedriver.Chrome in base_drivers) or (seleniumwire.undetected_chromedriver.Chrome in base_drivers):
+        if (uc_webdriver.Chrome in base_drivers) or (wire_uc_webdriver.Chrome in base_drivers):
             if executable_path:
                 kwargs.update({"driver_executable_path": executable_path})
         else:
