@@ -1,9 +1,5 @@
 import warnings
 from collections import defaultdict
-
-import undetected_chromedriver
-import seleniumwire
-
 from selenium_profiles.utils.utils import valid_key
 
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -54,6 +50,8 @@ class Chrome(BaseDriver):
             warnings.warn("More than one base_driver might not initialize correctly, seems buggy.\n Also, you might try different order")
         if (len(base_drivers) == 1) and (base_drivers[0] == Chrome.__base__):
             pass # got selenium.webdriver.Chrome as BaseDriver
+        elif not base_drivers:
+            pass
         else :
             Chrome.__bases__ = base_drivers
 
