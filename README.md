@@ -41,7 +41,7 @@ from seleniumwire import webdriver
 profile = profiles.Windows() # or .Android
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
-driver = Chrome(profile, options=options, base_driver=webdriver.Chrome,
+driver = Chrome(profile, options=options, base_drivers=(webdriver.Chrome,),
                 uc_driver=False
                 )
 
@@ -188,6 +188,7 @@ driver.quit()
 ```
 
 ### connect to running driver
+Undetectability isn't garanteed
 ```python
 from selenium import  webdriver
 driver = webdriver.Chrome()
