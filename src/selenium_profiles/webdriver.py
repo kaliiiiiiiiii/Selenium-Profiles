@@ -1,5 +1,9 @@
 import warnings
 from collections import defaultdict
+
+import undetected_chromedriver
+import seleniumwire
+
 from selenium_profiles.utils.utils import valid_key
 
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -7,24 +11,22 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium_profiles.utils.colab_utils import is_colab
 from selenium_profiles.scripts.profiles import options as options_handler
 
-
-class Base:pass
-
-
-class Chrome(Base):
+from selenium.webdriver import Chrome as BaseDriver
+class Chrome(BaseDriver):
 
     # noinspection PyDefaultArgument
     def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
                  options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
-                 base_driver=None, uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, **kwargs):
+                 base_drivers:tuple=None, uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, **kwargs):
 
         from selenium_profiles.scripts.profiles import cdp as cdp_handler
         from selenium_profiles.scripts.cdp_tools import cdp_tools
 
-        if base_driver and (uc_driver or seleniumwire_options):
-            raise ValueError("uc_driver or seleniumwire can't be used with base_driver specified")
+        if not base_drivers:
+            base_drivers = tuple()
 
         # import webdriver
+        webdriver = None
         if uc_driver:
             if seleniumwire_options:
                 import seleniumwire.undetected_chromedriver as webdriver
@@ -33,11 +35,9 @@ class Chrome(Base):
         else:
             if seleniumwire_options:
                 from seleniumwire import webdriver
-            else:
-                from selenium import webdriver
 
-        if not base_driver:
-            base_driver = webdriver.Chrome
+        if webdriver:
+            base_drivers = (webdriver.Chrome,) + base_drivers
 
         if not options:
             if webdriver:
@@ -46,7 +46,17 @@ class Chrome(Base):
                 from selenium.webdriver import ChromeOptions
                 options = ChromeOptions()
 
-        Chrome.__bases__ = (Chrome.__base__, base_driver,)
+        chrome_base_included = False
+        for b_driver in base_drivers:
+            if b_driver.__base__ == Chrome.__base__:
+                chrome_base_included = True
+
+        if (len(base_drivers) == 1) and (base_drivers[0] == Chrome.__base__):
+            pass # got selenium.webdriver.Chrome as BaseDriver
+        elif chrome_base_included:
+            Chrome.__bases__ = base_drivers
+        else:
+            Chrome.__bases__ = (Chrome.__base__, ) + base_drivers
 
         if not profile:
             profile = {}
@@ -86,8 +96,7 @@ class Chrome(Base):
         if not chrome_binary:
             options_manager.Options.binary_location = chrome_binary
 
-        # chromedriver path
-        if uc_driver:
+        if (undetected_chromedriver.Chrome in base_drivers) or (seleniumwire.undetected_chromedriver.Chrome in base_drivers):
             if executable_path:
                 kwargs.update({"driver_executable_path": executable_path})
         else:
