@@ -59,8 +59,6 @@ in the End. Else-wise your temporary folder will get flooded!
 #### Run with Google-Colab
 __[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/master/google-colab/selenium_profiles.ipynb) (file: master@google-colab/selenium_profiles.ipynb)__
 
-[Google-Colab](https://colab.research.google.com/github/kaliiiiiiiiii/Selenium-Profiles/blob/dev/google-colab/selenium_profiles.ipynb) (file: dev@google-colab/selenium_profiles.ipynb)
-
 ## Profiles
 
 Example Profile: 
