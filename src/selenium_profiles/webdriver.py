@@ -1,6 +1,7 @@
 import warnings
 from collections import defaultdict
 from selenium_profiles.utils.utils import valid_key
+import typing
 
 from selenium.webdriver.chrome.service import Service as ChromeService
 
@@ -14,9 +15,6 @@ class Chrome(BaseDriver):
     def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
                  options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
                  base_drivers:tuple=None, uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, **kwargs):
-
-        from selenium_profiles.scripts.profiles import cdp as cdp_handler
-        from selenium_profiles.scripts.cdp_tools import cdp_tools
 
         import seleniumwire.undetected_chromedriver as wire_uc_webdriver
         import undetected_chromedriver as uc_webdriver
@@ -124,8 +122,9 @@ class Chrome(BaseDriver):
 
         self.get("chrome://version/")  # wait browser to start
 
-        cdp_tools = cdp_tools(self)
-        cdp_tools.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
+        self.profiles = profiles(self, profile)
+
+        self.profiles.cdp_handler.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
                                                                 """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
                                                                 window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
                                                                 window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
@@ -133,49 +132,57 @@ class Chrome(BaseDriver):
                                                                 window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
                                                                 }) ();"""})
 
-        cdp_manager = cdp_handler(self, cdp_tools)
-        cdp_manager.apply(cdp_profile=profile["cdp"])
+        self.profiles.cdp_handler.apply(cdp_profile=profile["cdp"])
 
         if not uc_driver:
             from selenium_profiles.scripts import undetected
-            undetected.exec_cdp(self, cdp_tools)
+            undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
-        self.profiles = profiles(self, profile, cdp_tools=cdp_tools, cdp_manager=cdp_manager)
+    def get_cookies(self, urls:typing.List[str] = None) -> typing.List[dict]:
+        arg = {}
+        if urls:
+            arg["urls"] = urls
+        return self.execute_cdp_cmd("Network.getAllCookies", arg)['cookies']
+
+    def add_cookie(self, cookie_dict:dict) -> None:
+        self.execute_cdp_cmd("Network.setCookie",cookie_dict)
+
+    def delete_cookie(self, name:str, url:str=None, domain:str=None, path:str=None) -> None:
+        arg = {"name": name}
+        if url:
+            arg["url"] = url
+        if domain:
+            arg["domain"] = domain
+        if path:
+            arg["path"] = path
+        self.execute_cdp_cmd("Network.deleteCookies", arg)
+
+    def delete_all_cookies(self) -> None:
+        self.execute_cdp_cmd("Network.clearBrowserCookies", {})
 
 class profiles:
     # noinspection PyShadowingNames
-    def __init__(self, driver, profile, cdp_tools=None, cdp_manager=None):
+    def __init__(self, driver, profile, cdp_handler=None):
 
         from selenium_interceptor.interceptor import cdp_listener
         from selenium_profiles.scripts.driver_utils import requests, actions
-        from selenium_profiles.scripts.profiles import cdp as cdp_handler
 
         self._driver = driver
         self._profile = profile
 
-        if cdp_tools:
-            self.cdp_tools = cdp_tools
+        if cdp_handler:
+            self.cdp_handler = cdp_handler
+        elif "profiles" in driver.__dir__():
+            self.cdp_handler = driver.profiles.cdp_handler
         else:
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            self.cdp_tools = cdp_tools(self._driver)
-
-        if cdp_manager:
-            self.cdp_manager = cdp_manager
-        else:
-            self.cdp_manager = cdp_handler(self._driver, self.cdp_tools)
+            from selenium_profiles.scripts.profiles import cdp_handler
+            self.cdp_handler = cdp_handler(self._driver)
 
         self.cdp_listener = cdp_listener(driver=self._driver)
         self.actions = actions(self._driver)
 
         requests = requests(self._driver)
         self.fetch = requests.fetch
-
-        # patch driver functions
-        self._driver.get_cookies = self.cdp_tools.get_cookies
-        self._driver.add_cookie = self.cdp_tools.add_cookie
-        self._driver.get_cookie = self.cdp_tools.get_cookie
-        self._driver.delete_cookie = self.cdp_tools.delete_cookie
-        self._driver.delete_all_cookies = self.cdp_tools.delete_all_cookies
 
     # noinspection PyShadowingNames
     def apply(self, profile: dict):
@@ -189,7 +196,7 @@ class profiles:
             warnings.warn('profile["options"] can\'t be applied when driver already started')
         if "cdp" in profile.keys():
             # noinspection PyUnresolvedReferences
-            self.cdp_manager.apply(profile["cdp"])
+            self.cdp_handler.apply(profile["cdp"])
 
     def get_profile(self):
         from selenium_profiles.utils.utils import read

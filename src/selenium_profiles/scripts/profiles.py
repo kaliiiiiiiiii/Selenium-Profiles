@@ -5,18 +5,14 @@ from typing import Dict
 from selenium_profiles.utils.utils import check_cmd, valid_key
 
 
-class cdp:
-    def __init__(self, driver, cdp_tools=None):
+class cdp_handler:
+    def __init__(self, driver):
         self._driver = driver
-
-        if not cdp_tools:
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(self._driver)
 
         self._supported_keys = ["touch", "maxtouchpoints", "emulation", "useragent", "patch_version",
                                 "cores", "darkmode","pinter_as_touch","cdp_args"]
 
-        self.cdp_tools = cdp_tools
+        self.evaluate_on_document_identifiers = {}
 
     def apply(self, cdp_profile: bool or None = None):
         """
@@ -80,7 +76,7 @@ class cdp:
         """
         if useragent:
             useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver=self._driver)
-            return self.cdp_tools.set_useragent(useragent=useragent)
+            return self._driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
 
     def patch_version(self, useragent_profile: dict, version: str or bool or None = True, driver=None):
         """
@@ -94,17 +90,14 @@ class cdp:
 
         if version is True:
             if driver:
-                useragent = driver.execute_script("return navigator.userAgent")
+                useragent = driver.execute_cdp_cmd("Browser.getVersion",{})["product"]
                 import re
                 version = re.findall(r'(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+', useragent)
-                if len(version) != 1:
-                    raise LookupError("Couldn't find Chrome-version in: " + useragent)
-                else:
-                    version = version[0]
+                version = version[0]
             else:
                 raise ValueError("driver or version needs to be specified")
 
-        if type(version) == str:
+        elif type(version) == str:
             if profile["userAgent"]:
                 import re
                 # noinspection PyTypeChecker
@@ -157,7 +150,11 @@ class cdp:
             if not "screenHeight" in emulation.keys():
                 emulation.update({"screenHeight": emulation["height"]})
 
-            return self.cdp_tools.set_emulation(emulation=emulation)
+            return self._driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
+
+    def clear_emulation(self, enabled:bool or None):
+        if enabled or (enabled is None):
+            self._driver.execute_cdp_cmd("Emulation.clearDeviceMetricsOverride", {})
 
     def set_touchpoints(self, enabled: bool or None = None, maxpoints: int or None = None):
         """
@@ -165,25 +162,49 @@ class cdp:
         :param maxpoints:int
         """
         if not enabled is None:
-            return self.cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
+            if maxpoints is None:
+                maxpoints = 10
+            return self._driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
+                                                {'enabled': enabled, 'maxTouchPoints': maxpoints})
 
     def set_cores(self, cores_count: int or None = 8):
         """
         :param cores_count: int => navigator.hardwareConcurrency
         """
         if cores_count:
-            return self.cdp_tools.set_cores(cores_count=cores_count)
+            return self._driver.execute_cdp_cmd("Emulation.setHardwareConcurrencyOverride",
+                                                {"hardwareConcurrency": cores_count})
 
 
     def darkmode(self, enabled: bool or None = None, mobile: bool = False):
         if not enabled is None:
-            return self.cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)
+            if enabled:
+                if not mobile:
+                    warnings.warn('darkmode might look weird without mobile_view!')
+                return self._driver.execute_cdp_cmd('Emulation.setAutoDarkModeOverride',
+                                                    {'enabled': enabled})
 
     def pointer_as_touch(self, enabled: None or bool = True, mobile: bool = None):
-        if not enabled is None:
-            warnings.warn("pointer_as_touch makes selenium hang and isn't recommended")
-            return self.cdp_tools.pointer_as_touch(mobile, enabled)
+        if mobile or mobile is None:
+            config = 'mobile'
+        else:
+            config = 'desktop'
+        if not(enabled is None):
+            warnings.warn('Actions execute, but then take long when "EmitTouchEventsForMouse"!')
+            # executes, but then takes long [maybe check if success?]
+            return self._driver.execute_cdp_cmd('Emulation.setEmitTouchEventsForMouse', {'enabled': enabled,
+                                                                                         'configuration': config})
 
+    def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
+        identifier = int(
+            self._driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": js})["identifier"])
+        self.evaluate_on_document_identifiers.update({identifier: js})
+        return identifier
+
+    # remove js evaluation  on every new page for specific script
+    def remove_evaluate_on_document(self, identifier: int):
+        del self.evaluate_on_document_identifiers[identifier]
+        return self._driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
 
 class options:  # webdriver.Chrome or uc.Chrome options
     # noinspection PyDefaultArgument,PyShadowingNames

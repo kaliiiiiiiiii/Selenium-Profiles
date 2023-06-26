@@ -2,6 +2,7 @@ import json
 import os
 
 import selenium_profiles
+from selenium_profiles.utils.colab_utils import is_colab
 
 
 def sel_profiles_path():
@@ -49,3 +50,10 @@ def valid_key(got:list or set, valid:list, obj_name:str):
     for key in got:
         if key not in valid:
             raise ValueError(f"'{key}' isn't a valid key for {obj_name}")
+
+def my_platform():
+    import platform
+    if is_colab():
+        return "Google-Colab"
+    else:
+        return platform.system()
