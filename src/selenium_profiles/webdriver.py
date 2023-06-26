@@ -116,10 +116,10 @@ class Chrome(BaseDriver):
                 kwargs.update({"service": ChromeService(executable_path=executable_path)})
 
         if injector_options:
-            from selenium_injector.scripts.driverless import Driverless
+            from selenium_injector.scripts.injector import Injector
             if (injector_options is True) or injector_options == {}:
                 injector_options = {}
-            driverless = Driverless(**injector_options)
+            driverless = Injector(**injector_options)
 
             options_manager.add_argument(f'--load-extension={driverless.path}')
 
@@ -150,21 +150,19 @@ class Chrome(BaseDriver):
             undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
         if injector_options or injector_options == {}:
-            # noinspection PyUnboundLocalVariable
-            self.profiles.driverless = driverless
 
             # connection to tab-0
             tab_index = self.window_handles.index(self.current_window_handle).__str__()
-            self.profiles.driverless.tab_user = "tab-" + tab_index
+            self.profiles.injector.tab_user = "tab-" + tab_index
             config = f"""
-                            var connection = new connector("{self.profiles.driverless.socket.host}", {self.profiles.driverless.socket.port}, "{self.profiles.driverless.tab_user}")
+                            var connection = new connector("{self.profiles.injector.socket.host}", {self.profiles.driverless.socket.port}, "{self.profiles.driverless.tab_user}")
                             connection.connect();
                             """
 
             from selenium_injector.utils.utils import read
             utils_js = read("files/js/utils.js")
             self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",
-                                 {"source": "(function(){%s})()" % (utils_js + self.profiles.driverless.connection_js + config)})
+                                 {"source": "(function(){%s})()" % (utils_js + self.profiles.injector.connection_js + config)})
 
     def get_cookies(self, urls:typing.List[str] = None) -> typing.List[dict]:
         arg = {}
@@ -197,15 +195,18 @@ class Chrome(BaseDriver):
 
 class profiles:
     # noinspection PyShadowingNames
-    def __init__(self, driver, profile, cdp_handler=None):
+    def __init__(self, driver, profile, cdp_handler=None, selenium_injector=None):
 
         from selenium_interceptor.interceptor import cdp_listener
         from selenium_profiles.scripts.driver_utils import requests, actions
 
         self._driver = driver
         self._profile = profile
+        self.injector = selenium_injector
 
         self._seleniumwire = None
+        if "proxy" in self._driver.__dir__():
+            self._seleniumwire = True
 
         if cdp_handler:
             self.cdp_handler = cdp_handler
@@ -220,9 +221,6 @@ class profiles:
 
         requests = requests(self._driver)
         self.fetch = requests.fetch
-
-        if "proxy" in self._driver.__dir__():
-            self._seleniumwire = True
 
 
     # noinspection PyShadowingNames
@@ -244,18 +242,8 @@ class profiles:
         js = read('js/export_profile.js', sel_root=True)
         return self._driver.execute_async_script(js)
 
-    @property
-    def _driverless(self):
-        if "profiles" in self._driver.__dir__():
-            if "driverless" in self._driver.profiles.__dir__():
-                return self._driver.profiles.driverless
-    @property
-    def _dynamic_proxies_supported(self):
-        if self._driverless or self._seleniumwire:
-            return True
-
     def set_proxy(self, options):
-        if not self._dynamic_proxies_supported:
+        if not (self._seleniumwire or self.injector):
             raise ModuleNotFoundError("dynamic proxies only supported with seleniumwire or selenium-injector enabled")
         else:
             return NotImplementedError("setting proxies dynamically not implemented yet")
