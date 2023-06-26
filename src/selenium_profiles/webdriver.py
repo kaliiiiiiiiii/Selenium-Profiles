@@ -14,7 +14,9 @@ class Chrome(BaseDriver):
     # noinspection PyDefaultArgument
     def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
                  options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
-                 base_drivers:tuple=None, uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, **kwargs):
+                 base_drivers:tuple=None,
+                 uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, injector_options:dict or bool or None = None,
+                 **kwargs):
 
         import seleniumwire.undetected_chromedriver as wire_uc_webdriver
         import undetected_chromedriver as uc_webdriver
@@ -113,6 +115,14 @@ class Chrome(BaseDriver):
             if executable_path:
                 kwargs.update({"service": ChromeService(executable_path=executable_path)})
 
+        if injector_options:
+            from selenium_injector.scripts.driverless import Driverless
+            if (injector_options is True) or injector_options == {}:
+                injector_options = {}
+            driverless = Driverless(**injector_options)
+
+            options_manager.add_argument(f'--load-extension={driverless.path}')
+
         # add options to kwargs
         kwargs.update({"options": options_manager.Options})
 
@@ -123,6 +133,7 @@ class Chrome(BaseDriver):
         self.get("chrome://version/")  # wait browser to start
 
         self.profiles = profiles(self, profile)
+
 
         self.profiles.cdp_handler.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
                                                                 """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
@@ -137,6 +148,23 @@ class Chrome(BaseDriver):
         if not uc_driver:
             from selenium_profiles.scripts import undetected
             undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
+
+        if injector_options or injector_options == {}:
+            # noinspection PyUnboundLocalVariable
+            self.profiles.driverless = driverless
+
+            # connection to tab-0
+            tab_index = self.window_handles.index(self.current_window_handle).__str__()
+            self.profiles.driverless.tab_user = "tab-" + tab_index
+            config = f"""
+                            var connection = new connector("{self.profiles.driverless.socket.host}", {self.profiles.driverless.socket.port}, "{self.profiles.driverless.tab_user}")
+                            connection.connect();
+                            """
+
+            from selenium_injector.utils.utils import read
+            utils_js = read("files/js/utils.js")
+            self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",
+                                 {"source": "(function(){%s})()" % (utils_js + self.profiles.driverless.connection_js + config)})
 
     def get_cookies(self, urls:typing.List[str] = None) -> typing.List[dict]:
         arg = {}
@@ -160,6 +188,13 @@ class Chrome(BaseDriver):
     def delete_all_cookies(self) -> None:
         self.execute_cdp_cmd("Network.clearBrowserCookies", {})
 
+    def quit(self) -> None:
+        if "profiles" in self.__dir__():
+            if "driverless" in self.profiles.__dir__():
+                # noinspection PyUnresolvedReferences
+                self.profiles.driverless.stop()
+        super().quit()
+
 class profiles:
     # noinspection PyShadowingNames
     def __init__(self, driver, profile, cdp_handler=None):
@@ -169,6 +204,8 @@ class profiles:
 
         self._driver = driver
         self._profile = profile
+
+        self._seleniumwire = None
 
         if cdp_handler:
             self.cdp_handler = cdp_handler
@@ -183,6 +220,10 @@ class profiles:
 
         requests = requests(self._driver)
         self.fetch = requests.fetch
+
+        if "proxy" in self._driver.__dir__():
+            self._seleniumwire = True
+
 
     # noinspection PyShadowingNames
     def apply(self, profile: dict):
@@ -202,5 +243,65 @@ class profiles:
         from selenium_profiles.utils.utils import read
         js = read('js/export_profile.js', sel_root=True)
         return self._driver.execute_async_script(js)
+
+    @property
+    def _driverless(self):
+        if "profiles" in self._driver.__dir__():
+            if "driverless" in self._driver.profiles.__dir__():
+                return self._driver.profiles.driverless
+    @property
+    def _dynamic_proxies_supported(self):
+        if self._driverless or self._seleniumwire:
+            return True
+
+    def set_proxy(self, options):
+        if not self._dynamic_proxies_supported:
+            raise ModuleNotFoundError("dynamic proxies only supported with seleniumwire or selenium-injector enabled")
+        else:
+            return NotImplementedError("setting proxies dynamically not implemented yet")
+
+    @property
+    def proxy(self):
+        def make_proxy(proxy_dict:dict or None):
+            if proxy_dict:
+                defdict = defaultdict(lambda :"")
+                defdict.update(proxy_dict)
+                parsed = defdict["scheme"] + "://" + str(defdict["port"]) +":"+defdict["host"]
+                return parsed
+
+        if self._seleniumwire:
+            proxies = defaultdict(lambda: None)
+            proxies.update(self._driver.proxy)
+            if proxies["no_proxy"]:
+                # noinspection PyUnresolvedReferences
+                proxies["bypass_list"] = proxies["no_proxy"].split(",")
+            del proxies["no_proxy"]
+            if not proxies["http"] or proxies["https"]:
+                proxies["mode"] = "system"
+            return  dict(proxies)
+
+        elif self._driverless:
+            proxy = self._driverless.proxy
+            mode = proxy.mode
+            if mode == "fixed_servers":
+                rules = defaultdict(lambda :None)
+                rules.update(proxy.rules)
+                bypass_list = rules["bypassList"]
+                if not bypass_list:
+                    bypass_list = []
+                if rules["singleProxy"]:
+                    # noinspection PyTypeChecker
+                    single = make_proxy(rules["singleProxy"])
+                    return {"http": single, "https": single, "ftp":single,
+                            "mode":mode, "bypass_list":bypass_list}
+                else:
+                    return {"http": make_proxy(rules["proxyForHttp"]), "https": make_proxy(rules["proxyForHttps"]), "ftp": make_proxy(rules["proxyForFtp"]),"fallback_proxy":make_proxy(rules["fallbackProxy"]),
+                            "mode": mode, "bypass_list":bypass_list}
+            else:
+                return {"mode":mode}
+        else:
+            return
+
+
 
 
