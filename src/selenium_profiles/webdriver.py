@@ -115,13 +115,14 @@ class Chrome(BaseDriver):
             if executable_path:
                 kwargs.update({"service": ChromeService(executable_path=executable_path)})
 
+        injector = None
         if injector_options:
             from selenium_injector.scripts.injector import Injector
             if (injector_options is True) or injector_options == {}:
                 injector_options = {}
-            driverless = Injector(**injector_options)
+            injector = Injector(**injector_options)
 
-            options_manager.add_argument(f'--load-extension={driverless.path}')
+            options_manager.add_argument(f'--load-extension={injector.path}')
 
         # add options to kwargs
         kwargs.update({"options": options_manager.Options})
@@ -132,7 +133,7 @@ class Chrome(BaseDriver):
 
         self.get("chrome://version/")  # wait browser to start
 
-        self.profiles = profiles(self, profile)
+        self.profiles = profiles(self, profile, selenium_injector=injector)
 
 
         self.profiles.cdp_handler.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
@@ -155,7 +156,7 @@ class Chrome(BaseDriver):
             tab_index = self.window_handles.index(self.current_window_handle).__str__()
             self.profiles.injector.tab_user = "tab-" + tab_index
             config = f"""
-                            var connection = new connector("{self.profiles.injector.socket.host}", {self.profiles.driverless.socket.port}, "{self.profiles.driverless.tab_user}")
+                            var connection = new connector("{self.profiles.injector.socket.host}", {self.profiles.injector.socket.port}, "{self.profiles.injector.tab_user}")
                             connection.connect();
                             """
 
@@ -250,12 +251,33 @@ class profiles:
 
     @property
     def proxy(self):
-        def make_proxy(proxy_dict:dict or None):
+        def val2str(proxy_dict:dict or None, creds:dict = None):
+            from urllib.parse import quote
             if proxy_dict:
                 defdict = defaultdict(lambda :"")
                 defdict.update(proxy_dict)
-                parsed = defdict["scheme"] + "://" + str(defdict["port"]) +":"+defdict["host"]
+                if creds:
+                    # noinspection PyTypeChecker
+                    creds = quote(creds["username"])+':'+quote(creds["password"])+'@'
+                else:
+                    creds = ""
+                parsed = defdict["scheme"] + "://"+ creds + defdict["host"] +":"+str(defdict["port"])
                 return parsed
+        def str2val(url):
+            creds = ""
+            try:
+                scheme, url = url.split("://")
+                if "@" in url:
+                    creds, url = url.split("@")
+                host, port = url.split(":")
+                values = {"host": host, "port": port, "scheme": scheme}
+                if creds:
+                    username, password = creds.split(":")
+                    creds = {"password":password, "username":username}
+                    values.update(creds)
+            except ValueError as e:
+                raise ValueError("expected proxy_url, but got "+url)
+            return values
 
         if self._seleniumwire:
             proxies = defaultdict(lambda: None)
@@ -265,12 +287,19 @@ class profiles:
                 proxies["bypass_list"] = proxies["no_proxy"].split(",")
             del proxies["no_proxy"]
             if not proxies["http"] or proxies["https"]:
+                # noinspection PyTypeChecker
                 proxies["mode"] = "system"
             return  dict(proxies)
 
-        elif self._driverless:
-            proxy = self._driverless.proxy
+        elif self.injector:
+            proxy = self.injector.proxy
             mode = proxy.mode
+            auth = proxy.auth
+            if "urls" in auth.keys():
+                del auth["urls"]
+            if not auth:
+                auth = None
+
             if mode == "fixed_servers":
                 rules = defaultdict(lambda :None)
                 rules.update(proxy.rules)
@@ -279,14 +308,14 @@ class profiles:
                     bypass_list = []
                 if rules["singleProxy"]:
                     # noinspection PyTypeChecker
-                    single = make_proxy(rules["singleProxy"])
+                    single = val2str(rules["singleProxy"], creds=auth)
                     return {"http": single, "https": single, "ftp":single,
-                            "mode":mode, "bypass_list":bypass_list}
+                            "mode":mode, "bypass_list":bypass_list, "auth":auth}
                 else:
-                    return {"http": make_proxy(rules["proxyForHttp"]), "https": make_proxy(rules["proxyForHttps"]), "ftp": make_proxy(rules["proxyForFtp"]),"fallback_proxy":make_proxy(rules["fallbackProxy"]),
-                            "mode": mode, "bypass_list":bypass_list}
+                    return {"http": val2str(rules["proxyForHttp"], creds=auth), "https": val2str(rules["proxyForHttps"], creds=auth), "ftp": val2str(rules["proxyForFtp"], creds=auth),"fallback_proxy":val2str(rules["fallbackProxy"], creds=auth),
+                            "mode": mode, "bypass_list":bypass_list, "auth":auth}
             else:
-                return {"mode":mode}
+                return {"mode":mode, "rules":proxy.rules}
         else:
             return
 
