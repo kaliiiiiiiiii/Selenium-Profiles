@@ -1,87 +1,110 @@
-# noinspection PyUnresolvedReferences
-from selenium.webdriver import ChromeOptions
 import warnings
+from collections import defaultdict
+import typing
 
+from selenium.webdriver.chrome.service import Service as ChromeService
 
-#
-class Chrome:
+from selenium_profiles.utils.colab_utils import is_colab
+from selenium_profiles.scripts.profiles import options as options_handler
+
+from selenium.webdriver import Chrome as BaseDriver
+class Chrome(BaseDriver):
+
     # noinspection PyDefaultArgument
-    def __init__(self, profile: dict = None, chrome_binary:str=None, executable_path:str = None,
-                 options = None,dublicate_policy: str = "warn-add", safe_dublicates: list = ["--add-extension"],
-                 uc_driver: bool or None = None, seleniumwire_options:dict or bool or None = None):
-        from collections import defaultdict
-        from selenium.webdriver.chrome.service import Service as ChromeService
-        from selenium_profiles.utils.colab_utils import is_colab
-        from selenium_profiles.scripts.cdp_tools import cdp_tools
-        from selenium_profiles.scripts.profiles import options as options_handler
+    def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
+                 options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
+                 base_drivers:tuple=None,
+                 uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, injector_options:dict or bool or None = None,
+                 **kwargs):
+
+        import seleniumwire.undetected_chromedriver as wire_uc_webdriver
+        import undetected_chromedriver as uc_webdriver
+        from seleniumwire import webdriver as wire_webdriver
+
         from selenium_profiles.utils.utils import valid_key
 
+        if not base_drivers:
+            base_drivers = tuple()
 
-        # initial attributes
-        self.cdp = None
-        self._started = None
-        self.kwargs = {}
+        # import webdriver
+        webdriver = None
+        if uc_driver:
+            if seleniumwire_options:
+                webdriver = wire_uc_webdriver
+            else:
+                webdriver = uc_webdriver
+        else:
+            if seleniumwire_options:
+                webdriver = wire_webdriver
 
-        self.uc_driver = uc_driver
-        self.seleniumwire_options = seleniumwire_options
-        self.executable_path = executable_path
-        self.cdp_tools = cdp_tools
-        self.chrome_binary = chrome_binary
+        if webdriver:
+            base_drivers = (webdriver.Chrome,) + base_drivers
 
-        valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
-        self.profile = defaultdict(lambda: None)
-        self.profile.update(profile)
+        if not options:
+            if webdriver:
+                options = webdriver.ChromeOptions()
+            else:
+                from selenium.webdriver import ChromeOptions
+                options = ChromeOptions()
+
+        if len(base_drivers) > 1:
+            warnings.warn("More than one base_driver might not initialize correctly, seems buggy.\n Also, you might try different order")
+        if (len(base_drivers) == 1) and (base_drivers[0] == Chrome.__base__):
+            pass # got selenium.webdriver.Chrome as BaseDriver
+        elif not base_drivers:
+            pass
+        else :
+            Chrome.__bases__ = base_drivers
+
+        if not profile:
+            profile = {}
+
+        valid_key(profile.keys(), ["cdp", "options", "proxy"], "profile (selenium-profiles)")
+
+        if type(seleniumwire_options) is dict:
+            kwargs.update({"seleniumwire_options": seleniumwire_options})
+        elif not (type(seleniumwire_options) is bool or seleniumwire_options is None):
+            raise ValueError("Expected NoneType, dict or bool")
+
+        defdict = defaultdict(lambda: None)
+        defdict.update(profile)
+        profile = defdict
+        proxy = defaultdict(lambda :None)
+        # noinspection PyTypeChecker
+        if profile["proxy"]:
+            # noinspection PyTypeChecker
+            proxy.update(profile["proxy"])
+
+        if proxy["proxy"] and (not seleniumwire_options):
+            injector_options = True
 
         # sandbox handling for google-colab
         if is_colab():
             # todo: nested default-dict with Lambda: None
-            if self.profile["options"]:
+            if profile["options"]:
                 # noinspection PyUnresolvedReferences
-                if 'sandbox' in self.profile["options"].keys():
+                if 'sandbox' in profile["options"].keys():
                     # noinspection PyUnresolvedReferences
-                    if self.profile["options"]["sandbox"] is True:
-                        import warnings
+                    if profile["options"]["sandbox"] is True:
                         warnings.warn('Google-colab doesn\'t work with sandbox enabled yet, disabling sandbox')
                 else:
-                     # noinspection PyUnresolvedReferences
-                     self.profile["options"].update({"sandbox": False})
+                    # noinspection PyUnresolvedReferences
+                    profile["options"].update({"sandbox": False})
             else:
                 # noinspection PyTypeChecker
-                self.profile.update({"options": {"sandbox": False}})
-
-        # import webdriver
-        if self.uc_driver:
-            if self.seleniumwire_options:
-                import seleniumwire.undetected_chromedriver as webdriver
-            else:
-                import undetected_chromedriver as webdriver
-        else:
-            if self.seleniumwire_options:
-                from seleniumwire import webdriver
-            else:
-                from selenium import webdriver
-
-        if type(self.seleniumwire_options) is dict:
-            self.kwargs.update({"seleniumwire_options":self.seleniumwire_options})
-
-        self.driver = webdriver.Chrome
-        if not options:
-            options = webdriver.ChromeOptions()
-
-
+                profile.update({"options": {"sandbox": False}})
 
         # options-manager
-        self.options = options_handler(options, self.profile["options"], dublicate_policy=dublicate_policy, safe_dublicates=safe_dublicates)
+        options_manager = options_handler(options, profile["options"], duplicate_policy=duplicate_policy,
+                                          safe_duplicates=safe_duplicates)
 
         # chrome executable path
-        if not self.chrome_binary :
-            self.options.Options.binary_location = chrome_binary
+        if not chrome_binary:
+            options_manager.Options.binary_location = chrome_binary
 
-        # process kwargs
-
-        if uc_driver:
-            if self.executable_path:
-                self.kwargs.update({"driver_executable_path":self.executable_path})
+        if (uc_webdriver.Chrome in base_drivers) or (wire_uc_webdriver.Chrome in base_drivers):
+            if executable_path:
+                kwargs.update({"driver_executable_path": executable_path})
         else:
             # detectability options
             from selenium_profiles.scripts import undetected
@@ -89,130 +112,154 @@ class Chrome:
             # is adb used ?
             try:
                 # noinspection PyUnresolvedReferences
-                adb = self.profile["options"]["adb"]
+                adb = profile["options"]["adb"]
             except TypeError:
                 adb = None
             except KeyError:
                 adb = None
 
-            self.options.Options = undetected.config_options(self.options.Options, adb=adb)
+            options_manager.Options = undetected.config_options(options_manager.Options, adb=adb)
 
             # chromedriver path
-            if self.executable_path:
-                self.kwargs.update({"service": ChromeService(executable_path=self.executable_path)})
+            if executable_path:
+                kwargs.update({"service": ChromeService(executable_path=executable_path)})
+
+        injector = None
+        if injector_options:
+            from selenium_injector.scripts.injector import Injector
+            if (injector_options is True) or injector_options == {}:
+                injector_options = {}
+            injector = Injector(**injector_options)
+
+            options_manager.add_argument(f'--load-extension={injector.path}')
 
         # add options to kwargs
-        self.kwargs.update({"options": self.options.Options})
-
-    def start(self):
-
-        if self._started:
-            raise TypeError("webdriver.Chrome() object can't be re-used")
+        kwargs.update({"options": options_manager.Options})
 
         # Actual start of chrome
-        self.driver = self.driver(**self.kwargs)
-        self._started = True
-
-
+        super().__init__(**kwargs)
         # cdp tools
 
-        self.driver.get("http://lumtest.com/myip.json")  # wait browser to start
-        self.cdp_tools = self.cdp_tools(self.driver)
+        self.get("chrome://version/")  # wait browser to start
 
-        self.cdp_tools.evaluate_on_document_identifiers.update({1: # we know that it is there:)
-                """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
-                window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
-                window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
-                window.cdc_adoQpoasnfa76pfcZLmcfl_Proxy = window.Proxy;
-                window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
-                }) ();"""})
+        self.profiles = profiles(self, profile, selenium_injector=injector)
 
-        from selenium_profiles.scripts.profiles import cdp as cdp_handler
-        self.cdp = cdp_handler(self.driver, self.cdp_tools)
-        self.cdp.apply(cdp_profile=self.profile["cdp"])
 
-        if not self.uc_driver:
+        self.profiles.cdp_handler.evaluate_on_document_identifiers.update({1:  # we know that it is there:)
+                                                                """(function () {window.cdc_adoQpoasnfa76pfcZLmcfl_Array = window.Array;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Object = window.Object;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Promise = window.Promise;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Proxy = window.Proxy;
+                                                                window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol = window.Symbol;
+                                                                }) ();"""})
+
+        self.profiles.cdp_handler.apply(cdp_profile=profile["cdp"])
+
+        if not uc_driver:
             from selenium_profiles.scripts import undetected
-            undetected.exec_cdp(self.driver, self.cdp_tools)
+            undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
-        self.add_funcs_to_driver()
+        if injector_options or injector_options == {}:
 
-        # Return actual driver
-        return self.driver
+            # connection to tab-0
+            tab_index = self.window_handles.index(self.current_window_handle).__str__()
+            self.profiles.injector.tab_user = "tab-" + tab_index
+            config = f"""
+                            var connection = new connector("{self.profiles.injector.socket.host}", {self.profiles.injector.socket.port}, "{self.profiles.injector.tab_user}")
+                            connection.connect();
+                            """
 
-    def add_funcs_to_driver(self):
+            from selenium_injector.utils.utils import read
+            utils_js = read("files/js/utils.js")
+            self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",
+                                 {"source": "(function(){%s})()" % (utils_js + self.profiles.injector.connection_js + config)})
 
-        # add selenium-profiles utils to driver
-        class utils(object):
-            pass
-            def apply(self, profile:dict):
-                """
-                apply options after driver allready started
-                :param profile: selenium-profiles options
-                """
-                from selenium_profiles.utils.utils import valid_key
-                valid_key(profile.keys(),["cdp", "options"], "profile (selenium-profiles)")
-                if "options" in profile.keys():
-                    warnings.warn('profile["options"] can\'t be applied when driver allready started')
-                if "cdp" in profile.keys():
-                    # noinspection PyUnresolvedReferences
-                    self.cdp.apply(profile["cdp"])
+        if proxy["proxy"]:
+            from selenium_profiles.utils.utils import valid_key
+            # noinspection PyUnresolvedReferences
+            valid_key(proxy.keys(), ["proxy", "bypass_list"], '"profiles["proxy"]"')
+            # noinspection PyUnresolvedReferences
+            self.profiles.proxy.set_single(proxy["proxy"], bypass_list=proxy["bypass_list"])
 
-        utils = utils()
+    def get_cookies(self, urls:typing.List[str] = None) -> typing.List[dict]:
+        arg = {}
+        if urls:
+            arg["urls"] = urls
+        return self.execute_cdp_cmd("Network.getAllCookies", arg)['cookies']
 
-        # our profile
-        utils.__setattr__("profile",self.profile)
+    def add_cookie(self, cookie_dict:dict) -> None:
+        self.execute_cdp_cmd("Network.setCookie",cookie_dict)
 
-        # add selenium-interceptor
+    def delete_cookie(self, name:str, url:str=None, domain:str=None, path:str=None) -> None:
+        arg = {"name": name}
+        if url:
+            arg["url"] = url
+        if domain:
+            arg["domain"] = domain
+        if path:
+            arg["path"] = path
+        self.execute_cdp_cmd("Network.deleteCookies", arg)
+
+    def delete_all_cookies(self) -> None:
+        self.execute_cdp_cmd("Network.clearBrowserCookies", {})
+
+    def quit(self) -> None:
+        if "profiles" in self.__dir__():
+            if "driverless" in self.profiles.__dir__():
+                # noinspection PyUnresolvedReferences
+                self.profiles.driverless.stop()
+        super().quit()
+
+class profiles:
+    # noinspection PyShadowingNames
+    def __init__(self, driver, profile, cdp_handler=None, selenium_injector=None):
+
         from selenium_interceptor.interceptor import cdp_listener
-        utils.__setattr__("cdp_listener", cdp_listener(driver=self.driver))
+        from selenium_profiles.scripts.driver_utils import requests, actions
+        from selenium_profiles.scripts.proxy import DynamicProxy
 
-        # add my functions
-        utils.__setattr__("get_profile", self.get_profile)
-        utils.__setattr__("export_profile", self.export_profile)
-        utils.__setattr__("get_profile", self.get_profile)
-        utils.__setattr__("cdp", self.cdp)
+        self._driver = driver
+        self._profile = profile
+        self.injector = selenium_injector
 
-        from selenium_profiles.scripts.driver_utils import requests, actions, TouchActionChain
+        if cdp_handler:
+            self.cdp_handler = cdp_handler
+        elif "profiles" in driver.__dir__():
+            self.cdp_handler = driver.profiles.cdp_handler
+        else:
+            from selenium_profiles.scripts.profiles import cdp_handler
+            self.cdp_handler = cdp_handler(self._driver)
 
-        # requests.fetch
-        requests = requests(self.driver)
-        utils.__setattr__("fetch", requests.fetch)
+        self.cdp_listener = cdp_listener(driver=self._driver)
+        self.actions = actions(self._driver)
 
-        actions = actions(self.driver)
-        actions.__setattr__("TouchActionChain", TouchActionChain)
-        utils.__setattr__("actions", actions)
-
-        self.driver.profiles = utils
-
-        # patch driver functions
-        self.driver.get_cookies = self.cdp_tools.get_cookies
-        self.driver.add_cookie = self.cdp_tools.add_cookie
-        self.driver.get_cookie = self.cdp_tools.get_cookie
-        self.driver.delete_cookie = self.cdp_tools.delete_cookie
-        self.driver.delete_all_cookies = self.cdp_tools.delete_all_cookies
-
-    def export_profile(self, to_path=None):
-        import shutil
-        self.ensure_started()
-
-        if not to_path: # default path
-            from selenium_profiles.utils.utils import sel_profiles_path
-            to_path = sel_profiles_path() + "files/user_dir"
+        requests = requests(self._driver)
+        self.fetch = requests.fetch
+        try:
+            self.proxy = DynamicProxy(self._driver, injector=self.injector)
+        except ModuleNotFoundError:
+            pass # not supported
 
 
-        # noinspection PyUnresolvedReferences
-        shutil.copytree(self.driver.user_data_dir, to_path)
+    # noinspection PyShadowingNames
+    def apply(self, profile: dict):
+        """
+        apply options after driver already started
+        :param profile: selenium-profiles options
+        """
+        from selenium_profiles.utils.utils import valid_key
+        valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
+        if "options" in profile.keys():
+            warnings.warn('profile["options"] can\'t be applied when driver already started')
+        if "cdp" in profile.keys():
+            # noinspection PyUnresolvedReferences
+            self.cdp_handler.apply(profile["cdp"])
 
     def get_profile(self):
         from selenium_profiles.utils.utils import read
-        self.ensure_started()
-
         js = read('js/export_profile.js', sel_root=True)
+        return self._driver.execute_async_script(js)
 
-        # noinspection PyArgumentList
-        return self.driver.execute_async_script(js)
 
-    def ensure_started(self):
-        if not self._started:
-            raise TypeError("driver needs to be started first :)")
+
+

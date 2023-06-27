@@ -5,18 +5,14 @@ from typing import Dict
 from selenium_profiles.utils.utils import check_cmd, valid_key
 
 
-class cdp:
-    def __init__(self, driver, cdp_tools=None):
+class cdp_handler:
+    def __init__(self, driver):
         self._driver = driver
-
-        if not cdp_tools:
-            from selenium_profiles.scripts.cdp_tools import cdp_tools
-            cdp_tools = cdp_tools(self._driver)
 
         self._supported_keys = ["touch", "maxtouchpoints", "emulation", "useragent", "patch_version",
                                 "cores", "darkmode","pinter_as_touch","cdp_args"]
 
-        self.cdp_tools = cdp_tools
+        self.evaluate_on_document_identifiers = {}
 
     def apply(self, cdp_profile: bool or None = None):
         """
@@ -80,13 +76,13 @@ class cdp:
         """
         if useragent:
             useragent = self.patch_version(useragent_profile=useragent, version=patch_version, driver=self._driver)
-            return self.cdp_tools.set_useragent(useragent=useragent)
+            return self._driver.execute_cdp_cmd('Emulation.setUserAgentOverride', useragent)
 
     def patch_version(self, useragent_profile: dict, version: str or bool or None = True, driver=None):
         """
         :param useragent_profile: profile["cdp"]["useragent"]
         :param version: string or True (and driver specified => automatically get version)
-        :param driver: driver object to authomatically get the version
+        :param driver: driver object to automatically get the version
         :return: patched useragent_profile => profile["cdp"]["useragent"]
         """
         profile = defaultdict(lambda: None)
@@ -94,17 +90,14 @@ class cdp:
 
         if version is True:
             if driver:
-                useragent = driver.execute_script("return navigator.userAgent")
+                useragent = driver.execute_cdp_cmd("Browser.getVersion",{})["product"]
                 import re
                 version = re.findall(r'(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+', useragent)
-                if len(version) != 1:
-                    raise LookupError("Couldn't find Chrome-version in: " + useragent)
-                else:
-                    version = version[0]
+                version = version[0]
             else:
                 raise ValueError("driver or version needs to be specified")
 
-        if type(version) == str:
+        elif type(version) == str:
             if profile["userAgent"]:
                 import re
                 # noinspection PyTypeChecker
@@ -157,7 +150,11 @@ class cdp:
             if not "screenHeight" in emulation.keys():
                 emulation.update({"screenHeight": emulation["height"]})
 
-            return self.cdp_tools.set_emulation(emulation=emulation)
+            return self._driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
+
+    def clear_emulation(self, enabled:bool or None):
+        if enabled or (enabled is None):
+            self._driver.execute_cdp_cmd("Emulation.clearDeviceMetricsOverride", {})
 
     def set_touchpoints(self, enabled: bool or None = None, maxpoints: int or None = None):
         """
@@ -165,44 +162,68 @@ class cdp:
         :param maxpoints:int
         """
         if not enabled is None:
-            return self.cdp_tools.set_touchpoints(enabled=enabled, maxpoints=maxpoints)
+            if maxpoints is None:
+                maxpoints = 10
+            return self._driver.execute_cdp_cmd('Emulation.setTouchEmulationEnabled',
+                                                {'enabled': enabled, 'maxTouchPoints': maxpoints})
 
     def set_cores(self, cores_count: int or None = 8):
         """
         :param cores_count: int => navigator.hardwareConcurrency
         """
         if cores_count:
-            return self.cdp_tools.set_cores(cores_count=cores_count)
+            return self._driver.execute_cdp_cmd("Emulation.setHardwareConcurrencyOverride",
+                                                {"hardwareConcurrency": cores_count})
 
 
     def darkmode(self, enabled: bool or None = None, mobile: bool = False):
         if not enabled is None:
-            return self.cdp_tools.set_darkmode(enabled=enabled, mobile=mobile)
+            if enabled:
+                if not mobile:
+                    warnings.warn('darkmode might look weird without mobile_view!')
+                return self._driver.execute_cdp_cmd('Emulation.setAutoDarkModeOverride',
+                                                    {'enabled': enabled})
 
     def pointer_as_touch(self, enabled: None or bool = True, mobile: bool = None):
-        if not enabled is None:
-            warnings.warn("pointer_as_touch makes selenium hang and isn't recommended")
-            return self.cdp_tools.pointer_as_touch(mobile, enabled)
+        if mobile or mobile is None:
+            config = 'mobile'
+        else:
+            config = 'desktop'
+        if not(enabled is None):
+            warnings.warn('Actions execute, but then take long when "EmitTouchEventsForMouse"!')
+            # executes, but then takes long [maybe check if success?]
+            return self._driver.execute_cdp_cmd('Emulation.setEmitTouchEventsForMouse', {'enabled': enabled,
+                                                                                         'configuration': config})
 
+    def evaluate_on_new_document(self, js: str):  # evaluate js on every new page
+        identifier = int(
+            self._driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": js})["identifier"])
+        self.evaluate_on_document_identifiers.update({identifier: js})
+        return identifier
+
+    # remove js evaluation  on every new page for specific script
+    def remove_evaluate_on_document(self, identifier: int):
+        del self.evaluate_on_document_identifiers[identifier]
+        return self._driver.execute_cdp_cmd("Page.removeScriptToEvaluateOnNewDocument", {"identifier": str(identifier)})
 
 class options:  # webdriver.Chrome or uc.Chrome options
     # noinspection PyDefaultArgument,PyShadowingNames
-    def __init__(self, options, options_profile: dict or None = None, dublicate_policy: str = "warn-add",
-                 safe_dublicates: list = ["--add-extension"]):
+    def __init__(self, options, options_profile: dict or None = None, duplicate_policy: str = "warn-add",
+                 safe_duplicates: list = ["--add-extension"]):
         """
         :param options:  for example ChromeOptions()
         :param options_profile: # profile["options"] for a Selenium-Profiles profile
-        :param dublicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
-        exact dublicates always get removed with a warning
+        :param duplicate_policy: for args | "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+        exact duplicates always get removed with a warning
         """
         if not options_profile:
             options_profile = {}
         self.profile = defaultdict(lambda: None)
         self.profile.update(options_profile)
 
-        self.dublicate_policy = dublicate_policy
-        self.dublicates = defaultdict(lambda: set())
-        self.safe_dublicates = safe_dublicates
+        self.duplicate_policy = duplicate_policy
+        self.duplicates = defaultdict(lambda: set())
+        self.safe_duplicates = safe_duplicates
 
         self.Options = options
         self.to_capabilities = self.Options.to_capabilities
@@ -210,9 +231,9 @@ class options:  # webdriver.Chrome or uc.Chrome options
         self._profile_keys = ["sandbox", "window_size", "headless", "load_images", "incognito", "touch", "app", "gpu",
                               "proxy", "args", "capabilities", "experimental_options", "adb", "adb_package",
                               "use_running_app",
-                              "extension_paths", "auth_proxy"
+                              "extension_paths",
                               ]
-        self._supported_dublicate_policies = ["raise", "replace", "warn-replace",
+        self._supported_duplicate_policies = ["raise", "replace", "warn-replace",
                                               "skip", "warn-skip", "add", "warn-add"]
 
         self.apply(options_profile)
@@ -236,7 +257,6 @@ class options:  # webdriver.Chrome or uc.Chrome options
         self.update_experimental_options(profile["experimental_options"])
         self.adb_remote(profile["adb"], package=profile["adb_package"], use_running_app=profile["use_running_app"])
         self.add_extensions(profile["extension_paths"], adb=profile["adb"])
-        self.auth_proxy(profile["auth_proxy"])
         return self.Options
 
     # noinspection PyIncorrectDocstring
@@ -345,9 +365,9 @@ class options:  # webdriver.Chrome or uc.Chrome options
             if use_running_app or use_running_app is None:
                 self.update_experimental_options({'androidUseRunningApp': True})
 
-    def warn_adb_unsupported(self, adb: bool or None, methdod: str):
+    def warn_adb_unsupported(self, adb: bool or None, method: str):
         if adb:
-            warnings.warn(f"specifying {methdod} not supported on Android hardware")
+            warnings.warn(f"specifying {method} not supported on Android hardware")
 
     def proxy(self, proxy: str = None):
         """
@@ -356,7 +376,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
         supported_schemes = ["http", "https", "socks4", "socks5"]
 
         if proxy:
-            scheme = proxy.split("://")
+            scheme = proxy.split("://")[0]
             check_cmd(scheme, supported_schemes)
             if "@" in proxy:
                 raise ValueError("Proxies specified in options don't allow authentification")
@@ -364,139 +384,139 @@ class options:  # webdriver.Chrome or uc.Chrome options
 
     ## tools ##
 
-    def extend_arguments(self, my_args: list = None, dublicate_policy=None):
+    def extend_arguments(self, my_args: list = None, duplicate_policy=None):
 
         if my_args:
             for arg in my_args:
-                self.add_argument(arg, dublicate_policy=dublicate_policy)
+                self.add_argument(arg, duplicate_policy=duplicate_policy)
 
-    def add_argument(self, my_option: str, dublicate_policy=None):
+    def add_argument(self, my_option: str, duplicate_policy=None):
         """
         :param my_option: argument to add
-        :param dublicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
+        :param duplicate_policy: "raise" or "replace" or "warn-replace" or "skip" or "warn-skip" or "add" or "warn-add"
         """
 
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
-        check_cmd(policy, self._supported_dublicate_policies)
+        check_cmd(policy, self._supported_duplicate_policies)
         my_arg = my_option.split("=")[0]
-        dublicates_found = False
+        duplicates_found = False
         # iterateover current options
         if self.Options.arguments:
             for i, option in list(enumerate(self.Options.arguments)):
                 arg = option.split("=")[0]
 
-                if my_arg == arg:  # got dublicate
+                if my_arg == arg:  # got duplicate
                     if my_option == option:
-                        warnings.warn(f"exact dublicate found for {my_option}, skipping")
+                        warnings.warn(f"exact duplicate found for {my_option}, skipping")
                         return
                     else:
-                        dublicates_found = True
-                        if my_arg not in self.safe_dublicates:
-                            self.dublicates[arg].update({my_option, option})
+                        duplicates_found = True
+                        if my_arg not in self.safe_duplicates:
+                            self.duplicates[arg].update({my_option, option})
                             # replace
                             if policy == "replace":
                                 self.Options.arguments[i] = my_option
                             elif policy == "warn-replace":
                                 self.Options.arguments[i] = my_option
-                                warnings.warn(f"found dublicate for {my_option}: {option} , replacing")
+                                warnings.warn(f"found duplicate for {my_option}: {option} , replacing")
                             # skipp
                             elif policy == "skip":
                                 pass
                             elif policy == "warn-skip":
-                                warnings.warn(f"found dublicate for {my_option}: {option}, skipping")
+                                warnings.warn(f"found duplicate for {my_option}: {option}, skipping")
 
                             # raise
                             elif policy == "raise":
-                                raise ValueError(f"found dublicate for {my_option}: {option}")
+                                raise ValueError(f"found duplicate for {my_option}: {option}")
                 else:
                     self.Options.arguments.append(my_option)
                     return
 
             # add
-            if dublicates_found:  # we only want to add them once:)
-                if my_arg in self.safe_dublicates:
+            if duplicates_found:  # we only want to add them once:)
+                if my_arg in self.safe_duplicates:
                     self.Options.arguments.append(my_option)
                     return
                 if policy == "add":
                     self.Options.arguments.append(my_option)
                 elif policy == "warn-add":
                     self.Options.arguments.append(my_option)
-                    warnings.warn(f"found dublicates for {my_option}: {self.dublicates[my_arg]} , adding")
+                    warnings.warn(f"found duplicates for {my_option}: {self.duplicates[my_arg]} , adding")
 
         else:  # first option to add
             self.Options.arguments.append(my_option)
 
-    def update_capabilities(self, capabilities: dict or None = None, dublicate_policy=None):
+    def update_capabilities(self, capabilities: dict or None = None, duplicate_policy=None):
         """
-        :param dublicate_policy: self._supported_dublicate_policies
+        :param duplicate_policy: self._supported_duplicate_policies
         :param capabilities: dict of {"capability":value}
 
-        handling of dublicates not implemented yet!
+        handling of duplicates not implemented yet!
         """
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
         if capabilities:
-            check_cmd(policy, self._supported_dublicate_policies)
+            check_cmd(policy, self._supported_duplicate_policies)
             for cap, value in capabilities.items():
                 if cap in self.Options.capabilities.keys():
-                    dublicate = self.Options.capabilities[cap]
+                    duplicate = self.Options.capabilities[cap]
                     if policy == "replace":
                         self.Options.set_capability(cap, value=value)
                     elif policy == "warn-replace":
                         self.Options.set_capability(cap, value=value)
-                        warnings.warn(f"got dublicate for {cap}: {dublicate} , replacing")
+                        warnings.warn(f"got duplicate for {cap}: {duplicate} , replacing")
                     # skipp
                     elif policy == "skip":
                         pass
                     elif policy == "warn-skip":
-                        warnings.warn(f"got dublicate for {cap}: {dublicate}, skipping")
+                        warnings.warn(f"got duplicate for {cap}: {duplicate}, skipping")
                     elif policy == "add" or policy == "warn-add":
                         warnings.warn(
-                            f"got dublicate for {cap}: {dublicate} ,policy is {policy}, but capabilties need to be unique, skipping")
+                            f"got duplicate for {cap}: {duplicate} ,policy is {policy}, but capabilties need to be unique, skipping")
                     # raise
                     elif policy == "raise":
-                        raise ValueError(f"got dublicate for {cap}: {dublicate}")
+                        raise ValueError(f"got duplicate for {cap}: {duplicate}")
                 else:
                     self.Options.set_capability(cap, value=value)
 
-    def update_experimental_options(self, experimental_options: dict or None = None, dublicate_policy=None):
+    def update_experimental_options(self, experimental_options: dict or None = None, duplicate_policy=None):
         """
         :param experimental_options: dict of {"experimental_option":value}
-        :param dublicate_policy: self._supported_dublicate_policies
+        :param duplicate_policy: self._supported_duplicate_policies
         """
-        if dublicate_policy:
-            policy = dublicate_policy
+        if duplicate_policy:
+            policy = duplicate_policy
         else:
-            policy = self.dublicate_policy
+            policy = self.duplicate_policy
 
         if experimental_options:
-            check_cmd(policy, self._supported_dublicate_policies)
+            check_cmd(policy, self._supported_duplicate_policies)
             for key, value in experimental_options.items():
                 if key in self.Options.experimental_options.keys():
-                    dublicate = self.Options.experimental_options[key]
+                    duplicate = self.Options.experimental_options[key]
                     if policy == "replace":
                         self.Options.add_experimental_option(key, value=value)
                     elif policy == "warn-replace":
                         self.Options.add_experimental_option(key, value=value)
-                        warnings.warn(f"got dublicate for {key}: {dublicate} , replacing")
+                        warnings.warn(f"got duplicate for {key}: {duplicate} , replacing")
                     # skipp
                     elif policy == "skip":
                         pass
                     elif policy == "warn-skip":
-                        warnings.warn(f"got dublicate for {key}: {dublicate}, skipping")
+                        warnings.warn(f"got duplicate for {key}: {duplicate}, skipping")
                     elif policy == "add" or policy == "warn-add":
                         warnings.warn(
-                            f"got dublicate for {key}: {dublicate} ,policy is {policy}, but experimental_options need to be unique, skipping")
+                            f"got duplicate for {key}: {duplicate} ,policy is {policy}, but experimental_options need to be unique, skipping")
                     # raise
                     elif policy == "raise":
-                        raise ValueError(f"got dublicate for {key}: {dublicate}")
+                        raise ValueError(f"got duplicate for {key}: {duplicate}")
                 else:
                     self.Options.add_experimental_option(key, value=value)
 
@@ -521,45 +541,4 @@ class options:  # webdriver.Chrome or uc.Chrome options
                     elif os.path.isdir(extension_path):
                         self.add_argument('--load-extension=' + extension_path)
                 else:
-                    raise LookupError("Extension-path doesn't exsist")
-
-    def auth_proxy(self, config: dict = None):
-        """
-        :param config: dict =>
-        {
-        host: str
-        port: int
-        username: str | optional
-        password: str | optional
-        scheme: str | optional
-        temp_dir: str | optional
-        }
-        """
-        from selenium_profiles.scripts.proxy_extension import make_extension
-
-        if config:
-            auth_proxy = defaultdict(lambda: None)
-            auth_proxy.update(config)
-
-            valid_key(auth_proxy.keys(), ["host", "port", "username", "password", "scheme", "temp_dir"],
-                      'profile_options auth_proxy => profile["options"]["auth_proxy"]')
-
-            host = auth_proxy["host"]
-            port = auth_proxy["port"]
-            username = auth_proxy["username"]
-            password = auth_proxy["password"]
-            scheme = auth_proxy["scheme"]
-            temp_dir = auth_proxy["temp_dir"]
-
-            if not host:
-                raise ValueError("value 'host' is required")
-            if not port:
-                raise ValueError("value 'port' is required")
-
-            if not scheme:
-                scheme = "http"
-
-            # noinspection PyTypeChecker
-            path = make_extension(host=host, port=port, username=str(username), password=str(password),
-                                  scheme=scheme, temp_dir=temp_dir)
-            self.add_extensions(extension_paths=[path])
+                    raise LookupError("Extension-path doesn't exist")

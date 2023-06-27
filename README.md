@@ -7,10 +7,10 @@
 * **Undetected** by Google, Cloudflare, creep-js ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
 * [Touch Actions](#Touch_actions)
-* [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
+* dynamic proxies with authentication
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.profiles.fetch(url)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
-* apply profile on allready running driver with `driver.profiles.apply(profiles.Android())`
+* apply profile on already running driver with `driver.profiles.apply(profiles.Android())`
 * use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
 for the latest features, have a look at the `dev` branch
@@ -35,15 +35,15 @@ for the latest features, have a look at the `dev` branch
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By  # locate elements
-from selenium.webdriver import ChromeOptions
+from seleniumwire import webdriver
 
 
-profile = profiles.Windows()
-options = ChromeOptions()
-mydriver = Chrome(profile, options=options, uc_driver=False)
-# mydriver.options.add_argument("--headless=new")
-
-driver = mydriver.start()  # or .Android
+profile = profiles.Windows() # or .Android
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
+driver = Chrome(profile, options=options, base_drivers=(webdriver.Chrome,),
+                uc_driver=False
+                )
 
 # get url
 driver.get('https://abrahamjuliot.github.io/creepjs/')  # test fingerprint
@@ -76,11 +76,6 @@ profile = \
       "gpu": False,
       "proxy": "http://example-proxy.com:9000", # note: auth not supported,
       "extension_paths": ["path/to/extension_1", ...], # directory, .crx or .zip
-      "auth_proxy": {
-            "host":"host", "port":9000,
-            "username":"user", "password":"password", 
-            "temp_dir": "C:/Downloads/proxy_extension"
-                },
       "args": ["--my-arg1", ...],
       "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
       "experimental_options":{"option1":"value1", "option2":"value2"},
@@ -116,6 +111,10 @@ profile = \
                     "bitness": "",
                     "wow64": False}
     }
+  },
+"proxy":{
+  "proxy":"socks5://user1:pass@example_jost.com:5001", 
+  "bypass_list":["localhost"]
   }
 }
 ```
@@ -129,8 +128,7 @@ from selenium_profiles.profiles import profiles
 
 profile = profiles.Android()
 
-mydriver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
-driver = mydriver.start()
+driver = webdriver.Chrome(profile, uc_driver=False, seleniumwire_options=True) # or pass seleniumwire-options
 
 def interceptor(request):
     request.headers['New-Header'] = 'Some Value'
@@ -148,18 +146,19 @@ exit()
 
 Example demonstration script
 ```python
-from selenium_profiles.webdriver import Chrome, ChromeOptions
+from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ChromeOptions
 
 from selenium_profiles.scripts.driver_utils import TouchActionChain
 
 
 # Start Driver
 options = ChromeOptions()
-profile = profiles.Android()
-mydriver = Chrome(profile, uc_driver=False, options=ChromeOptions)
-driver = mydriver.start()  # or .Android
+profile = profiles.Android() # or .Windows()
+
+driver = Chrome(profile, uc_driver=False, options=options)
 
 # initialise touch_actions
 chain = TouchActionChain(driver)
@@ -185,6 +184,45 @@ input('Press ENTER to quit Driver\n')
 driver.quit()
 ```
 
+### connect to running driver
+Undetectability isn't garanteed
+```python
+from selenium import  webdriver
+driver = webdriver.Chrome()
+# driver allready started:)
+
+
+from selenium_profiles.webdriver import profiles as profile_manager
+from selenium_profiles.profiles import profiles
+
+profile = profiles.Android() # or .Android()
+driver.profiles = profile_manager(driver=driver, profile=profile)
+driver.profiles.apply(profile)
+
+driver.get('https://hmaker.github.io/selenium-detector/')  # test fingerprint
+
+input("Press ENTER to exit")
+driver.quit()  # Execute on the End!
+```
+
+### Set proxies dynamically or with options
+```python
+from selenium_profiles.webdriver import Chrome
+from selenium_profiles.profiles import profiles
+
+profile = profiles.Windows() # or .Android()
+profile["proxy"] = {
+  "proxy":"http://user1:pass1@example_host.com:41149"
+  }
+
+driver = Chrome(profile=profile, injector_options=True)
+
+driver.profiles.proxy.set_single("http://user2:pass2@example_host.com:41149")
+print(driver.profiles.proxy.proxy)
+
+driver.quit()  # Execute on the End!
+```
+
 ### To export a profile:
 
 go to [https://js.do/kaliiiiiiiiiii/get_profile](https://js.do/kaliiiiiiiiiii/get_profile) in your browser and copy the text.
@@ -199,6 +237,8 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
+- [ ] use class instead of generator function at `selenium_profiles.webdriver.Chrome`
+- [ ] dynamic proxies [issue](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/52)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] fonts don't match platform
@@ -206,7 +246,16 @@ Please feel free to open an issue or fork!
     - `Navigator.userAgent`
     - `Navigator.platform`
     - `navigator.hardwareConcurrency`
-- [ ] allow passing seleniumwire-options => [discussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/36)
+  - [ ] emulation leak on new tabs [diskussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/50)
+  - [ ] [selenium-detector](https://github.com/HMaker/HMaker.github.io/blob/master/selenium-detector/chromedriver.js)
+    - [ ] Either Devtools Console is open or CDP Runtime Domain is enabled => patch javascript objects using a Proxy or disable CDP.Runtime domain?
+    - [ ] [document.$cdc_asdjflasutopfhvcZLmcfl_](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/js/call_function.js;l=219)
+    - [ ] [`document.$chrome_asyncScriptInfo`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/chrome/web_view_impl.cc;l=1586-1597;drc=2e14a3ac178ee87aa9154e5a15dcd986af1b6059)
+    - [ ] driver.execute_script() usage (needs hook on called element)
+    - [ ] driver.execute_async_script() usage (needs hook on called element)
+    - [ ] driver.find_element() usage
+    - [x] [`window.cdc_adoQpoasnfa76pfcZLmcfl`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/chrome/devtools_client_impl.cc;l=526-532;drc=f915006bb8e09e0c29016cf9ab9e737cdebc1adc)
+- [x] allow passing seleniumwire-options => [discussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/36)
 - [x] default metrics
   - [x] Android
   - [x] Windows
@@ -279,5 +328,6 @@ Inspiration, code snippets, etc.
 * [google-colab installer](https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/108)
 * [scripts/touch_action_chain](https://www.reddit.com/r/Appium/comments/rbx1r2/touchaction_deprecated_please_use_w3c_i_stead/)
 * [cdp_event_listeners](https://stackoverflow.com/questions/66227508/selenium-4-0-0-beta-1-how-add-event-listeners-in-cdp)
-* [porxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
+* [proxy-auth](https://github.com/Smartproxy/Selenium-proxy-authentication)
 * [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager)
+* [dynamic subclasses](https://stackoverflow.com/a/9270908/20443541)

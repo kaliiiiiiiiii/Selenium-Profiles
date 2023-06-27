@@ -75,6 +75,7 @@ class requests:
 class actions(object):
     def __init__(self, driver):
         self._driver = driver
+        self.TouchActionChain = TouchActionChain
     def sendkeys(self, keys):  # send keys without specific Element
         from selenium.webdriver.common.action_chains import ActionChains
         action = ActionChains(self._driver)
