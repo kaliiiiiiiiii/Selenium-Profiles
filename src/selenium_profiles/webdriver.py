@@ -200,14 +200,11 @@ class profiles:
 
         from selenium_interceptor.interceptor import cdp_listener
         from selenium_profiles.scripts.driver_utils import requests, actions
+        from selenium_profiles.scripts.proxy_extension import DynamicProxy
 
         self._driver = driver
         self._profile = profile
         self.injector = selenium_injector
-
-        self._seleniumwire = None
-        if "proxy" in self._driver.__dir__():
-            self._seleniumwire = True
 
         if cdp_handler:
             self.cdp_handler = cdp_handler
@@ -222,6 +219,10 @@ class profiles:
 
         requests = requests(self._driver)
         self.fetch = requests.fetch
+        try:
+            self.proxy = DynamicProxy(self._driver, injector=self.injector)
+        except ModuleNotFoundError:
+            pass # not supported
 
 
     # noinspection PyShadowingNames

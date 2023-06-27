@@ -63,9 +63,14 @@ class DynamicProxy:
             if "@" in url:
                 creds, url = url.split("@")
             host, port = url.split(":")
+            port = int(port)
+            if not (scheme and host and port):
+                raise ValueError
             values = {"host": host, "port": port, "scheme": scheme}
             if creds:
                 username, password = creds.split(":")
+                if not (username and password):
+                    raise ValueError
                 creds = {"password": password, "username": username}
                 values.update(creds)
         except ValueError:
@@ -90,8 +95,9 @@ class DynamicProxy:
         if self._seleniumwire:
             self._driver.proxy = {"http":proxy, "https":proxy, "no_proxy":",".join(bypass_list)}
         elif self._injector:
-            raise NotImplementedError("dynamic proxies with injector not implemented yet")
-            #self._injector.proxy.set_single()
+            proxy = self.str2val(proxy)
+            proxy.update({"bypass_list":bypass_list})
+            self._injector.proxy.set_single(**proxy)
 
     @property
     def proxy(self):
