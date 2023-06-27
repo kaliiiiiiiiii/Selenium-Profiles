@@ -1,8 +1,10 @@
 window._cf_chl_opt = {
     cFPWv: 'g'
 };
-~function(S, g, h, i, o, s) {
-    S = b,
+~function(g, h, i, o, s) {
+// MAIN function
+    b = b
+    ,
     function(c, e, R, f, z) {
         for (R = b,
         f = c(); !![]; )
@@ -17,9 +19,9 @@ window._cf_chl_opt = {
             }
     }(a, 855701),
     g = this || self,
-    h = g[S(385)],
+    h = g['document'],
     i = function(T, e, f, z) {
-        return T = S,
+        return T = b,
         e = String[T(386)],
         f = {
             'h': function(A) {
@@ -294,16 +296,16 @@ window._cf_chl_opt = {
         z
     }(),
     o = {},
-    o[S(434)] = 'o',
-    o[S(387)] = 's',
-    o[S(432)] = 'u',
-    o[S(373)] = 'z',
-    o[S(452)] = 'n',
-    o[S(417)] = 'I',
-    o[S(446)] = 'b',
+    o['object'] = 'o',
+    o['string'] = 's',
+    o['undefined'] = 'u',
+    o['symbol'] = 'z',
+    o['number'] = 'n',
+    o['bigint'] = 'I',
+    o['boolean'] = 'b',
     s = o,
-    g[S(399)] = function(f, z, A, B, a7, D, E, F, G, H, I) {
-        if (a7 = S,
+    g['giZRRiQTBy'] = function(f, z, A, B, a7, D, E, F, G, H, I) {
+        if (a7 = b,
         z === null || void 0 === z)
             return B;
         for (D = w(z),
@@ -333,38 +335,38 @@ window._cf_chl_opt = {
     ,
     y();
     function a(ad) {
-        return ad = '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10;onreadystatechange;application/json;undefined;display: none;object;_cf_chl_opt;charAt;from;length;pow;bind;send;tabIndex;Content-Type;contentDocument;call;boolean;1749meMeVf;replace;[native code];timeout;getOwnPropertyNames;number;removeChild;hasOwnProperty;createElement;sort;charCodeAt;msg;getPrototypeOf;%2b;addEventListener;Content-type;44jVXaeo;__CF$cv$params;3172698fewaEA;Message: ;iframe;ontimeout;loading;catch;cFPWv;symbol;6921530pKEFzO;includes;/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/;POST;d.cookie;Object;/beacon/ov;1528YJCEGG;/cv/result/;4016270ZKDoub;xhHjpm;document;fromCharCode;string;61767eGTCHg;KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp;splice;random;isArray;push;concat;1497095mYMkKq;appendChild;Microsoft.XMLHTTP;Function;giZRRiQTBy;prototype;XMLHttpRequest;error on cf_chl_props;function;open;join;toString;23475WbNMZJ;setRequestHeader;application/x-www-form-urlencoded;1866CuNRNs;ActiveXObject;/cdn-cgi/challenge-platform/h/;Array;body;stringify;clientInformation;bigint;isNaN;style;DOMContentLoaded; - ;Set;contentWindow;/invisible/jsd;4HUmwuG;Error object: ;keys;navigator'.split(';'),
+        return ad = ['0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10', 'onreadystatechange', 'application/json', 'undefined', 'display: none', 'object', '_cf_chl_opt', 'charAt', 'from', 'length', 'pow', 'bind', 'send', 'tabIndex', 'Content-Type', 'contentDocument', 'call', 'boolean', '1749meMeVf', 'replace', '[native code]', 'timeout', 'getOwnPropertyNames', 'number', 'removeChild', 'hasOwnProperty', 'createElement', 'sort', 'charCodeAt', 'msg', 'getPrototypeOf', '%2b', 'addEventListener', 'Content-type', '44jVXaeo', '__CF$cv$params', '3172698fewaEA', 'Message: ', 'iframe', 'ontimeout', 'loading', 'catch', 'cFPWv', 'symbol', '6921530pKEFzO', 'includes', '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/', 'POST', 'd.cookie', 'Object', '/beacon/ov', '1528YJCEGG', '/cv/result/', '4016270ZKDoub', 'xhHjpm', 'document', 'fromCharCode', 'string', '61767eGTCHg', 'KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp', 'splice', 'random', 'isArray', 'push', 'concat', '1497095mYMkKq', 'appendChild', 'Microsoft.XMLHTTP', 'Function', 'giZRRiQTBy', 'prototype', 'XMLHttpRequest', 'error on cf_chl_props', 'function', 'open', 'join', 'toString', '23475WbNMZJ', 'setRequestHeader', 'application/x-www-form-urlencoded', '1866CuNRNs', 'ActiveXObject', '/cdn-cgi/challenge-platform/h/', 'Array', 'body', 'stringify', 'clientInformation', 'bigint', 'isNaN', 'style', 'DOMContentLoaded', ' - ', 'Set', 'contentWindow', '/invisible/jsd', '4HUmwuG', 'Error object: ', 'keys', 'navigator'],
         a = function() {
             return ad
         }
         ,
         a()
     }
-    function l(f, z, a1, A, B, C, D, E, F, G) {
-        if (a1 = S,
+    function l(f, z, a1 /*a1 =b*/, A, B, C, D, E, F, G) {
+        if (b = b,
         !j(.01))
             return ![];
-        A = [a1(367) + f, a1(426) + JSON[a1(415)](z)][a1(405)](a1(421));
+        A = [b(367) + f, b(426) + JSON[b(415)](z)][b(405)](b(421));
         try {
-            if (B = g[a1(365)],
-            C = a1(412) + g[a1(435)][a1(372)] + a1(380) + 1 + a1(376) + B.r + a1(424),
+            if (B = g[b(365)],
+            C = b(412) + g[b(435)][b(372)] + b(380) + 1 + b(376) + B.r + b(424),
             D = n(),
             !D)
                 return;
-            E = a1(377),
-            D[a1(404)](E, C, !![]),
-            a1(450)in D && (D[a1(450)] = 2500,
-            D[a1(369)] = function() {}
+            E = b(377),
+            D[b(404)](E, C, !![]),
+            b(450)in D && (D[b(450)] = 2500,
+            D[b(369)] = function() {}
             ),
-            D[a1(408)](a1(462), a1(409)),
+            D[b(408)](b(462), b(409)),
             F = {},
-            F[a1(458)] = A,
-            G = i[a1(384)](JSON[a1(415)](F))[a1(448)]('+', a1(460)),
-            D[a1(441)]('v_' + B.r + '=' + G)
+            F[b(458)] = A,
+            G = i[b(384)](JSON[b(415)](F))[b(448)]('+', b(460)),
+            D[b(441)]('v_' + B.r + '=' + G)
         } catch (H) {}
     }
-    function y(ab, c, e, f) {
-        (ab = S,
+    function y(c, e, f) {
+        (b = b,
         c = ![],
         e = function(aa, z, A) {
             if (aa = b,
@@ -379,29 +381,29 @@ window._cf_chl_opt = {
             }
         }
         ,
-        h.readyState !== 'loading') ? e() : g[ab(461)] ? h[ab(461)](ab(420), e) : (f = h[ab(430)] || function() {}
+        h.readyState !== 'loading') ? e() : g['addEventListener'] ? h['addEventListener']('DOMContentLoaded', e) : (f = h['onreadystatechange'] || function() {}
         ,
-        h[ab(430)] = function(ac) {
-            ac = ab,
+        h['onreadystatechange'] = function() {
+            b = b,
             f(),
-            h.readyState !== ac(370) && (h[ac(430)] = f,
+            h.readyState !== 'loading' && (h['onreadystatechange'] = f,
             e())
         }
         )
     }
-    function x(a9, z, A, B, C, D) {
-        a9 = S;
+    function x(z, A, B, C, D) {
+        b = b;
         try {
-            return z = h[a9(455)](a9(368)),
-            z[a9(419)] = a9(433),
-            z[a9(442)] = '-1',
-            h[a9(414)][a9(396)](z),
-            A = z[a9(423)],
+            return z = h['createElement']('iframe'),
+            z['style'] = 'display: none',
+            z['tabIndex'] = '-1',
+            h['body']['appendChild'](z),
+            A = z['contentWindow'],
             B = {},
             B = giZRRiQTBy(A, A, '', B),
-            B = giZRRiQTBy(A, A[a9(416)] || A[a9(428)], 'n.', B),
-            B = giZRRiQTBy(A, z[a9(444)], 'd.', B),
-            h[a9(414)][a9(453)](z),
+            B = giZRRiQTBy(A, A['clientInformation'] || A['navigator'], 'n.', B),
+            B = giZRRiQTBy(A, z['contentDocument'], 'd.', B),
+            h['body']['removeChild'](z),
             C = {},
             C.r = B,
             C.e = null,
@@ -415,7 +417,7 @@ window._cf_chl_opt = {
     }
     function m(c) {}
     function v(f, z, A, a4, B) {
-        a4 = S;
+        a4 =b;
         try {
             return z[A][a4(371)](function() {}),
             'p'
@@ -430,48 +432,109 @@ window._cf_chl_opt = {
         a4(403) == B ? u(f, z[A]) ? 'N' : 'f' : s[B] || '?')
     }
     function w(c, a5, e) {
-        for (a5 = S,
+        for (a5 = b,
         e = []; null !== c; e = e[a5(394)](Object[a5(427)](c)),
         c = Object[a5(459)](c))
             ;
         return e
     }
     function n(a2) {
-        if (a2 = S,
-        g[a2(401)])
-            return new g[(a2(401))]();
-        if (g[a2(411)])
+        if (b = b,
+        g['XMLHttpRequest'])
+            return new g[('XMLHttpRequest')]();
+        if (g['ActiveXObject'])
             try {
-                return new g[(a2(411))](a2(397))
+                return new g[('ActiveXObject')]('Microsoft.XMLHTTP')
             } catch (c) {}
     }
-    function u(c, e, a3) {
-        return a3 = S,
-        e instanceof c[a3(398)] && 0 < c[a3(398)][a3(400)][a3(406)][a3(445)](e).indexOf(a3(449))
+    function u(c, e) {
+        return b = b,
+        e instanceof c['Function'] && 0 < c['Function']['prototype']['toString']['call'](e).indexOf('[native code]')
     }
-    function b(c, d, e) {
+
+    function b(c, d, e) { // returns string from `function a(ad)`
         return e = a(),
         b = function(f, g, h) {
             return f = f - 364,
             h = e[f],
             h
+            h
         }
         ,
         b(c, d)
     }
-    function j(c, Z) {
-        return Z = S,
-        Math[Z(391)]() < c
+    function j(c) {
+        Math.random() < c
     }
-    function k(c, e, a0, f, z) {
-        a0 = S,
+    function k(c, e, f, z) {
+        b = b,
         f = {
-            'wp': i[a0(384)](JSON[a0(415)](e)),
-            's': a0(429)
+            'wp': i['xhHjpm'](JSON.stringify(e)),
+            's': '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10'
         },
         z = new XMLHttpRequest(),
-        z[a0(404)](a0(377), a0(412) + g[a0(435)][a0(372)] + a0(382) + c),
-        z[a0(408)](a0(443), a0(431)),
-        z[a0(441)](JSON[a0(415)](f))
+        z['open']('POST', '/cdn-cgi/challenge-platform/h/' + g['_cf_chl_opt']['cFPWv'] + '/cv/result/' + c),
+        z['setRequestHeader']('Content-Type', 'application/json'),
+        z['send'](JSON.stringify(f))
     }
+
+// end of MAIN
 }()
+
+// called from html:
+(function() {
+                window._cf_chl_opt = {
+                    cvId: '2',
+                    cZone: 'nowsecure.nl',
+                    cType: 'managed',
+                    cNounce: '27030',
+                    cRay: '7ddf8bfc69e0ba92',
+                    cHash: '2ba3e6c3364659b',
+                    cUPMDTk: "\/?__cf_chl_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU",
+                    cFPWv: 'g',
+                    cTTimeMs: '1000',
+                    cMTimeMs: '0',
+                    cTplV: 5,
+                    cTplB: 'cf',
+                    cK: "",
+                    cRq: {
+                        ru: 'aHR0cHM6Ly9ub3dzZWN1cmUubmwv',
+                        ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2',
+                        rm: 'R0VU',
+                        d: 'rFZ05zjvQK7f24chSRFsDoPEy8RbhQ33YjgggLBH2HsBm1hH0vLjggm257xDYM7nL1cc2TqAhAsCNuJzyeF7GOxl9QiDLHHec7kz1VxPpGzpzdB2udfwMKmUZSg0NZtYmmL1KNmIqkIZ77uc3zlqNwpFfQ16j1CYevThhwW9bq5xZh0GKPiSUNEycSxA3spRwTdFq9kutVRaPpsKenozNjepiD+2o1QTxIe0pMXttHHsITqAZ6IUyh5wPLghEJD/0ZY23dVJVoZ/1ZnWx7jPjYo6IeWxPBcTEzm9lKwwgc23bY7pCmL9c/Cc10TAdhatCs2Sf1umU2PCjyPFjWj6IadyQZ6AndXDlesDoW+gMXT+aPpN3tD93MZKt+nyoX9RUUVYFFs6oSlQqDMvMcDZBlzUasW0xtyMvreFiIYY1pKRCBGJqB1UvHB+Rj+WUVqfxzT6a5WLf0spqmS0Q+kxWVtSD/BV2g/ap1g3GMeumKSr+N4SVzS6+kgpk8O6FPNbu7t/ZCqzj156zshrL+UwRij2lEOkCexj9eTCp0hawz7VXa8X8Jvw4xiD5lzFngxu+iiV/P2TKZJqzYyovSwBWA==',
+                        t: 'MTY4Nzg4ODM3OC4zMDcwMDA=',
+                        cT: 1687893326, // Math.floor(Date.now() / 1000),
+                        m: 'i8NtMxwZqnQGEgIISvC4+1I1l4r5HknUvp5mOjx+qeM=',
+                        i1: '0EakX8xtUj9/l1pkQuiG6A==',
+                        i2: 'mmaXyHuIDNxYpKibGYp4nA==',
+                        zh: '9o6sDYLEg3t9KrPhDrxQpLX3EFuiRPt8/vBjYeXXjhM=',
+                        uh: '0CF8H7M40rTpO3nQlHachgfkgE8HRlszEVlfLXI8vE4=',
+                        hh: 'ZWKc/9OeKWBypS27gOf1uCLya4SW2C0xp63VDfZjYWk=',
+                    }
+                };
+                var trkjs = document.createElement('img');
+                trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7ddf8bfc69e0ba92');
+                trkjs.setAttribute('alt', '');
+                trkjs.setAttribute('style', 'display: none');
+                document.body.appendChild(trkjs);
+                // add transparent 1x1 GIF
+
+                var cpo = document.createElement('script');
+                cpo.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/managed/v1?ray=7ddf8bfc69e0ba92';
+                // build `v1?ray=****************.js`
+
+                // => ''
+                window._cf_chl_opt.cOgUHash =  /*location.hash =>*/ ''  === '' && /*location.href.indexOf('#') =>*/ -1 !== -1 ? '#' : /*location.hash =>*/ '';
+                window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+
+                if (window.history && window.history.replaceState) {
+                    var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+                    history.replaceState(null, null, "\/?__cf_chl_rt_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU" + window._cf_chl_opt.cOgUHash);
+                    cpo.onload = function() {
+                        history.replaceState(null, null, ogU);
+                    }
+                    ;
+                }
+                document.getElementsByTagName('head')[0].appendChild(cpo);
+                // load (execute) `v1?ray=****************.js`
+            }());
