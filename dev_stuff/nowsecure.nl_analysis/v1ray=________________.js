@@ -346,10 +346,10 @@ window._cf_chl_opt = {
         if (b = b,
         !j(.01))
             return ![];
-        A = [b(367) + f, b(426) + JSON[b(415)](z)][b(405)](b(421));
+        A = ['Message: ' + f, 'Error object: ' + JSON['stringify'](z)]['join'](' - ');
         try {
-            if (B = g[b(365)],
-            C = b(412) + g[b(435)][b(372)] + b(380) + 1 + b(376) + B.r + b(424),
+            if (B = g['__CF$cv$params'],
+            C = '/cdn-cgi/challenge-platform/h/' + g['_cf_chl_opt']['cFPWv'] + '/beacon/ov' + 1 + b(376) + B.r + b(424),
             D = n(),
             !D)
                 return;
