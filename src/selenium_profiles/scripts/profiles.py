@@ -97,7 +97,7 @@ class cdp_handler:
             else:
                 raise ValueError("driver or version needs to be specified")
 
-        elif type(version) == str:
+        if type(version) == str:
             if profile["userAgent"]:
                 import re
                 # noinspection PyTypeChecker
