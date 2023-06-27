@@ -1,6 +1,5 @@
 import warnings
 from collections import defaultdict
-from selenium_profiles.utils.utils import valid_key
 import typing
 
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -21,6 +20,8 @@ class Chrome(BaseDriver):
         import seleniumwire.undetected_chromedriver as wire_uc_webdriver
         import undetected_chromedriver as uc_webdriver
         from seleniumwire import webdriver as wire_webdriver
+
+        from selenium_profiles.utils.utils import valid_key
 
         if not base_drivers:
             base_drivers = tuple()
@@ -58,7 +59,7 @@ class Chrome(BaseDriver):
         if not profile:
             profile = {}
 
-        valid_key(profile.keys(), ["cdp", "options"], "profile (selenium-profiles)")
+        valid_key(profile.keys(), ["cdp", "options", "proxy"], "profile (selenium-profiles)")
 
         if type(seleniumwire_options) is dict:
             kwargs.update({"seleniumwire_options": seleniumwire_options})
@@ -68,6 +69,14 @@ class Chrome(BaseDriver):
         defdict = defaultdict(lambda: None)
         defdict.update(profile)
         profile = defdict
+        proxy = defaultdict(lambda :None)
+        # noinspection PyTypeChecker
+        if profile["proxy"]:
+            # noinspection PyTypeChecker
+            proxy.update(profile["proxy"])
+
+        if proxy["proxy"] and (not seleniumwire_options):
+            injector_options = True
 
         # sandbox handling for google-colab
         if is_colab():
@@ -165,6 +174,13 @@ class Chrome(BaseDriver):
             self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",
                                  {"source": "(function(){%s})()" % (utils_js + self.profiles.injector.connection_js + config)})
 
+        if proxy["proxy"]:
+            from selenium_profiles.utils.utils import valid_key
+            # noinspection PyUnresolvedReferences
+            valid_key(proxy.keys(), ["proxy", "bypass_list"], '"profiles["proxy"]"')
+            # noinspection PyUnresolvedReferences
+            self.profiles.proxy.set_single(proxy["proxy"], bypass_list=proxy["bypass_list"])
+
     def get_cookies(self, urls:typing.List[str] = None) -> typing.List[dict]:
         arg = {}
         if urls:
@@ -200,7 +216,7 @@ class profiles:
 
         from selenium_interceptor.interceptor import cdp_listener
         from selenium_profiles.scripts.driver_utils import requests, actions
-        from selenium_profiles.scripts.proxy_extension import DynamicProxy
+        from selenium_profiles.scripts.proxy import DynamicProxy
 
         self._driver = driver
         self._profile = profile

@@ -7,7 +7,7 @@
 * **Undetected** by Google, Cloudflare, creep-js ..
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
 * [Touch Actions](#Touch_actions)
-* [proxies with authentication](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/6#discussioncomment-4704385)
+* dynamic proxies with authentication
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.profiles.fetch(url)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
 * apply profile on already running driver with `driver.profiles.apply(profiles.Android())`
@@ -76,11 +76,6 @@ profile = \
       "gpu": False,
       "proxy": "http://example-proxy.com:9000", # note: auth not supported,
       "extension_paths": ["path/to/extension_1", ...], # directory, .crx or .zip
-      "auth_proxy": {
-            "host":"host", "port":9000,
-            "username":"user", "password":"password", 
-            "temp_dir": "C:/Downloads/proxy_extension"
-                },
       "args": ["--my-arg1", ...],
       "capabilities": {"cap_1":"val_1", "cap_2":"val_2"},
       "experimental_options":{"option1":"value1", "option2":"value2"},
@@ -116,6 +111,10 @@ profile = \
                     "bitness": "",
                     "wow64": False}
     }
+  },
+"proxy":{
+  "proxy":"socks5://user1:pass@example_jost.com:5001", 
+  "bypass_list":["localhost"]
   }
 }
 ```
@@ -203,6 +202,24 @@ driver.profiles.apply(profile)
 driver.get('https://hmaker.github.io/selenium-detector/')  # test fingerprint
 
 input("Press ENTER to exit")
+driver.quit()  # Execute on the End!
+```
+
+### Set proxies dynamically or with options
+```python
+from selenium_profiles.webdriver import Chrome
+from selenium_profiles.profiles import profiles
+
+profile = profiles.Windows() # or .Android()
+profile["proxy"] = {
+  "proxy":"http://user1:pass1@example_host.com:41149"
+  }
+
+driver = Chrome(profile=profile, injector_options=True)
+
+driver.profiles.proxy.set_single("http://user2:pass2@example_host.com:41149")
+print(driver.profiles.proxy.proxy)
+
 driver.quit()  # Execute on the End!
 ```
 

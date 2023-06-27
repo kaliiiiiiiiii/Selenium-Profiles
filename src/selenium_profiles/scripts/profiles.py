@@ -231,7 +231,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
         self._profile_keys = ["sandbox", "window_size", "headless", "load_images", "incognito", "touch", "app", "gpu",
                               "proxy", "args", "capabilities", "experimental_options", "adb", "adb_package",
                               "use_running_app",
-                              "extension_paths", "auth_proxy"
+                              "extension_paths",
                               ]
         self._supported_duplicate_policies = ["raise", "replace", "warn-replace",
                                               "skip", "warn-skip", "add", "warn-add"]
@@ -257,7 +257,6 @@ class options:  # webdriver.Chrome or uc.Chrome options
         self.update_experimental_options(profile["experimental_options"])
         self.adb_remote(profile["adb"], package=profile["adb_package"], use_running_app=profile["use_running_app"])
         self.add_extensions(profile["extension_paths"], adb=profile["adb"])
-        self.auth_proxy(profile["auth_proxy"])
         return self.Options
 
     # noinspection PyIncorrectDocstring
@@ -543,44 +542,3 @@ class options:  # webdriver.Chrome or uc.Chrome options
                         self.add_argument('--load-extension=' + extension_path)
                 else:
                     raise LookupError("Extension-path doesn't exist")
-
-    def auth_proxy(self, config: dict = None):
-        """
-        :param config: dict =>
-        {
-        host: str
-        port: int
-        username: str | optional
-        password: str | optional
-        scheme: str | optional
-        temp_dir: str | optional
-        }
-        """
-        from selenium_profiles.scripts.proxy_extension import make_extension
-
-        if config:
-            auth_proxy = defaultdict(lambda: None)
-            auth_proxy.update(config)
-
-            valid_key(auth_proxy.keys(), ["host", "port", "username", "password", "scheme", "temp_dir"],
-                      'profile_options auth_proxy => profile["options"]["auth_proxy"]')
-
-            host = auth_proxy["host"]
-            port = auth_proxy["port"]
-            username = auth_proxy["username"]
-            password = auth_proxy["password"]
-            scheme = auth_proxy["scheme"]
-            temp_dir = auth_proxy["temp_dir"]
-
-            if not host:
-                raise ValueError("value 'host' is required")
-            if not port:
-                raise ValueError("value 'port' is required")
-
-            if not scheme:
-                scheme = "http"
-
-            # noinspection PyTypeChecker
-            path = make_extension(host=host, port=port, username=str(username), password=str(password),
-                                  scheme=scheme, temp_dir=temp_dir)
-            self.add_extensions(extension_paths=[path])
