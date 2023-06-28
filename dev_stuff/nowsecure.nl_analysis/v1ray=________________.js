@@ -1,13 +1,76 @@
+// called from html:
+(function() {
+                window._cf_chl_opt = {
+                    cvId: '2',
+                    cZone: 'nowsecure.nl',
+                    cType: 'managed',
+                    cNounce: '27030',
+                    cRay: '7ddf8bfc69e0ba92',
+                    cHash: '2ba3e6c3364659b',
+                    cUPMDTk: "\/?__cf_chl_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU",
+                    cFPWv: 'g',
+                    cTTimeMs: '1000',
+                    cMTimeMs: '0',
+                    cTplV: 5,
+                    cTplB: 'cf',
+                    cK: "",
+                    cRq: {
+                        ru: 'aHR0cHM6Ly9ub3dzZWN1cmUubmwv',
+                        ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2',
+                        rm: 'R0VU',
+                        d: 'rFZ05zjvQK7f24chSRFsDoPEy8RbhQ33YjgggLBH2HsBm1hH0vLjggm257xDYM7nL1cc2TqAhAsCNuJzyeF7GOxl9QiDLHHec7kz1VxPpGzpzdB2udfwMKmUZSg0NZtYmmL1KNmIqkIZ77uc3zlqNwpFfQ16j1CYevThhwW9bq5xZh0GKPiSUNEycSxA3spRwTdFq9kutVRaPpsKenozNjepiD+2o1QTxIe0pMXttHHsITqAZ6IUyh5wPLghEJD/0ZY23dVJVoZ/1ZnWx7jPjYo6IeWxPBcTEzm9lKwwgc23bY7pCmL9c/Cc10TAdhatCs2Sf1umU2PCjyPFjWj6IadyQZ6AndXDlesDoW+gMXT+aPpN3tD93MZKt+nyoX9RUUVYFFs6oSlQqDMvMcDZBlzUasW0xtyMvreFiIYY1pKRCBGJqB1UvHB+Rj+WUVqfxzT6a5WLf0spqmS0Q+kxWVtSD/BV2g/ap1g3GMeumKSr+N4SVzS6+kgpk8O6FPNbu7t/ZCqzj156zshrL+UwRij2lEOkCexj9eTCp0hawz7VXa8X8Jvw4xiD5lzFngxu+iiV/P2TKZJqzYyovSwBWA==',
+                        t: 'MTY4Nzg4ODM3OC4zMDcwMDA=',
+                        cT: 1687893326, // Math.floor(Date.now() / 1000),
+                        m: 'i8NtMxwZqnQGEgIISvC4+1I1l4r5HknUvp5mOjx+qeM=',
+                        i1: '0EakX8xtUj9/l1pkQuiG6A==',
+                        i2: 'mmaXyHuIDNxYpKibGYp4nA==',
+                        zh: '9o6sDYLEg3t9KrPhDrxQpLX3EFuiRPt8/vBjYeXXjhM=',
+                        uh: '0CF8H7M40rTpO3nQlHachgfkgE8HRlszEVlfLXI8vE4=',
+                        hh: 'ZWKc/9OeKWBypS27gOf1uCLya4SW2C0xp63VDfZjYWk=',
+                    }
+                };
+                var trkjs = document.createElement('img');
+                trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7ddf8bfc69e0ba92');
+                trkjs.setAttribute('alt', '');
+                trkjs.setAttribute('style', 'display: none');
+                //document.body.appendChild(trkjs);
+                // add transparent 1x1 GIF
+
+                var cpo = document.createElement('script');
+                cpo.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/managed/v1?ray=7ddf8bfc69e0ba92';
+                // build `v1?ray=****************.js`
+
+                // => ''
+                window._cf_chl_opt.cOgUHash =  /*location.hash =>*/ ''  === '' && /*location.href.indexOf('#') =>*/ -1 !== -1 ? '#' : /*location.hash =>*/ '';
+                window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+
+                if (window.history && window.history.replaceState) {
+                    var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+                    history.replaceState(null, null, "\/?__cf_chl_rt_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU" + window._cf_chl_opt.cOgUHash);
+                    cpo.onload = function() {
+                        history.replaceState(null, null, ogU);
+                    }
+                    ;
+                }
+                //document.getElementsByTagName('head')[0].appendChild(cpo);
+                // load (execute) `v1?ray=****************.js`
+            }());
+
 window._cf_chl_opt = {
     cFPWv: 'g'
 };
 ~function(g, h, i, o, s) {
 // MAIN function
-    b = b
+
+    // string based on int
+    function b(c, d, e) { // returns string from `function a(ad)`
+        e = ['44jVXaeo', '__CF$cv$params', '3172698fewaEA', 'Message: ', 'iframe', 'ontimeout', 'loading', 'catch', 'cFPWv', 'symbol', '6921530pKEFzO', 'includes', '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/', 'POST', 'd.cookie', 'Object', '/beacon/ov', '1528YJCEGG', '/cv/result/', '4016270ZKDoub', 'xhHjpm', 'document', 'fromCharCode', 'string', '61767eGTCHg', 'KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp', 'splice', 'random', 'isArray', 'push', 'concat', '1497095mYMkKq', 'appendChild', 'Microsoft.XMLHTTP', 'Function', 'giZRRiQTBy', 'prototype', 'XMLHttpRequest', 'error on cf_chl_props', 'function', 'open', 'join', 'toString', '23475WbNMZJ', 'setRequestHeader', 'application/x-www-form-urlencoded', '1866CuNRNs', 'ActiveXObject', '/cdn-cgi/challenge-platform/h/', 'Array', 'body', 'stringify', 'clientInformation', 'bigint', 'isNaN', 'style', 'DOMContentLoaded', ' - ', 'Set', 'contentWindow', '/invisible/jsd', '4HUmwuG', 'Error object: ', 'keys', 'navigator', '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10', 'onreadystatechange', 'application/json', 'undefined', 'display: none', 'object', '_cf_chl_opt', 'charAt', 'from', 'length', 'pow', 'bind', 'send', 'tabIndex', 'Content-Type', 'contentDocument', 'call', 'boolean', '1749meMeVf', 'replace', '[native code]', 'timeout', 'getOwnPropertyNames', 'number', 'removeChild', 'hasOwnProperty', 'createElement', 'sort', 'charCodeAt', 'msg', 'getPrototypeOf', '%2b', 'addEventListener', 'Content-type']
+        return e[c- 364]
+    }
     ,
     function(c, e, R, f, z) {
         for (b = b,
-        f = c(); !![]; )
+        f = c(); true; )
             try {
                 if (true)
                     break;
@@ -17,10 +80,13 @@ window._cf_chl_opt = {
                 f.push(f.shift())
             }
     }(a, 855701),
-    g = this || self,
-    h = g.document,
+
+    // global props
+    g = window,
+    h = window.document,
+
+    // some dict with function
     i = function(b, e, f, z) {
-        return b = b,
         e = String.fromCharCode,
         f = {
             'h': function(A) {
@@ -289,21 +355,23 @@ window._cf_chl_opt = {
                     G++)
                 }
             }
-        },
-        z = {},
-        z['xhHjpm'] = f.h,
-        z
-    }(),
-    o = {},
-    o.object = 'o',
-    o.string = 's',
-    o.undefined = 'u',
-    o.symbol = 'z',
-    o.number = 'n',
-    o.bigint = 'I',
-    o.boolean = 'b',
-    s = o,
-    g['giZRRiQTBy'] = function(f, z, A, B, b, D, E, F, G, H, I) {
+        }
+        return {'xhHjpm':f.h}
+    }()
+
+    ,
+    // types - dict ?
+    s = {},
+    s.object = 'o',
+    s.string = 's',
+    s.undefined = 'u',
+    s.symbol = 'z',
+    s.number = 'n',
+    s.bigint = 'I',
+    s.boolean = 'b',
+
+    // some function
+    window['giZRRiQTBy'] = function(f, z, A, B, b, D, E, F, G, H, I) {
         if (b = b,
         z === null || void 0 === z)
             return B;
@@ -333,22 +401,16 @@ window._cf_chl_opt = {
     }
     ,
     y();
-    function a(ad) {
-        return ad = ['0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10', 'onreadystatechange', 'application/json', 'undefined', 'display: none', 'object', '_cf_chl_opt', 'charAt', 'from', 'length', 'pow', 'bind', 'send', 'tabIndex', 'Content-Type', 'contentDocument', 'call', 'boolean', '1749meMeVf', 'replace', '[native code]', 'timeout', 'getOwnPropertyNames', 'number', 'removeChild', 'hasOwnProperty', 'createElement', 'sort', 'charCodeAt', 'msg', 'getPrototypeOf', '%2b', 'addEventListener', 'Content-type', '44jVXaeo', '__CF$cv$params', '3172698fewaEA', 'Message: ', 'iframe', 'ontimeout', 'loading', 'catch', 'cFPWv', 'symbol', '6921530pKEFzO', 'includes', '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/', 'POST', 'd.cookie', 'Object', '/beacon/ov', '1528YJCEGG', '/cv/result/', '4016270ZKDoub', 'xhHjpm', 'document', 'fromCharCode', 'string', '61767eGTCHg', 'KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp', 'splice', 'random', 'isArray', 'push', 'concat', '1497095mYMkKq', 'appendChild', 'Microsoft.XMLHTTP', 'Function', 'giZRRiQTBy', 'prototype', 'XMLHttpRequest', 'error on cf_chl_props', 'function', 'open', 'join', 'toString', '23475WbNMZJ', 'setRequestHeader', 'application/x-www-form-urlencoded', '1866CuNRNs', 'ActiveXObject', '/cdn-cgi/challenge-platform/h/', 'Array', 'body', 'stringify', 'clientInformation', 'bigint', 'isNaN', 'style', 'DOMContentLoaded', ' - ', 'Set', 'contentWindow', '/invisible/jsd', '4HUmwuG', 'Error object: ', 'keys', 'navigator'],
-        a = function() {
-            return ad
-        }
-        ,
-        a()
-    }
+
+    // some functions
     function l(f, z, b, A, B, C, D, E, F, G) {
         if (b = b,
-        !j(.01))
-            return ![];
+        !(Math.random() < .01)
+            return false;
         A = ['Message: ' + f, 'Error object: ' + JSON.stringify(z)].join(' - ');
         try {
-            if (B = g['__CF$cv$params'],
-            C = '/cdn-cgi/challenge-platform/h/' + g['_cf_chl_opt']['cFPWv'] + '/beacon/ov' + 1 + '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/' + B.r + '/invisible/jsd',
+            if (B = window['__CF$cv$params'],
+            C = '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] + '/beacon/ov' + 1 + '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/' + B.r + '/invisible/jsd',
             D = n(),
             !D)
                 return;
@@ -370,7 +432,7 @@ window._cf_chl_opt = {
         e = function(b, z, A) {
             if (true) {
                 if (c = true,
-                z = g['__CF$cv$params'],
+                z = window['__CF$cv$params'],
                 !z)
                     return;
                 A = x(),
@@ -379,12 +441,12 @@ window._cf_chl_opt = {
             }
         }
         ,
-        h.readyState !== 'loading') ? e() : g.addEventListener ? h.addEventListener('DOMContentLoaded', e) : (f = h.onreadystatechange || function() {}
+        window.document.readyState !== 'loading') ? e() : window.addEventListener ? window.document.addEventListener('DOMContentLoaded', e) : (f = window.document.onreadystatechange || function() {}
         ,
-        h.onreadystatechange = function() {
+        window.document.onreadystatechange = function() {
             b = b,
             f(),
-            h.readyState !== 'loading' && (h.onreadystatechange = f,
+            window.document.readyState !== 'loading' && (window.document.onreadystatechange = f,
             e())
         }
         )
@@ -392,16 +454,16 @@ window._cf_chl_opt = {
     function x(b, z, A, B, C, D) {
         b = b;
         try {
-            return z = h.createElement('iframe'),
+            return z = window.document.createElement('iframe'),
             z.style = 'display: none',
             z.tabIndex = '-1',
-            h.body.appendChild(z),
+            window.document.body.appendChild(z),
             A = z.contentWindow,
             B = {},
             B = giZRRiQTBy(A, A, '', B),
             B = giZRRiQTBy(A, A.clientInformation || A.navigator, 'n.', B),
             B = giZRRiQTBy(A, z.contentDocument, 'd.', B),
-            h.body.removeChild(z),
+            window.document.body.removeChild(z),
             C = {},
             C.r = B,
             C.e = null,
@@ -438,31 +500,16 @@ window._cf_chl_opt = {
     }
     function n(b) {
         if (b = b,
-        g.XMLHttpRequest)
-            return new g[('XMLHttpRequest')]();
-        if (g['ActiveXObject'])
+        window.XMLHttpRequest)
+            return new window[('XMLHttpRequest')]();
+        if (window['ActiveXObject'])
             try {
-                return new g[('ActiveXObject')]('Microsoft.XMLHTTP')
+                return new window[('ActiveXObject')]('Microsoft.XMLHTTP')
             } catch (c) {}
     }
     function u(c, e, b) {
         return b = b,
         e instanceof c.Function && 0 < c.Function.prototype.toString.call(e).indexOf('[native code]')
-    }
-
-    function b(c, d, e) { // returns string from `function a(ad)`
-        return e = a(),
-        b = function(f, g, h) {
-            return f = f - 364,
-            h = e[f],
-            h
-            h
-        }
-        ,
-        b(c, d)
-    }
-    function j(c) {
-        Math.random() < c
     }
     function k(c, e, b, f, z) {
         b = b,
@@ -471,68 +518,10 @@ window._cf_chl_opt = {
             's': '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10'
         },
         z = new XMLHttpRequest(),
-        z.open('POST', '/cdn-cgi/challenge-platform/h/' + g['_cf_chl_opt']['cFPWv'] + '/cv/result/' + c),
+        z.open('POST', '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] + '/cv/result/' + c),
         z.setRequestHeader('Content-Type', 'application/json'),
         z.send(JSON.stringify(f))
     }
 
 // end of MAIN
 }()
-
-// called from html:
-(function() {
-                window._cf_chl_opt = {
-                    cvId: '2',
-                    cZone: 'nowsecure.nl',
-                    cType: 'managed',
-                    cNounce: '27030',
-                    cRay: '7ddf8bfc69e0ba92',
-                    cHash: '2ba3e6c3364659b',
-                    cUPMDTk: "\/?__cf_chl_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU",
-                    cFPWv: 'g',
-                    cTTimeMs: '1000',
-                    cMTimeMs: '0',
-                    cTplV: 5,
-                    cTplB: 'cf',
-                    cK: "",
-                    cRq: {
-                        ru: 'aHR0cHM6Ly9ub3dzZWN1cmUubmwv',
-                        ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2',
-                        rm: 'R0VU',
-                        d: 'rFZ05zjvQK7f24chSRFsDoPEy8RbhQ33YjgggLBH2HsBm1hH0vLjggm257xDYM7nL1cc2TqAhAsCNuJzyeF7GOxl9QiDLHHec7kz1VxPpGzpzdB2udfwMKmUZSg0NZtYmmL1KNmIqkIZ77uc3zlqNwpFfQ16j1CYevThhwW9bq5xZh0GKPiSUNEycSxA3spRwTdFq9kutVRaPpsKenozNjepiD+2o1QTxIe0pMXttHHsITqAZ6IUyh5wPLghEJD/0ZY23dVJVoZ/1ZnWx7jPjYo6IeWxPBcTEzm9lKwwgc23bY7pCmL9c/Cc10TAdhatCs2Sf1umU2PCjyPFjWj6IadyQZ6AndXDlesDoW+gMXT+aPpN3tD93MZKt+nyoX9RUUVYFFs6oSlQqDMvMcDZBlzUasW0xtyMvreFiIYY1pKRCBGJqB1UvHB+Rj+WUVqfxzT6a5WLf0spqmS0Q+kxWVtSD/BV2g/ap1g3GMeumKSr+N4SVzS6+kgpk8O6FPNbu7t/ZCqzj156zshrL+UwRij2lEOkCexj9eTCp0hawz7VXa8X8Jvw4xiD5lzFngxu+iiV/P2TKZJqzYyovSwBWA==',
-                        t: 'MTY4Nzg4ODM3OC4zMDcwMDA=',
-                        cT: 1687893326, // Math.floor(Date.now() / 1000),
-                        m: 'i8NtMxwZqnQGEgIISvC4+1I1l4r5HknUvp5mOjx+qeM=',
-                        i1: '0EakX8xtUj9/l1pkQuiG6A==',
-                        i2: 'mmaXyHuIDNxYpKibGYp4nA==',
-                        zh: '9o6sDYLEg3t9KrPhDrxQpLX3EFuiRPt8/vBjYeXXjhM=',
-                        uh: '0CF8H7M40rTpO3nQlHachgfkgE8HRlszEVlfLXI8vE4=',
-                        hh: 'ZWKc/9OeKWBypS27gOf1uCLya4SW2C0xp63VDfZjYWk=',
-                    }
-                };
-                var trkjs = document.createElement('img');
-                trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7ddf8bfc69e0ba92');
-                trkjs.setAttribute('alt', '');
-                trkjs.setAttribute('style', 'display: none');
-                document.body.appendChild(trkjs);
-                // add transparent 1x1 GIF
-
-                var cpo = document.createElement('script');
-                cpo.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/managed/v1?ray=7ddf8bfc69e0ba92';
-                // build `v1?ray=****************.js`
-
-                // => ''
-                window._cf_chl_opt.cOgUHash =  /*location.hash =>*/ ''  === '' && /*location.href.indexOf('#') =>*/ -1 !== -1 ? '#' : /*location.hash =>*/ '';
-                window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
-
-                if (window.history && window.history.replaceState) {
-                    var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
-                    history.replaceState(null, null, "\/?__cf_chl_rt_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU" + window._cf_chl_opt.cOgUHash);
-                    cpo.onload = function() {
-                        history.replaceState(null, null, ogU);
-                    }
-                    ;
-                }
-                document.getElementsByTagName('head')[0].appendChild(cpo);
-                // load (execute) `v1?ray=****************.js`
-            }());

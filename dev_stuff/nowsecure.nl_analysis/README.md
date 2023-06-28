@@ -93,6 +93,7 @@ self.onmessage = function(m) {
 ```
 
 ## Scripts
+ look like obfuscated with [Jscrambler](https://en.wikipedia.org/wiki/Jscrambler)
 
 ### `invisible.js` de-obfuscated
 - at [nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js](https://nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js)
