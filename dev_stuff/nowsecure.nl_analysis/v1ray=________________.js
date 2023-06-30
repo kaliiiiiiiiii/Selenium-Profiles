@@ -62,30 +62,11 @@ window._cf_chl_opt = {
 ~function(g, h, i, o, s) {
 // MAIN function
 
-    // string based on int
-    function b(c, d, e) { // returns string from `function a(ad)`
-        e = ['44jVXaeo', '__CF$cv$params', '3172698fewaEA', 'Message: ', 'iframe', 'ontimeout', 'loading', 'catch', 'cFPWv', 'symbol', '6921530pKEFzO', 'includes', '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/', 'POST', 'd.cookie', 'Object', '/beacon/ov', '1528YJCEGG', '/cv/result/', '4016270ZKDoub', 'xhHjpm', 'document', 'fromCharCode', 'string', '61767eGTCHg', 'KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp', 'splice', 'random', 'isArray', 'push', 'concat', '1497095mYMkKq', 'appendChild', 'Microsoft.XMLHTTP', 'Function', 'giZRRiQTBy', 'prototype', 'XMLHttpRequest', 'error on cf_chl_props', 'function', 'open', 'join', 'toString', '23475WbNMZJ', 'setRequestHeader', 'application/x-www-form-urlencoded', '1866CuNRNs', 'ActiveXObject', '/cdn-cgi/challenge-platform/h/', 'Array', 'body', 'stringify', 'clientInformation', 'bigint', 'isNaN', 'style', 'DOMContentLoaded', ' - ', 'Set', 'contentWindow', '/invisible/jsd', '4HUmwuG', 'Error object: ', 'keys', 'navigator', '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10', 'onreadystatechange', 'application/json', 'undefined', 'display: none', 'object', '_cf_chl_opt', 'charAt', 'from', 'length', 'pow', 'bind', 'send', 'tabIndex', 'Content-Type', 'contentDocument', 'call', 'boolean', '1749meMeVf', 'replace', '[native code]', 'timeout', 'getOwnPropertyNames', 'number', 'removeChild', 'hasOwnProperty', 'createElement', 'sort', 'charCodeAt', 'msg', 'getPrototypeOf', '%2b', 'addEventListener', 'Content-type']
-        return e[c- 364]
-    }
-    ,
-    function(c, e, R, f, z) {
-        for (b = b,
-        f = c(); true; )
-            try {
-                if (true)
-                    break;
-                else
-                    f.push(f.shift())
-            } catch (A) {
-                f.push(f.shift())
-            }
-    }(a, 855701),
-
     // global props
     g = window,
     h = window.document,
 
-    // some dict with function
+    // assumption: I['xhHjpm'] is encryptor
     i = function(b, e, f, z) {
         e = String.fromCharCode,
         f = {
@@ -360,7 +341,7 @@ window._cf_chl_opt = {
     }()
 
     ,
-    // types - dict ?
+    // types - dict, no usage?
     s = {},
     s.object = 'o',
     s.string = 's',
@@ -370,7 +351,162 @@ window._cf_chl_opt = {
     s.bigint = 'I',
     s.boolean = 'b',
 
-    // some function
+    // on document loaded, // first called function
+    function y() {
+        (c = false,
+
+        // check window['__CF$cv$params']
+        e = function() {
+            if (true) {
+                if (c = true,
+                z = window['__CF$cv$params'],
+                !z)
+                    return;
+                A = x(), // iframe test
+                k(z.r, A.r), // post to server
+                A.e && l('error on cf_chl_props', A.e) // send error back to server
+            }
+        }
+        ,
+        window.document.readyState !== 'loading') ? e() : window.addEventListener ? window.document.addEventListener('DOMContentLoaded', e) : (f = window.document.onreadystatechange || function() {}
+        ,
+        window.document.onreadystatechange = function() {
+            b = b,
+            f(),
+            window.document.readyState !== 'loading' && (window.document.onreadystatechange = f,
+            e())
+        }
+        )
+    }()
+
+
+
+
+
+    // DE-OBFUSCATION
+    // DE-OBFUSCATION
+
+    // string based on int
+    function b(c) { // returns string from `function a(ad)`
+        e = ['44jVXaeo', '__CF$cv$params', '3172698fewaEA', 'Message: ', 'iframe', 'ontimeout', 'loading', 'catch', 'cFPWv', 'symbol', '6921530pKEFzO', 'includes', '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/', 'POST', 'd.cookie', 'Object', '/beacon/ov', '1528YJCEGG', '/cv/result/', '4016270ZKDoub', 'xhHjpm', 'document', 'fromCharCode', 'string', '61767eGTCHg', 'KG2A0eRcvEsHMjm1LlXfz$qZdV8aD+7BytrU-C6unWIkb3JON5wxoTFS9i4ghYQPp', 'splice', 'random', 'isArray', 'push', 'concat', '1497095mYMkKq', 'appendChild', 'Microsoft.XMLHTTP', 'Function', 'giZRRiQTBy', 'prototype', 'XMLHttpRequest', 'error on cf_chl_props', 'function', 'open', 'join', 'toString', '23475WbNMZJ', 'setRequestHeader', 'application/x-www-form-urlencoded', '1866CuNRNs', 'ActiveXObject', '/cdn-cgi/challenge-platform/h/', 'Array', 'body', 'stringify', 'clientInformation', 'bigint', 'isNaN', 'style', 'DOMContentLoaded', ' - ', 'Set', 'contentWindow', '/invisible/jsd', '4HUmwuG', 'Error object: ', 'keys', 'navigator', '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10', 'onreadystatechange', 'application/json', 'undefined', 'display: none', 'object', '_cf_chl_opt', 'charAt', 'from', 'length', 'pow', 'bind', 'send', 'tabIndex', 'Content-Type', 'contentDocument', 'call', 'boolean', '1749meMeVf', 'replace', '[native code]', 'timeout', 'getOwnPropertyNames', 'number', 'removeChild', 'hasOwnProperty', 'createElement', 'sort', 'charCodeAt', 'msg', 'getPrototypeOf', '%2b', 'addEventListener', 'Content-type']
+        return e[c- 364]
+    }
+
+    , // does something with fuction a() => function b(c) => {retrun string[c]}
+    function(c) {
+        for (b = b,
+        f = c(); true; )
+            try {
+                if (true)
+                    break;
+                else
+                    f.push(f.shift())
+            } catch (A) {
+                f.push(f.shift())
+            }
+    }(a /*function*/),
+
+    // END DE-OBFUSCATION
+    // END DE-OBFUSCATION
+
+
+
+
+    // NETWORK
+    // NETWORK
+
+    // return new window.XMLHttpRequest()
+    function n(b) {
+        if (b = b,
+        window.XMLHttpRequest)
+            return new window.XMLHttpRequest();
+        if (window.ActiveXObject)
+            try {
+                return new window.ActiveXObject('Microsoft.XMLHTTP')
+            } catch (c) {}
+    }
+
+    // POST args[0]:f,args[1]:z to '/cdn-cgi/challenge-platform/h/g/beacon/ov1/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/' + args[2]:b.r + '/invisible/jsd'
+    // assumption: ecryption using i['xhHjpm']
+    // assumption: Sends Error-messages to server
+    function l(f, z, b, A, B, C, D, E, F, G) {
+        if (b = b,
+        !(Math.random() < .01)
+            return false;
+        A = ['Message: ' + f, 'Error object: ' + JSON.stringify(z)].join(' - ');
+        try {
+            if (B = window['__CF$cv$params'],
+            C = '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] /*"g"*/ + '/beacon/ov' + 1 + '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/' + B.r + '/invisible/jsd',
+            D = n(), // = new window.XMLHttpRequest()
+            !D)
+                return;
+            E = 'POST',
+            D.open(E, C, !![]),
+            'timeout'in D && (D.timeout = 2500,
+            D.ontimeout = function() {}
+            ),
+            D.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'),
+            F = {},
+            F['msg'] = A,
+            G = i['xhHjpm'](JSON.stringify(F)).replace('+', '%2b'),
+            D.send('v_' + B.r + '=' + G)
+        } catch (H) {}
+    }
+
+    // POST args[1]:e to "/cdn-cgi/challenge-platform/h/g/cv/result/"+args[0]:c
+    // assumption: ecryption using i['xhHjpm']
+    function k(c, e, b, f, z) {
+        b = b,
+        f = {
+            'wp': i['xhHjpm'](JSON.stringify(e)),
+            's': '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10'
+        },
+        z = new XMLHttpRequest(),
+        z.open('POST', '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] /*"g"*/ + '/cv/result/' + c),
+        z.setRequestHeader('Content-Type', 'application/json'),
+        z.send(JSON.stringify(f))
+    }
+
+    // END NETWORK
+    // END NETWORK
+
+
+    // 1. create iframe
+    // 2. process(iframe.clientInformation || iframe.navigator)
+    // 3. retrun processed iframe.clientInformation || iframe.navigator
+    function x() {
+        try {
+            return z = window.document.createElement('iframe'),
+            z.style = 'display: none',
+            z.tabIndex = '-1',
+            window.document.body.appendChild(z),
+            A = z.contentWindow, // = globalThis of iframe
+            B = {},
+            B = giZRRiQTBy(A, A, '', B),
+            B = giZRRiQTBy(A, A.clientInformation || A.navigator, 'n.', B),
+            B = giZRRiQTBy(A, z.contentDocument, 'd.', B),
+            window.document.body.removeChild(z),
+            C = {},
+            C.r = B,
+            C.e = null,
+            C
+        } catch (E) {
+            return D = {},
+            D.r = {},
+            D.e = E,
+            D
+        }
+    }
+
+    // empty function, no usage?
+    function m(c) {}
+
+
+
+    // OVERWRITE PROTECTION
+    // OVERWRITE PROTECTION
+
+    // assumption: check overwritten values?
     window['giZRRiQTBy'] = function(f, z, A, B, b, D, E, F, G, H, I) {
         if (b = b,
         z === null || void 0 === z)
@@ -393,91 +529,17 @@ window._cf_chl_opt = {
         F++)
             ;
         return B;
+
+        // .hasOwnProperty
         function C(J, K, b) {
             b = b,
             Object.prototype.hasOwnProperty.call(B, K) || (B[K] = []),
             B[K].push(J)
         }
     }
-    ,
-    y();
 
-    // some functions
-    function l(f, z, b, A, B, C, D, E, F, G) {
-        if (b = b,
-        !(Math.random() < .01)
-            return false;
-        A = ['Message: ' + f, 'Error object: ' + JSON.stringify(z)].join(' - ');
-        try {
-            if (B = window['__CF$cv$params'],
-            C = '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] + '/beacon/ov' + 1 + '/0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10/' + B.r + '/invisible/jsd',
-            D = n(),
-            !D)
-                return;
-            E = 'POST',
-            D.open(E, C, !![]),
-            'timeout'in D && (D.timeout = 2500,
-            D.ontimeout = function() {}
-            ),
-            D.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'),
-            F = {},
-            F['msg'] = A,
-            G = i['xhHjpm'](JSON.stringify(F)).replace('+', '%2b'),
-            D.send('v_' + B.r + '=' + G)
-        } catch (H) {}
-    }
-    function y(b, c, e, f) {
-        (b = b,
-        c = false,
-        e = function(b, z, A) {
-            if (true) {
-                if (c = true,
-                z = window['__CF$cv$params'],
-                !z)
-                    return;
-                A = x(),
-                k(z.r, A.r),
-                A.e && l('error on cf_chl_props', A.e)
-            }
-        }
-        ,
-        window.document.readyState !== 'loading') ? e() : window.addEventListener ? window.document.addEventListener('DOMContentLoaded', e) : (f = window.document.onreadystatechange || function() {}
-        ,
-        window.document.onreadystatechange = function() {
-            b = b,
-            f(),
-            window.document.readyState !== 'loading' && (window.document.onreadystatechange = f,
-            e())
-        }
-        )
-    }
-    function x(b, z, A, B, C, D) {
-        b = b;
-        try {
-            return z = window.document.createElement('iframe'),
-            z.style = 'display: none',
-            z.tabIndex = '-1',
-            window.document.body.appendChild(z),
-            A = z.contentWindow,
-            B = {},
-            B = giZRRiQTBy(A, A, '', B),
-            B = giZRRiQTBy(A, A.clientInformation || A.navigator, 'n.', B),
-            B = giZRRiQTBy(A, z.contentDocument, 'd.', B),
-            window.document.body.removeChild(z),
-            C = {},
-            C.r = B,
-            C.e = null,
-            C
-        } catch (E) {
-            return D = {},
-            D.r = {},
-            D.e = E,
-            D
-        }
-    }
-    function m(c) {}
-    function v(f, z, A, b, B) {
-        b =b;
+    // assumption: check overwritten values
+    function v(f, z, A) {
         try {
             return z[A].catch(function() {}),
             'p'
@@ -491,37 +553,25 @@ window._cf_chl_opt = {
         return f.Array.isArray(z[A]) ? 'a' : z[A] === f.Array ? 'D' : (B = typeof z[A],
         'function' == B ? u(f, z[A]) ? 'N' : 'f' : s[B] || '?')
     }
-    function w(c, b, e) {
+
+    // get all keys of object => return [key1, key2, ...]
+    function w(c) {
         for (b = b,
         e = []; null !== c; e = e.concat(Object.keys(c)),
         c = Object.getPrototypeOf(c))
             ;
         return e
     }
-    function n(b) {
-        if (b = b,
-        window.XMLHttpRequest)
-            return new window[('XMLHttpRequest')]();
-        if (window['ActiveXObject'])
-            try {
-                return new window[('ActiveXObject')]('Microsoft.XMLHTTP')
-            } catch (c) {}
-    }
-    function u(c, e, b) {
-        return b = b,
+
+    // assumption: check function
+    // args[0]: native function to check
+    // args[1]: globalThis
+    function u(c, e) {
         e instanceof c.Function && 0 < c.Function.prototype.toString.call(e).indexOf('[native code]')
     }
-    function k(c, e, b, f, z) {
-        b = b,
-        f = {
-            'wp': i['xhHjpm'](JSON.stringify(e)),
-            's': '0.855424979613877:1687885557:ANZuQxetpZPdIQEsSfYeU2ColQYy0UezvgDBHkCbQ10'
-        },
-        z = new XMLHttpRequest(),
-        z.open('POST', '/cdn-cgi/challenge-platform/h/' + window['_cf_chl_opt']['cFPWv'] + '/cv/result/' + c),
-        z.setRequestHeader('Content-Type', 'application/json'),
-        z.send(JSON.stringify(f))
-    }
+
+    // END OVERWRITE PROTECTION
+    // END OVERWRITE PROTECTION
 
 // end of MAIN
 }()

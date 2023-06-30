@@ -97,5 +97,15 @@ self.onmessage = function(m) {
 
 ### `invisible.js` de-obfuscated
 - at [nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js](https://nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js)
-![img_1.png](img_1.png)
 ### `v1?ray=****************.js` de-obfuscated
+
+```js
+// assumption: check function
+    // args[0]: native function to check
+    // args[1]: globalThis
+function u(c, e) {
+   e instanceof c.Function && 0 < c.Function.prototype.toString.call(e).indexOf('[native code]')
+}
+```
+- check `.toString() == '[native code]'`
+- check `instanceof Function`
