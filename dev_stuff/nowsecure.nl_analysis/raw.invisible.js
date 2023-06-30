@@ -1052,144 +1052,130 @@ window._cf_chl_opt.uaO = false;
     "turnstile_footer_privacy": "%E9%9A%B1%E7%A7%81%E6%AC%8A",
     "turnstile_footer_terms": "%E6%A2%9D%E6%AC%BE"
     },
-    gL = {},
-    gL['ar-eg'] = gq,
-    gL.ar = gr,
-    gL.de = gs,
-    gL.en = gt,
-    gL.es = gu,
-    gL.fa = gv,
-    gL.fr = gw,
-    gL.id = gx,
-    gL.it = gy,
-    gL.ja = gz,
-    gL.ko = gA,
-    gL.nl = gB,
-    gL.pl = gC,
-    gL.pt = gD,
-    gL['pt-br'] = gE,
-    gL.ru = gF,
-    gL.tr = gG,
-    gL['tlh'] = gH,
-    gL.zh = gI,
-    gL['zh-cn'] = gJ,
-    gL['zh-tw'] = gK,
-    gM = gL,
-    gN {
+    gL = {
+    'ar-eg':gq,
+    'ar':gr,
+    'de':gs,
+    'en':gt,
+    'es':gu,
+    'fa':gv,
+    'fr':gw,
+    'id':gx,
+    'it':gy,
+    'ja':gz,
+    'ko':gA,
+    'nl':gB,
+    'pl':gC,
+    'pt':gD,
+    'pt-br':gE,
+    'ru':gF,
+    'tr':gH,
+    'tlh':gH,
+    'zh':gI,
+    'ch-cn':gJ,
+    'zh-tw':gK
+    }
+    gM = gL
+
+    gN = {
     "ar": true,
     "ar-eg": true,
     "fa": true
-    },
-    gO = gN,
-    gP = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    gQ = {},
-    gQ['challenge.privacy_link'] = 'https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F',
-    gQ['challenge.terms'] = 'https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F',
-    gR = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fde-de%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fde-de%2Fwebsite-terms%2F"
-    },
-    gS = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    gT = {},
-    {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fes-es%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fes-es%2Fwebsite-terms%2F"
-    },
-    gU = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    gV = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Ffr-fr%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Ffr-fr%2Fwebsite-terms%2F"
-    },
-    gW = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    gX = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fit-it%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fit-it%2Fwebsite-terms%2F"
-    },
-    gY = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fja-jp%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fja-jp%2Fwebsite-terms%2F"
-    },
-    gZ = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fko-kr%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fko-kr%2Fwebsite-terms%2F"
-    },
-    h0 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    h1 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    h2 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fwebsite-terms%2F"
-    },
-    h3 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fwebsite-terms%2F"
-    },
-    h4 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fru-ru%2Fwebsite-terms%2F"
-    },
-    h5 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    h6 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
-    },
-    h7 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fwebsite-terms%2F"
-    },
-    h8 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fwebsite-terms%2F"
-    },
-    h9 = {
-    "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-tw%2Fprivacypolicy%2F",
-    "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-tw%2Fwebsite-terms%2F"
-    },
-    ha = {},
-    ha['ar-eg'] = gP,
-    ha.ar = gQ,
-    ha.de = gR,
-    ha.en = gS,
-    ha.es = gT,
-    ha.fa = gU,
-    ha.fr = gV,
-    ha.id = gW,
-    ha.it = gX,
-    ha.ja = gY,
-    ha.ko = gZ,
-    ha.nl = h0,
-    ha.pl = h1,
-    ha.pt = h2,
-    ha['pt-br'] = h3,
-    ha.ru = h4,
-    ha.tr = h5,
-    ha['tlh'] = h6,
-    ha.zh = h7,
-    ha['zh-cn'] = h8,
-    ha['zh-tw'] = h9,
+    }
+    gO = gN
+
+    ha = {
+        'ar-eg':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'ar':{
+            'challenge.privacy_link':'https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F',
+            'challenge.terms':'https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F'
+            },
+        'de':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fde-de%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fde-de%2Fwebsite-terms%2F"
+            },
+        'en':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'es':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fes-es%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fes-es%2Fwebsite-terms%2F"
+            },
+        'fa':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'fr':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Ffr-fr%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Ffr-fr%2Fwebsite-terms%2F"
+            },
+        'id':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'it':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fit-it%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fit-it%2Fwebsite-terms%2F"
+            },
+        'ja':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fja-jp%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fja-jp%2Fwebsite-terms%2F"
+            },
+        'ko':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fko-kr%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fko-kr%2Fwebsite-terms%2F"
+            },
+        'nl':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'pl':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'pt':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fwebsite-terms%2F"
+            },
+        'pt-br':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fpt-br%2Fwebsite-terms%2F"
+            },
+        'ru':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fru-ru%2Fwebsite-terms%2F"
+            },
+        'tr':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'tlh':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fwebsite-terms%2F"
+            },
+        'zh':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fwebsite-terms%2F"
+            },
+        'zh-cn':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-cn%2Fwebsite-terms%2F"
+            },
+        'zh-tw':{
+            "challenge.privacy_link": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-tw%2Fprivacypolicy%2F",
+            "challenge.terms": "https%3A%2F%2Fwww.cloudflare.com%2Fzh-tw%2Fwebsite-terms%2F"
+            }
+        }
     hb = ha,
+
     hc = 'en',
-    hf = [],
+
+    hf = []
+
     i0 = {},
     i0['hide'] = hz,
     i0.show = hA,
@@ -1218,28 +1204,28 @@ window._cf_chl_opt.uaO = false;
     i7['destroy'] = hR,
     i8 = {},
     i8['spinner'] = i0,
-    i8[io(762)] = i1,
-    i8[io(1942)] = i2,
-    i8[io(1417)] = hx,
-    i8[io(1657)] = hn,
-    i8[io(1393)] = hm,
-    i8[io(1389)] = hd,
-    i8[io(464)] = hk,
-    i8[io(663)] = hq,
-    i8[io(181)] = hE,
-    i8[io(1627)] = hF,
-    i8[io(1981)] = hG,
-    i8[io(1844)] = hy,
-    i8[io(833)] = hr,
-    i8[io(1809)] = i3,
-    i8[io(936)] = i4,
-    i8[io(1842)] = i5,
-    i8[io(1382)] = i6,
-    i8[io(367)] = i7,
-    i8[io(1838)] = hZ,
-    i8[io(1380)] = hW,
-    i8[io(1648)] = hs,
-    fE[io(264)].ui = i8,
+    i8['explainer'] = i1,
+    i8['interactive'] = i2,
+    i8['isDarkMode'] = hx,
+    i8['addFatalAPIError'] = hn,
+    i8['showAuxiliaryContent'] = hm,
+    i8['getUiBrandedSnippet'] = hd,
+    i8['disableUiWithMessage'] = hk,
+    i8['transientError'] = hq,
+    i8['showOverlay'] = hE,
+    i8['getBrandPrefix'] = hF,
+    i8['getTemplateVersion'] = hG,
+    i8['redirect'] = hy,
+    i8['bootstrap'] = hr,
+    i8['stage'] = i3,
+    i8['api_fail'] = i4,
+    i8['api_success'] = i5,
+    i8['api_expired'] = i6,
+    i8['ctp'] = i7,
+    i8['api_show_dbg_info'] = hZ,
+    i8['is_killed'] = hW,
+    i8['schedule_connection_warning'] = hs,
+    fE['_cf_chl_opt'].ui = i8,
     i9 = function(kT, e, f, g, h) {
         return kT = io,
         e = {
