@@ -1,3 +1,63 @@
+// called from html:
+(function() {
+                window._cf_chl_opt = {
+                    cvId: '2',
+                    cZone: 'nowsecure.nl',
+                    cType: 'managed',
+                    cNounce: '27030',
+                    cRay: '7ddf8bfc69e0ba92',
+                    cHash: '2ba3e6c3364659b',
+                    cUPMDTk: "\/?__cf_chl_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU",
+                    cFPWv: 'g',
+                    cTTimeMs: '1000',
+                    cMTimeMs: '0',
+                    cTplV: 5,
+                    cTplB: 'cf',
+                    cK: "",
+                    cRq: {
+                        ru: 'aHR0cHM6Ly9ub3dzZWN1cmUubmwv',
+                        ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2',
+                        rm: 'R0VU',
+                        d: 'rFZ05zjvQK7f24chSRFsDoPEy8RbhQ33YjgggLBH2HsBm1hH0vLjggm257xDYM7nL1cc2TqAhAsCNuJzyeF7GOxl9QiDLHHec7kz1VxPpGzpzdB2udfwMKmUZSg0NZtYmmL1KNmIqkIZ77uc3zlqNwpFfQ16j1CYevThhwW9bq5xZh0GKPiSUNEycSxA3spRwTdFq9kutVRaPpsKenozNjepiD+2o1QTxIe0pMXttHHsITqAZ6IUyh5wPLghEJD/0ZY23dVJVoZ/1ZnWx7jPjYo6IeWxPBcTEzm9lKwwgc23bY7pCmL9c/Cc10TAdhatCs2Sf1umU2PCjyPFjWj6IadyQZ6AndXDlesDoW+gMXT+aPpN3tD93MZKt+nyoX9RUUVYFFs6oSlQqDMvMcDZBlzUasW0xtyMvreFiIYY1pKRCBGJqB1UvHB+Rj+WUVqfxzT6a5WLf0spqmS0Q+kxWVtSD/BV2g/ap1g3GMeumKSr+N4SVzS6+kgpk8O6FPNbu7t/ZCqzj156zshrL+UwRij2lEOkCexj9eTCp0hawz7VXa8X8Jvw4xiD5lzFngxu+iiV/P2TKZJqzYyovSwBWA==',
+                        t: 'MTY4Nzg4ODM3OC4zMDcwMDA=',
+                        cT: 1687893326, // Math.floor(Date.now() / 1000),
+                        m: 'i8NtMxwZqnQGEgIISvC4+1I1l4r5HknUvp5mOjx+qeM=',
+                        i1: '0EakX8xtUj9/l1pkQuiG6A==',
+                        i2: 'mmaXyHuIDNxYpKibGYp4nA==',
+                        zh: '9o6sDYLEg3t9KrPhDrxQpLX3EFuiRPt8/vBjYeXXjhM=',
+                        uh: '0CF8H7M40rTpO3nQlHachgfkgE8HRlszEVlfLXI8vE4=',
+                        hh: 'ZWKc/9OeKWBypS27gOf1uCLya4SW2C0xp63VDfZjYWk=',
+                    }
+                };
+                var trkjs = document.createElement('img');
+                trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7ddf8bfc69e0ba92');
+                trkjs.setAttribute('alt', '');
+                trkjs.setAttribute('style', 'display: none');
+                //document.body.appendChild(trkjs);
+                // add transparent 1x1 GIF
+
+                var cpo = document.createElement('script');
+                cpo.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/managed/v1?ray=7ddf8bfc69e0ba92';
+                // build `v1?ray=****************.js`
+
+                // => ''
+                window._cf_chl_opt.cOgUHash =  /*location.hash =>*/ ''  === '' && /*location.href.indexOf('#') =>*/ -1 !== -1 ? '#' : /*location.hash =>*/ '';
+                window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+
+                if (window.history && window.history.replaceState) {
+                    var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+                    history.replaceState(null, null, "\/?__cf_chl_rt_tk=1hwWc.Wp5ioCReGtMuaNmrPDZTNGd.emn8K5ywWt9u4-1687888378-0-gaNycGzNDKU" + window._cf_chl_opt.cOgUHash);
+                    cpo.onload = function() {
+                        history.replaceState(null, null, ogU);
+                    }
+                    ;
+                }
+                //document.getElementsByTagName('head')[0].appendChild(cpo);
+                // load (execute) `v1?ray=****************.js`
+            }());
+
+
+
 window._cf_chl_opt.uaO = false;
 ~function(io, fE, fF, fG, fH, fN, fO, gc, gd, gn, go, gp, gq, gr, gs, gt, gu, gv, gw, gx, gy, gz, gA, gB, gC, gD, gE, gF, gG, gH, gI, gJ, gK, gL, gM, gN, gO, gP, gQ, gR, gS, gT, gU, gV, gW, gX, gY, gZ, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, ha, hb, hc, hf, hP, i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, ib, ie, ig, ih, ii, ij, ik, fL, fM) {
     for (io = c,

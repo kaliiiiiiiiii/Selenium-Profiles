@@ -20,7 +20,7 @@ overwriting javascript and emulation doesn't work there :(
 )()
 ```
 
-#### What's that for ??
+#### maximum Stack-size
 ```js
 onmessage = function(e) {var gsb = function(){
     var sizeA = 0;
@@ -52,6 +52,10 @@ onmessage = function(e) {var gsb = function(){
     return [sizeA, sizeB, bytes];
 }; postMessage({a3: gsb()})};
 ```
+- seems to get the max stack size:
+  - with local var
+  - without local var
+  - difference in bytes ??
 
 #### get "speed" of execution within worker
 ```js
