@@ -507,13 +507,17 @@ window._cf_chl_opt = {
     // OVERWRITE PROTECTION
 
     // assumption: check overwritten values?
+    // args[0]:f = globalThis
+    // args[1]:z:Object?
+    // args[2]:A some_str
+    // args[3]:B = {} in usages
     window['giZRRiQTBy'] = function(f, z, A, B) {
         if (z === null || void 0 === z)
             return B;
         for (D = w(z), // = keys of z
         f.Object.getOwnPropertyNames && (D = D.concat(f.Object.getOwnPropertyNames(z))),
 
-        D = f.Array.from && f['Set'] ? f.Array.from(new f[('Set')](D)) : function(J)
+        D = f.Array.from && f.Set ? f.Array.from(new f.Set(D)) : function(J)
             {
             for (b = b,
             J.sort(),
@@ -533,6 +537,7 @@ window._cf_chl_opt = {
         return B;
 
         // .hasOwnProperty
+        // B from outer scope
         function C(J, K) {
             Object.prototype.hasOwnProperty.call(B, K) || (B[K] = []),
             B[K].push(J)
@@ -540,6 +545,7 @@ window._cf_chl_opt = {
     }
 
     // assumption: check overwritten values
+    // B from outer scope
     function v(f, z, A) {
         try { // bind catch of z[A] to empty function
             return z[A].catch(function() {}),
@@ -556,11 +562,12 @@ window._cf_chl_opt = {
     }
 
     // get all keys of object => return [key1, key2, ...]
+    //  checck .getPrototypeOf() correlates with .keys() ?
     function w(c) {
         for (b = b,
         e = []; null !== c; e = e.concat(Object.keys(c)),
-        c = Object.getPrototypeOf(c))
-            ;
+        c = Object.getPrototypeOf(c));
+
         return e
     }
 

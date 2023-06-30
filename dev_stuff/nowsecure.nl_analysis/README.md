@@ -109,3 +109,14 @@ function u(c, e) {
 ```
 - check `.toString() == '[native code]'`
 - check `instanceof Function`
+
+```js
+// get all keys of object => return [key1, key2, ...]
+function w(c) {
+    for (b = b,
+    e = []; null !== c; e = e.concat(Object.keys(c)),
+    c = Object.getPrototypeOf(c));
+    return e
+}
+```
+check .getPrototypeOf() correlates with .keys()
