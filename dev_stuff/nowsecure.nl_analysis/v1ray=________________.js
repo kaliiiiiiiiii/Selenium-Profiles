@@ -507,21 +507,23 @@ window._cf_chl_opt = {
     // OVERWRITE PROTECTION
 
     // assumption: check overwritten values?
-    window['giZRRiQTBy'] = function(f, z, A, B, b, D, E, F, G, H, I) {
-        if (b = b,
-        z === null || void 0 === z)
+    window['giZRRiQTBy'] = function(f, z, A, B) {
+        if (z === null || void 0 === z)
             return B;
-        for (D = w(z),
+        for (D = w(z), // = keys of z
         f.Object.getOwnPropertyNames && (D = D.concat(f.Object.getOwnPropertyNames(z))),
-        D = f.Array.from && f['Set'] ? f.Array.from(new f[('Set')](D)) : function(J, b, K) {
+
+        D = f.Array.from && f['Set'] ? f.Array.from(new f[('Set')](D)) : function(J)
+            {
             for (b = b,
             J.sort(),
             K = 0; K < J.length; J[K] === J[K + 1] ? J.splice(K + 1, 1) : K += 1)
                 ;
             return J
         }(D),
-        E = 'nAsAaAb'.split('A'),
-        E = E.includes.bind(E),
+
+        E = ['n', 's', 'a', 'b'],
+        E = E.includes.bind(E), // function (arg includes ['n', 's', 'a', 'b'] ?)
         F = 0; F < D.length; G = D[F],
         H = v(f, z, G),
         E(H) ? (I = H === 's' && !f.isNaN(z[G]),
@@ -531,8 +533,7 @@ window._cf_chl_opt = {
         return B;
 
         // .hasOwnProperty
-        function C(J, K, b) {
-            b = b,
+        function C(J, K) {
             Object.prototype.hasOwnProperty.call(B, K) || (B[K] = []),
             B[K].push(J)
         }
@@ -540,7 +541,7 @@ window._cf_chl_opt = {
 
     // assumption: check overwritten values
     function v(f, z, A) {
-        try {
+        try { // bind catch of z[A] to empty function
             return z[A].catch(function() {}),
             'p'
         } catch (C) {}
