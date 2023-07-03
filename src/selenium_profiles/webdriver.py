@@ -131,7 +131,7 @@ class Chrome(BaseDriver):
                 injector_options = {}
             injector = Injector(**injector_options)
 
-            options_manager.add_argument(f'--load-extension={injector.path}')
+            options_manager.add_argument(f'--load-extension={",".join(injector.paths)}')
 
         # add options to kwargs
         kwargs.update({"options": options_manager.Options})
@@ -160,14 +160,12 @@ class Chrome(BaseDriver):
             undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
         if injector_options or injector_options == {}:
+            from selenium_injector.scripts.injector import make_config
 
             # connection to tab-0
             tab_index = self.window_handles.index(self.current_window_handle).__str__()
             self.profiles.injector.tab_user = "tab-" + tab_index
-            config = f"""
-                            var connection = new connector("{self.profiles.injector.socket.host}", {self.profiles.injector.socket.port}, "{self.profiles.injector.tab_user}")
-                            connection.connect();
-                            """
+            config = make_config(host=injector.socket.host, port=injector.socket.port, user=self.profiles.injector.tab_user, debug=True)
 
             from selenium_injector.utils.utils import read
             utils_js = read("files/js/utils.js")
