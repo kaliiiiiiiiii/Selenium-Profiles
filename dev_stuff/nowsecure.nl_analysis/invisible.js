@@ -1298,7 +1298,7 @@ window._cf_chl_opt.uaO = false;
     i9 = function(kT, e, f, g, h) {
         return kT = io,
         e = {
-            'BpAyc': kT(1346),
+            'BpAyc': 'tByXOmVzwriLJ9kcEGKxdl5sFINu1P74fDbpMW+avjY3o6-eHZQTnSA$Ug8C2Rhq0',
             'EBoth': function(i, j) {
                 return j === i
             },
@@ -1389,7 +1389,7 @@ window._cf_chl_opt.uaO = false;
             'cTdOA': function(i, j) {
                 return i !== j
             },
-            'QRiWt': kT(631),
+            'QRiWt': 'JeOgc',
             'MwLxI': function(i, j) {
                 return i ^ j
             },
@@ -1400,7 +1400,7 @@ window._cf_chl_opt.uaO = false;
                 return j ^ i
             },
             'iQGKe': 'JyzWE',
-            'ikaPC': kT(1343),
+            'ikaPC': 'QBjpz',
             'bxSTW': kT(875),
             'hlxzQ': kT(186),
             'DmqJB': function(i, j) {
@@ -1431,7 +1431,7 @@ window._cf_chl_opt.uaO = false;
                 return j == i
             }
         },
-        f = String[kT(939)],
+        f = String['fromCharCode'],
         g = {
             'h': function(i, kU, j, k, m) {
                 return (kU = kT,
@@ -1460,14 +1460,14 @@ window._cf_chl_opt.uaO = false;
                 I = 0,
                 J = 0; J < i[kW(202)]; J += 1)
                     if (K = i[kW(424)](J),
-                    Object.prototype.hasOwnProperty[kW(976)](x, K) || (x[K] = E++,
+                    Object.prototype.hasOwnProperty['call'](x, K) || (x[K] = E++,
                     B[K] = !0),
                     L = C + K,
-                    Object[kW(426)][kW(1935)][kW(976)](x, L))
+                    Object['prototype']['hasOwnProperty']['call'](x, L))
                         C = L;
                     else {
-                        if (Object[kW(426)][kW(1935)][kW(976)](B, C)) {
-                            if (e[kW(1030)](256, C[kW(627)](0))) {
+                        if (Object['prototype']['hasOwnProperty']['call'](B, C)) {
+                            if (e['RZfXj'](256, C['charCodeAt'](0))) {
                                 if (e[kW(155)](kW(765), kW(765)))
                                     return O = e[kW(1203)](C, 65535) + e[kW(1203)](i, 65535),
                                     e[kW(1215)](e[kW(438)](j >> 16, e[kW(912)](J, 16)) + (O >> 16), 16) | 65535.22 & O;
@@ -2212,7 +2212,7 @@ window._cf_chl_opt.uaO = false;
         return j[ly(1109)]('')
     }
     ,
-    fG[io(672)](function(lA, d, e, f, g, h, i, j) {
+    fG['push'](function(lA, d, e, f, g, h, i, j) {
         if (lA = io,
         d = {
             'izwnV': lA(950),
@@ -5519,16 +5519,16 @@ window._cf_chl_opt.uaO = false;
             'Tnjkv': function(e, f) {
                 return f === e
             },
-            'crjgl': ju(490),
+            'crjgl': 'auto',
             'EeKEQ': function(e, f) {
                 return e > f
             }
         },
-        d[ju(815)](hf[ju(202)], 0)) {
-            if (fE[ju(264)][ju(1098)] && fE[ju(264)][ju(1098)] !== d[ju(770)] && hf[ju(672)](fE[ju(264)][ju(1098)][ju(1626)]()[ju(1216)]('_', '-')),
-            navigator[ju(1669)]) {
-                if (ju(728) === ju(728))
-                    hf[ju(672)](navigator[ju(1669)].toLowerCase()[ju(1216)]('_', '-'));
+        d['Tnjkv'](hf['length'], 0)) {
+            if (fE['_cf_chl_opt']['chlApiLanguage'] && fE['_cf_chl_opt']['chlApiLanguage'] !== d['crjgl'] && hf['push'](fE['_cf_chl_opt']['chlApiLanguage']['toLowerCase']()['replace']('_', '-')),
+            navigator['language']) {
+                if (true)
+                    hf['push'](navigator['language'].toLowerCase()['replace']('_', '-'));
                 else {
                     if (aU[ju(426)][ju(1935)][ju(976)](aV, aW)) {
                         if (256 > cu[ju(627)](0)) {
@@ -5581,7 +5581,7 @@ window._cf_chl_opt.uaO = false;
                     d[ju(1074)](0, cs) && ct++
                 }
             }
-            navigator[ju(321)] && typeof navigator[ju(321)] === ju(1948) && d[ju(457)](navigator[ju(321)][ju(202)], 1) && navigator[ju(321)][ju(1565)](function(f, jv) {
+            navigator['languages'] && typeof navigator['languages'] === ju(1948) && d[ju(457)](navigator[ju(321)][ju(202)], 1) && navigator['languages']['forEach'](function(f, jv) {
                 jv = ju,
                 hf[jv(672)](f[jv(1626)]()[jv(1216)]('_', '-'))
             })
