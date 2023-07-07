@@ -41,7 +41,7 @@ from seleniumwire import webdriver
 profile = profiles.Windows() # or .Android
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
-driver = Chrome(profile, options=options, base_drivers=(webdriver.Chrome,),
+driver = Chrome(profile, options=options,
                 uc_driver=False
                 )
 
@@ -237,8 +237,6 @@ Please feel free to open an issue or fork!
 
 
 ## Todo
-- [ ] use class instead of generator function at `selenium_profiles.webdriver.Chrome`
-- [ ] dynamic proxies [issue](https://github.com/kaliiiiiiiiii/Selenium-Profiles/issues/52)
 - [x] js-undetectability
   - [ ] [`navigator.connection`]
   - [ ] fonts don't match platform
@@ -255,7 +253,6 @@ Please feel free to open an issue or fork!
     - [ ] driver.execute_async_script() usage (needs hook on called element)
     - [ ] driver.find_element() usage
     - [x] [`window.cdc_adoQpoasnfa76pfcZLmcfl`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/chrome/devtools_client_impl.cc;l=526-532;drc=f915006bb8e09e0c29016cf9ab9e737cdebc1adc)
-- [x] allow passing seleniumwire-options => [discussion](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/36)
 - [x] default metrics
   - [x] Android
   - [x] Windows
@@ -273,11 +270,6 @@ Please feel free to open an issue or fork!
        - [x] useragent-data
        - [ ] undetected
          - [ ] headless
-- [ ] [audio_captcha_solver](https://github.com/najmi9/solve-recaptcha-python-selenium/blob/master/main.py)
-- [X] support for 
-  - [x] Windows
-  - [x] Jupyter Notebook (Google-Colab)
-  - [x] Linux
 
 
 ## Deprecated
