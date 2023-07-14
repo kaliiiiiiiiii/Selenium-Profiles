@@ -142,6 +142,30 @@ driver.quit()
 exit()
 ```
 
+Using [Selenium-Injector](https://github.com/kaliiiiiiiiii/Selenium-Injector)
+```python
+from selenium_profiles.webdriver import Chrome
+
+driver = Chrome(injector_options=True)
+injector = driver.profiles.injector
+
+# modify headers
+injector.declarativeNetRequest.update_headers({"test": "test_2", "sec-ch-ua-platform": "Android"})
+rules = injector.declarativeNetRequest.dynamic_rules
+headers = injector.declarativeNetRequest._headers
+
+driver.get("https://httpbin.org/headers")
+input("press ENTER to continue")
+
+# block images
+injector.declarativeNetRequest.update_block_on(resource_types=["image"])
+
+driver.get("https://www.wikimedia.org/")
+
+input("press ENTER to exit")
+driver.quit()
+```
+
 ### Touch_actions
 
 Example demonstration script

@@ -2,7 +2,7 @@ import setuptools
 import sys
 
 
-requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver", "selenium-wire", "webdriver-manager", "selenium-injector>=2.2"]
+requirements = ['selenium', 'requests', 'selenium-interceptor', "undetected-chromedriver", "selenium-wire", "webdriver-manager", "selenium-injector>=2.3"]
 
 if 'google.colab' in sys.modules: # we're on google-colab
     requirements.extend(['PyVirtualDisplay', "google-colab-shell"])

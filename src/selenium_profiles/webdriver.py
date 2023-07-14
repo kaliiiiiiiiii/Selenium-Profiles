@@ -159,19 +159,6 @@ class Chrome(BaseDriver):
             from selenium_profiles.scripts import undetected
             undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
-        if injector_options or injector_options == {}:
-            from selenium_injector.scripts.injector import make_config
-
-            # connection to tab-0
-            tab_index = self.window_handles.index(self.current_window_handle).__str__()
-            self.profiles.injector.tab_user = "tab-" + tab_index
-            config = make_config(host=injector.socket.host, port=injector.socket.port, user=self.profiles.injector.tab_user, debug=True)
-
-            from selenium_injector.utils.utils import read
-            utils_js = read("files/js/utils.js")
-            self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument",
-                                 {"source": "(function(){%s})()" % (utils_js + self.profiles.injector.connection_js + config)})
-
         if proxy["proxy"]:
             from selenium_profiles.utils.utils import valid_key
             # noinspection PyUnresolvedReferences
