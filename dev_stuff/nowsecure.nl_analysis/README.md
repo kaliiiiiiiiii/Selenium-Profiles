@@ -1,8 +1,11 @@
 # Nowsecure Cloudfare analysis
 as 27.6.2023
+- same scripts on [bscscan.com/contractsVerified](https://bscscan.com/contractsVerified)
+- => not just nowsecure-specific
 
 ## Service-worker scripts
 overwriting javascript and emulation doesn't work there :(
+
 
 #### expose emulation and `navigator.webdriver`
 ```js
@@ -101,6 +104,7 @@ self.onmessage = function(m) {
 
 ### `invisible.js` de-obfuscated
 - at [nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js](https://nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js)
+- and [bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js](https://bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js)
 ### `v1?ray=****************.js` de-obfuscated
 
 ```js
