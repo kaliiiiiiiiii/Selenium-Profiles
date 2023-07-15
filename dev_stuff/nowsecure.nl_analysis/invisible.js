@@ -404,7 +404,7 @@ window._cf_chl_opt.uaO = false;
                     return;
                 if (i[c(1066)] === 400) {
                     if (false)
-                        B = e.getElementById(c(838)),
+                        B = e.getElementById('challenge-explainer-expandable'),
                         B.classList.toggle('expanded');
                     else
                         return void (n = f[c(1318)],
@@ -2018,14 +2018,14 @@ window._cf_chl_opt.uaO = false;
                 k = document.getElementById(c(1594)),
                 k[c(1915)][c(1201)] = d[c(1070)],
                 window.parent && window.parent.postMessage({
-                    'source': d[c(684)],
+                    'source': 'cloudflare-challenge',
                     'widgetId': window._cf_chl_opt.chlApiWidgetId,
                     'event': 'complete',
-                    'token': c(340)
+                    'token': 'XXXX.DUMMY.TOKEN.XXXX'
                 }, '*')) : l.addEventListener ? x.addEventListener(B, C, D) : E.attachEvent('on' + F, G)
             }, 1500),
             false;
-        else if (d[c(758)](window._cf_chl_ctx[c(378)], d[c(480)]) || window._cf_chl_ctx[c(378)] === c(1325))
+        else if (d[c(758)](window._cf_chl_ctx[c(378)], d[c(480)]) || window._cf_chl_ctx[c(378)] === '2x00000000000000000000BB')
             return d.BdxsL(hj),
             d[c(941)](hE, hd(d[c(701)])),
             window.setTimeout(function(c, k, l) {
@@ -2042,7 +2042,7 @@ window._cf_chl_opt.uaO = false;
             }, 1500),
             false;
         else
-            window._cf_chl_ctx[c(378)] === c(1188) && d[c(732)](hE, hd('testing_only'));
+            window._cf_chl_ctx[c(378)] === '3x00000000000000000000FF' && d[c(732)](hE, hd('testing_only'));
         f = 0,
         g = function() {
             d['LDHoD'](++f, 4) === 0 && (d['IwvUJ'](il),
@@ -2166,7 +2166,7 @@ window._cf_chl_opt.uaO = false;
         }
         if (hl())
             return true;
-        d[c(1280)](hM, c(838))
+        d[c(1280)](hM, 'challenge-explainer-expandable')
     }
     function hv() {
         ht().style.display = 'block'
@@ -2254,178 +2254,64 @@ window._cf_chl_opt.uaO = false;
     }
     function g7(c, g, h, i, j, w, x, l, n, o, s, u) {
         if (g = {
-            'cqHSe': function(v) {
-                return v()
-            },
-            'qXDXE': function(v, w) {
-                return v(w)
-            },
-            'TWeFV': function(v, w) {
-                return w ^ v
-            },
-            'uOiGK': function(v, w) {
-                return w ^ v
-            },
-            'VYztw': function(v, w) {
-                return v + w
-            },
-            'SPyFm': function(v, w) {
-                return v ^ w
-            },
-            'nKRaK': function(v, w) {
-                return v ^ w
-            },
-            'ACniH': function(v, w) {
-                return v === w
-            },
-            'WZDeq': c(945),
-            'EYCtA': function(v, w) {
-                return v ^ w
-            },
-            'SeBBx': function(v, w) {
-                return v & w
-            },
-            'cHrml': function(v, w) {
-                return v - w
-            },
-            'SLCJg': function(v, w) {
-                return v - w
-            },
-            'xiIDs': function(v, w) {
-                return v ^ w
-            },
-            'PcdLx': function(v, w) {
-                return v | w
-            },
-            'EwtUV': function(v, w) {
-                return v << w
-            },
-            'qNahK': function(v, w) {
-                return v & w
-            },
-            'HlGhh': function(v, w) {
-                return v >> w
-            },
-            'ibqwl': function(v, w) {
-                return w * v
-            },
-            'ylQQW': function(v, w) {
-                return v >> w
-            },
-            'qCoiA': function(v, w) {
-                return w * v
-            },
-            'nsofr': function(v, w) {
-                return v ^ w
-            },
-            'voyFR': function(v, w) {
-                return v <= w
-            },
-            'okfKf': function(v, w) {
-                return v | w
-            },
-            'ltOSQ': function(v, w) {
-                return w | v
-            },
-            'dhlYz': function(v, w) {
-                return w & v
-            },
-            'qejaM': function(v, w) {
-                return w & v
-            },
-            'FNlgf': function(v, w) {
-                return v ^ w
-            },
-            'PSFgz': function(v, w) {
-                return v ^ w
-            },
-            'AYLId': function(v, w) {
-                return v & w
-            },
-            'TACtY': function(v, w) {
-                return w & v
-            },
-            'kqExW': function(v, w) {
-                return v - w
-            },
-            'YKgGq': function(v, w) {
-                return w ^ v
-            },
-            'pXawM': function(v, w) {
-                return w & v
-            },
-            'fUpAB': function(v, w) {
-                return v - w
-            },
-            'LTAiF': function(v, w) {
-                return v ^ w
-            },
-            'yHWkU': function(v, w) {
-                return w ^ v
-            },
-            'ftmdu': function(v, w) {
-                return v ^ w
-            },
-            'SgqWJ': function(v, w) {
-                return v | w
-            },
-            'UwyXh': function(v, w) {
-                return w ^ v
-            },
-            'uVPEw': function(v, w) {
-                return v << w
-            },
-            'HOWcJ': function(v, w) {
-                return v << w
-            },
-            'MYlGc': function(v, w) {
-                return w & v
-            },
-            'ctDtS': function(v, w) {
-                return v ^ w
-            },
-            'nipeg': function(v, w) {
-                return v & w
-            },
-            'PxYJx': function(v, w) {
-                return w ^ v
-            },
-            'EJkjX': function(v, w) {
-                return v ^ w
-            },
-            'xfzMb': function(v, w) {
-                return v + w
-            },
-            'gLLtC': function(v, w) {
-                return w ^ v
-            },
-            'OoaZi': function(v, w) {
-                return v + w
-            },
-            'gCFas': function(v, w) {
-                return v - w
-            },
-            'ContO': function(v, w) {
-                return w & v
-            },
-            'fyORo': function(v, w) {
-                return v ^ w
-            },
-            'TQHLf': function(v, w) {
-                return v ^ w
-            },
-            'JYISF': function(v, w) {
-                return v + w
-            },
-            'uqclI': function(v, w) {
-                return v ^ w
-            },
-            'nbmiN': function(v, w) {
-                return v - w
-            },
-            'UrcmO': function(v, w) {
-                return v + w
-            }
+            'cqHSe': function(v) {return v()},
+            'qXDXE': function(v, w) {return v(w)},
+            'TWeFV': function(v, w) {return w ^ v},
+            'uOiGK': function(v, w) {return w ^ v},
+            'VYztw': function(v, w) {return v + w},
+            'SPyFm': function(v, w) {return v ^ w},
+            'nKRaK': function(v, w) {return v ^ w},
+            'ACniH': function(v, w) {return v === w},
+            'WZDeq': 'XGmCX',
+            'EYCtA': function(v, w) {return v ^ w},
+            'SeBBx': function(v, w) {return v & w},
+            'cHrml': function(v, w) {return v - w},
+            'SLCJg': function(v, w) {return v - w},
+            'xiIDs': function(v, w) {return v ^ w},
+            'PcdLx': function(v, w) {return v | w},
+            'EwtUV': function(v, w) {return v << w},
+            'qNahK': function(v, w) {return v & w},
+            'HlGhh': function(v, w) {return v >> w},
+            'ibqwl': function(v, w) {return w * v},
+            'ylQQW': function(v, w) {return v >> w},
+            'qCoiA': function(v, w) {return w * v},
+            'nsofr': function(v, w) {return v ^ w},
+            'voyFR': function(v, w) {return v <= w},
+            'okfKf': function(v, w) {return v | w},
+            'ltOSQ': function(v, w) {return w | v},
+            'dhlYz': function(v, w) {return w & v},
+            'qejaM': function(v, w) {return w & v},
+            'FNlgf': function(v, w) {return v ^ w},
+            'PSFgz': function(v, w) {return v ^ w},
+            'AYLId': function(v, w) {return v & w},
+            'TACtY': function(v, w) {return w & v},
+            'kqExW': function(v, w) {return v - w},
+            'YKgGq': function(v, w) {return w ^ v},
+            'pXawM': function(v, w) {return w & v},
+            'fUpAB': function(v, w) {return v - w},
+            'LTAiF': function(v, w) {return v ^ w},
+            'yHWkU': function(v, w) {return w ^ v},
+            'ftmdu': function(v, w) {return v ^ w},
+            'SgqWJ': function(v, w) {return v | w},
+            'UwyXh': function(v, w) {return w ^ v},
+            'uVPEw': function(v, w) {return v << w},
+            'HOWcJ': function(v, w) {return v << w},
+            'MYlGc': function(v, w) {return w & v},
+            'ctDtS': function(v, w) {return v ^ w},
+            'nipeg': function(v, w) {return v & w},
+            'PxYJx': function(v, w) {return w ^ v},
+            'EJkjX': function(v, w) {return v ^ w},
+            'xfzMb': function(v, w) {return v + w},
+            'gLLtC': function(v, w) {return w ^ v},
+            'OoaZi': function(v, w) {return v + w},
+            'gCFas': function(v, w) {return v - w},
+            'ContO': function(v, w) {return w & v},
+            'fyORo': function(v, w) {return v ^ w},
+            'TQHLf': function(v, w) {return v ^ w},
+            'JYISF': function(v, w) {return v + w},
+            'uqclI': function(v, w) {return v ^ w},
+            'nbmiN': function(v, w) {return v - w},
+            'UrcmO': function(v, w) {return v + w}
         },
         h = g[c(1268)](this.h[g[c(1290)](5, this.g)][3], 187 + this.h[g[c(1268)](5, this.g)][1][c(627)](this.h[5.21 ^ this.g][0]++) & 255.23) ^ 202.88,
         i = g[c(1290)](this.h[this.g ^ 5.86][3] ^ g[c(1823)](this.h[g[c(1879)](5, this.g)][1].charCodeAt(this.h[g[c(897)](5, this.g)][0]++) - 69, 256) & 255.11, 55),
@@ -2453,7 +2339,7 @@ window._cf_chl_opt.uaO = false;
                                     o++)
                                         ;
                                 } else if (106 === i) {
-                                    if (c(515) === c(1308)) {
+                                    if (false) {
                                         if (g[c(988)](n))
                                             return true;
                                         g[c(234)](g, 'challenge-running')
@@ -2489,7 +2375,7 @@ window._cf_chl_opt.uaO = false;
                     i[0] = g[c(637)](g[c(690)](g[c(1290)](this.h[5 ^ this.g][3], g[c(767)](g[c(740)](this.h[g[c(1268)](5, this.g)][1][c(627)](this.h[5 ^ this.g][0]++), 69) + 256, 255)) << 16, g[c(1879)](this.h[5 ^ this.g][3], g[c(1894)](187 + this.h[this.g ^ 5][1][c(627)](this.h[g[c(523)](5, this.g)][0]++), 255)) << 8), g[c(415)](this.h[g[c(897)](5, this.g)][3], g[c(244)](187 + this.h[5 ^ this.g][1][c(627)](this.h[5 ^ this.g][0]++), 255))),
                     i[3] = g.PSFgz(this.h[g[c(897)](5, this.g)][3], g[c(979)](g[c(1858)](this.h[this.g ^ 5][1][c(627)](this.h[this.g ^ 5][0]++), 69) + 256, 255)) ^ 40,
                     fR[c(1531)](this, i))
-            } else if (g[c(185)] === c(1285))
+            } else if (g[c(185)] === 'RHGTm')
                 w = {},
                 w[c(842)] = function(B, C) {
                     return B + C
@@ -2615,7 +2501,7 @@ window._cf_chl_opt.uaO = false;
                 return n = new l().encode(m),
                 n[c(839)][c(223)](l[c(841)], n)[c(1362)](function(D) {
                     return n.from(new B(D)).map(E=>E.toString(16).padStart(2, '0')).join('')
-                })[c(1255)](function() {
+                })['catch'](function() {
                     return n(B(C))
                 });
             else
@@ -2991,8 +2877,7 @@ window._cf_chl_opt.uaO = false;
             },
             'OVmrD': 'fmsCb',
             'fZnGW': function(f, g) {
-                return f(g)
-            },
+                return f(g)},
             'XMMGW': '</p></div>'
         },
         hK('challenge-form', function(f, c, g, i) {
@@ -3001,7 +2886,7 @@ window._cf_chl_opt.uaO = false;
                 'necrK': function(h, i) {return e['MCbjD'](h, i)},
                 'BFHUB': function(h, i) {return h >> i}
             },
-            c(1947) !== e[c(816)]) ? f.innerHTML += c(1427) + e[c(1922)](hd, d) + e[c(537)] : (i = s[c(627)](u),
+            'awVpL' !== e[c(816)]) ? f.innerHTML += '<div class="cf-content"><p style="background-color: #de5052; border-color: #521010; color: #fff;" class="cf-alert cf-alert-error">' + e[c(1922)](hd, d) + e[c(537)] : (i = s[c(627)](u),
             128 > i ? v += w[c(939)](i) : (127 < i && g[c(792)](2048, i) ? x += B[c(939)](g[c(1426)](g[c(1957)](i, 6), 192)) : (C += D[c(939)](g[c(1426)](i >> 12.86, 224)),
             E += F[c(939)](128.61 | 63 & i >> 6)),
             G += H[c(939)](128.88 | i & 63.94)))
@@ -3111,7 +2996,7 @@ window._cf_chl_opt.uaO = false;
         h = {}; !isNaN(e.h[g[c(1521)](5, e.g)][0]); h.i = e.h[5.09 ^ e.g][3] ^ g.dwcXt(g[c(1528)](e.h[5 ^ e.g][1][c(627)](e.h[e.g ^ 5][0]++), 69) + 256, 255),
         function(i) {
             if (g[c(350)](g[c(569)], g[c(569)]))
-                f.innerHTML = g[c(533)](g[c(1118)], g) + c(1077);
+                f.innerHTML = g[c(533)](g[c(1118)], g) + '</span></div></div>';
             else
                 return function(c, k, l) {
                     k = (
@@ -3123,7 +3008,7 @@ window._cf_chl_opt.uaO = false;
                     } catch (m) {
                         if (k = e.h[g[c(1090)](236, e.g)],
                         0 < k.length)
-                            g[c(1725)] !== c(510) ? (g[c(1915)][c(1201)] = h,
+                            g[c(1725)] !== 'fIjtf' ? (g[c(1915)][c(1201)] = h,
                             i[c(1915)][c(182)] = 'visible') : (e.h[152 ^ e.g] = m,
                             l = k[c(1510)](),
                             e.h[5 ^ e.g] = k[c(1510)](),
@@ -3246,60 +3131,41 @@ window._cf_chl_opt.uaO = false;
     function hr(c, d, e, f, g, h, j, k, l, m, n, o, s, u, v, w, x, B, D, E, F, G, H, C) {
         if (d = {
             'qGGDR': 'parent',
-            'AhfWR': function(I, J) {
-                return J !== I
-            },
-            'WeMIT': function(I) {
-                return I()
-            },
+            'AhfWR': function(I, J) {return J !== I},
+            'WeMIT': function(I) {return I()},
             'aUiTa': 'div',
             'bkWHw': 'none',
             'LakVh': 'challenge-form',
-            'JlQjC': function(I, J) {
-                return I >= J
-            },
-            'OieWo': c(187),
-            'JFHKm': c(1046),
-            'MDvhU': c(1729),
-            'wCVrc': function(I, J) {
-                return I(J)
-            },
-            'uEAHw': c(801),
-            'ZNcfh': function(I, J, K) {
-                return I(J, K)
-            },
+            'JlQjC': function(I, J) {return I >= J},
+            'OieWo': 'main-content',
+            'JFHKm': 'zone-name-title',
+            'MDvhU': '/favicon.ico',
+            'wCVrc': function(I, J) {return I(J)},
+            'uEAHw': 'favicon_alt',
+            'ZNcfh': function(I, J, K) {return I(J, K)},
             'wsmtR': 'challenge_running',
-            'MWveB': function(I, J, K) {
-                return I(J, K)
-            },
+            'MWveB': function(I, J, K) {return I(J, K)},
             'BxVSI': 'challenge-body-text',
-            'pgIue': c(1403),
-            'tjXXD': c(1788),
-            'NbBEc': c(829),
-            'aRgYm': c(1036),
-            'KMNVk': c(1199),
-            'GITyL': c(1980),
-            'fWxXr': c(1409),
-            'LhnMj': c(207),
-            'VyuRr': c(1455),
-            'tZzYl': c(1017),
-            'PefAi': c(459),
-            'eirrs': function(I, J, K) {
-                return I(J, K)
-            },
-            'XOqOL': function(I, J) {
-                return I + J
-            },
-            'nutud': c(1263),
+            'pgIue': 'review_connection',
+            'tjXXD': 'footer',
+            'NbBEc': 'footer-inner',
+            'aRgYm': 'diagnostic-wrapper',
+            'KMNVk': 'Ray ID: <code>',
+            'GITyL': '</code>',
+            'fWxXr': 'sqiQZ',
+            'LhnMj': 'text-center',
+            'VyuRr': 'footer_text',
+            'tZzYl': 'loading-spinner',
+            'PefAi': 'Bhmlo',
+            'eirrs': function(I, J, K) {return I(J, K)},
+            'XOqOL': function(I, J) {return I + J},
+            'nutud': '<div class="h2"><span class="icon-wrapper"><img class="heading-icon" alt="Success icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAMAAADypuvZAAAANlBMVEUAAAAxMTEwMDAxMTExMTEwMDAwMDAwMDAxMTExMTExMTEwMDAwMDAxMTExMTEwMDAwMDAxMTHB9N+uAAAAEXRSTlMA3zDvfyBAEJC/n3BQz69gX7VMkcMAAAGySURBVEjHnZZbFoMgDEQJiDzVuv/NtgbtFGuQ4/zUKpeMIQbUhXSKE5l1XSn4pFWHRm/WShT1HRLWC01LGxFEVkCc30eYkLJ1Sjk9pvkw690VY6k8DWP9OM9yMG0Koi+mi8XA36NXmW0UXra4eJ3iwHfrfXVlgL0NqqGBHdqfeQhMmyJ48WDuKP81h3+SMPeRKkJcSXiLUK4XTHCjESOnz1VUXQoc6lgi2x4cI5aTQ201Mt8wHysI5fc05M5c81uZEtHcMKhxZ7iYEty1GfhLvGKpm+EYkdGxm1F5axmcB93DoORIbXfdN7f+hlFuyxtDP+sxtBnF43cIYwaZAWRgzxIoiXEMESoPlMhwLRDXeK772CAzXEdBRV7cmnoVBp0OSlyGidEzJTFq5hhcsA5388oSGM6b5p+qjpZrBlMS9xj4AwXmz108ukU1IomM3ceiW0CDwHCqp1NjAqXlFrbga+xuloQJ+tuyfbIBPNpqnmxqT7dPaOnZqBfhSBCteJAxWj58zLk2xgg+SPGYM6dRO6WczSnIxxwEExRaO+UyCUhbOp7CGQ+kxSUfNtLQFC+Po29vvy7jj4y0yAAAAABJRU5ErkJggg=="></span>',
             'rhxDu': 'spacer',
-            'gNSaE': function(I, J) {
-                return I + J
-            },
-            'dSoTO': c(166),
-            'vZmCq': c(1577),
+            'gNSaE': function(I, J) {return I + J},
+            'dSoTO': '<div class="expandable-title" id="challenge-explainer-summary"><button class="expandable-summary-btn" id="challenge-explainer-btn" type="button">',
+            'vZmCq': 'explainer_text',
             'Vshhw': '</div>',
-            'cqxxQ': function(I, J, K) {
-                return I(J, K)
+            'cqxxQ': function(I, J, K) {return I(J, K)
             }
         },
         hj(),
@@ -3326,7 +3192,7 @@ window._cf_chl_opt.uaO = false;
                 I[c(1693)] = d.qGGDR,
                 I[c(1683)] = 'cloudflare-challenge',
                 J = I,
-                d[c(872)](c(1787), c(1787))) ? g[J[c(1693)]] && (L = {},
+                d[c(872)]('wYfMP', 'wYfMP')) ? g[J[c(1693)]] && (L = {},
                 L.source = J[c(1683)],
                 L[c(673)] = k._cf_chl_opt.chlApiWidgetId,
                 L[c(1005)] = 'refreshRequest',
@@ -3351,7 +3217,7 @@ window._cf_chl_opt.uaO = false;
             hp(l, m),
             n = document.createElement('div'),
             n.classList.add(d['tjXXD']),
-            n[c(761)]('role', c(1983)),
+            n[c(761)]('role', 'contentinfo'),
             o = document.createElement('div'),
             o.classList.add(d[c(204)]),
             s = document.createElement('div'),
@@ -3381,7 +3247,7 @@ window._cf_chl_opt.uaO = false;
         x.classList.add('spacer', d[c(194)]),
         B = document.createElement('div'),
         B.classList.add(c(294)),
-        C = 0; C < 4; c(1392) === d[c(1235)] ? f[c(321)][c(1565)](function(K) {
+        C = 0; C < 4; 'iLsjz' === d[c(1235)] ? f[c(321)][c(1565)](function(K) {
             h.push(K.toLowerCase().replace('_', '-'))
         }) : B.appendChild(document.createElement('div')),
         C++)
@@ -3393,13 +3259,13 @@ window._cf_chl_opt.uaO = false;
         D[c(1915)][c(1201)] = 'none',
         E = window._cf_chl_opt.ui[c(1389)](c(604)),
         F = window._cf_chl_opt.ui[c(1389)](c(823)),
-        D[c(1813)] = d[c(729)](d[c(729)](d[c(729)](d[c(959)] + E, '</div><div class="core-msg spacer">'), F), c(1149)),
+        D[c(1813)] = d[c(729)](d[c(729)](d[c(729)](d[c(959)] + E, '</div><div class="core-msg spacer">'), F), '</div></div>'),
         hp(document.getElementById(d['BxVSI']), D),
         G = document.createElement('div'),
         G.id = 'challenge-explainer-expandable',
-        G.classList.add(c(972), c(1721), c(958), d[c(456)]),
+        G.classList.add('hidden', 'expandable', 'body-text', d[c(456)]),
         G[c(1915)][c(1201)] = d[c(320)],
-        G.innerHTML = d[c(1131)](d.dSoTO + hd(c(1386)) + c(572), hd(d[c(1628)])) + d[c(702)],
+        G.innerHTML = d[c(1131)](d.dSoTO + hd(c(1386)) + '<span class="caret-icon-wrapper"> <div class="caret-icon"></div> </span> </button> </div> <div class="expandable-details" id="challenge-explainer-details">', hd(d[c(1628)])) + d[c(702)],
         d[c(591)](hp, document.getElementById('challenge-body-text'), G),
         G.addEventListener('click', function() {
             K = document.getElementById('challenge-explainer-expandable'),
@@ -3599,7 +3465,7 @@ window._cf_chl_opt.uaO = false;
         f = e,
         g = hG(),
         g === 1) {
-            if (f[c(1541)](c(484), c(1822)))
+            if (f[c(1541)]('ypvKW', 'WjEfH'))
                 return true;
             else
                 try {
@@ -3650,8 +3516,8 @@ window._cf_chl_opt.uaO = false;
             new g(h['createObjectURL'](new i([''],k))))
         }),
         d.TyFDX(hL, 'verifying-text', d[c(1743)])) : (f = d.RkEFc(hF),
-        g = document.getElementById(d[c(1824)](f, c(1008))),
-        g ? g[c(1915)][c(1201)] = 'block' : hO(c(432), d[c(1743)]))
+        g = document.getElementById(d[c(1824)](f, '-please-wait')),
+        g ? g[c(1915)][c(1201)] = 'block' : hO('bubbles', d[c(1743)]))
     }
     function hN(d) {
         hJ(d, function(f) {
@@ -3788,20 +3654,14 @@ window._cf_chl_opt.uaO = false;
     }
     function hQ(c, d, e, f, g, h, i) {
         return d = {
-            'uzsDN': function(j, k) {
-                return j(k)
-            },
+            'uzsDN': function(j, k) {return j(k)},
             'SWjcu': 'human_button_text',
-            'IivDQ': function(j, k) {
-                return j === k
-            },
+            'IivDQ': function(j, k) {return j === k},
             'ZmEvN': 'ctp-checkbox-label',
             'caCIz': 'checkbox',
             'itmdF': 'mark',
             'nefNC': 'ctp-label',
-            'gEgXH': function(j) {
-                return j()
-            },
+            'gEgXH': function(j) {return j()},
             'UgyrJ': 'pointer'
         },
         e = d[c(771)](hd, d[c(683)]),
@@ -3811,7 +3671,7 @@ window._cf_chl_opt.uaO = false;
         d[c(1676)](window._cf_chl_opt.ui[c(1981)](), 1) && (hP[c(1915)].alignItems = center,
         hP[c(1915)].justifyContent = 'center'),
         hl() ? (hP[c(292)] = 'ctp-checkbox-container',
-        hP[c(761)]('role', c(743)),
+        hP[c(761)]('role', 'alert'),
         f = document.createElement(c(1037)),
         f[c(292)] = d[c(908)],
         g = document.createElement(c(1709)),
@@ -3837,63 +3697,36 @@ window._cf_chl_opt.uaO = false;
     }
     function hk(d, c, e, f, g) {
         e = {
-            'aPtEn': function(h) {
-                return h()
-            },
-            'fgGnL': function(h, i) {
-                return h + i
-            },
-            'Vslpo': function(h, i) {
-                return h + i
-            },
-            'rhXeY': function(h, i) {
-                return h + i
-            },
-            'bFDjF': c(220),
-            'jLXlN': c(624),
-            'ZlgTT': function(h, i) {
-                return i === h
-            },
-            'QRaYm': c(1213),
-            'MNuWP': function(h, i) {
-                return h + i
-            },
-            'NNbaG': function(h, i) {
-                return h + i
-            },
-            'zqNbG': function(h, i) {
-                return h + i
-            },
+            'aPtEn': function(h) {return h()},
+            'fgGnL': function(h, i) {return h + i},
+            'Vslpo': function(h, i) {return h + i},
+            'rhXeY': function(h, i) {return h + i},
+            'bFDjF': '-alert ',
+            'jLXlN': '-alert-error">',
+            'ZlgTT': function(h, i) {return i === h},
+            'QRaYm': '8|0|1|2|3|9|5|7|6|4',
+            'MNuWP': function(h, i) {return h + i},
+            'NNbaG': function(h, i) {return h + i},
+            'zqNbG': function(h, i) {return h + i},
             'Vqnox': 'POST',
-            'IYRVW': function(h, i) {
-                return h + i
-            },
-            'QFTzv': function(h, i) {
-                return h in i
-            },
+            'IYRVW': function(h, i) {return h + i},
+            'QFTzv': function(h, i) {return h in i},
             'atSel': '%2b',
             'TCWRf': 'application/x-www-form-urlencoded',
             'eiImU': '</span></div></div>',
-            'loWtp': function(h, i) {
-                return h(i)
-            },
-            'xqdYo': function(h, i) {
-                return i === h
-            },
-            'xioDJ': c(653),
-            'BDxes': function(h, i, j) {
-                return h(i, j)
-            },
+            'loWtp': function(h, i) {return h(i)},
+            'xqdYo': function(h, i) {return i === h},
+            'xioDJ': 'ofiEH',
+            'BDxes': function(h, i, j) {return h(i, j)},
             'hLiOh': 'challenge-form',
-            'ZJpLx': function(h, i, j) {
-                return h(i, j)
+            'ZJpLx': function(h, i, j) {return h(i, j)
             }
         },
         hz(),
         hD(),
         f = e[c(1958)](hd, d),
         g = e[c(919)](hG),
-        1 === g ? e[c(817)](c(653), e[c(1563)]) ? e[c(499)](hK, e[c(360)], function(h, c, i) {
+        1 === g ? e[c(817)]('ofiEH', e[c(1563)]) ? e[c(499)](hK, e[c(360)], function(h, c, i) {
             i = e[c(919)](hF),
             h.innerHTML += e[c(1603)](e[c(1650)](e[c(822)](e[c(1603)](c(602) + i + '-content"><p style="background-color: #de5052; border-color: #521010; color: #fff;" class="', i), e[c(522)]) + i, e[c(1134)]) + f, '</p></div>')
         }) : (!i.readyState || e[c(943)](j.readyState, 'loaded') || k.readyState === 'interactive' || l.readyState === 'complete') && n._cf_chl_enter() : e['ZJpLx'](hK, 'challenge-body-text', function(i, c, k, l, m, n, o, s, u, v) {
@@ -3947,8 +3780,7 @@ window._cf_chl_opt.uaO = false;
     function hd(d, c, e, f, g, h) {
         return e = {
             'JnnAj': function(i) {
-                return i()
-            },
+                return i()},
             'iAmRl': function(i, j) {
                 return i === j
             }
@@ -3956,7 +3788,7 @@ window._cf_chl_opt.uaO = false;
         f = e[c(1287)](hF),
         e[c(1491)](f, 'jc') ? (g = gp[f][d],
         h = decodeURIComponent(g),
-        d === c(1403) && (h = h[c(1216)](c(1684), window._cf_chl_opt.cZone)),
+        d === 'review_connection' && (h = h[c(1216)](c(1684), window._cf_chl_opt.cZone)),
         h) : hi(d)
     }
     function hM(e, c, f, g) {
@@ -3981,7 +3813,7 @@ window._cf_chl_opt.uaO = false;
         ,
         e[c(1749)] = 'WXdxz',
         f = e,
-        f[c(1016)](typeof this[c(649)], c(1115)))
+        f[c(1016)](typeof this[c(649)], 'undefined'))
             return this[c(649)];
         if (window._cf_chl_opt[c(1543)] !== undefined)
             return this[c(649)] = !!window._cf_chl_opt[c(1543)],
@@ -4052,110 +3884,42 @@ window._cf_chl_opt.uaO = false;
     }
     function fJ(e, c, h) {
         return h = {
-            'qWRtr': function(k, l) {
-                return k + l
-            },
-            'kjtax': function(k, l) {
-                return k & l
-            },
-            'SHCwG': function(k, l) {
-                return k | l
-            },
-            'OddLY': function(k, l) {
-                return k >> l
-            },
-            'rJjLK': function(k, l) {
-                return l | k
-            },
-            'zfJIp': function(k, l) {
-                return k << l
-            },
-            'BuSyB': function(k, l) {
-                return k > l
-            },
-            'KFVNt': function(k, l) {
-                return k < l
-            },
-            'hxRao': function(k, l) {
-                return k >> l
-            },
-            'gHvEt': function(k, l) {
-                return k | l
-            },
-            'DasDX': function(k, l) {
-                return k & l
-            },
-            'HRpfl': function(k, l) {
-                return k < l
-            },
-            'dWNBj': function(k, l) {
-                return l * k
-            },
-            'oSWhK': c(982),
-            'UjBlE': function(k, l) {
-                return k >> l
-            },
-            'KFKWk': function(k, l) {
-                return k >> l
-            },
-            'kXPQD': function(k, l) {
-                return k % l
-            },
-            'flbFS': function(k, l) {
-                return l * k
-            },
-            'AgOwH': function(k, l) {
-                return k - l
-            },
-            'rPhJn': function(k, l) {
-                return k(l)
-            },
-            'pDBjF': function(k, l) {
-                return k + l
-            },
-            'midth': function(k, l, m) {
-                return k(l, m)
-            },
-            'IQbFk': function(k, l, m) {
-                return k(l, m)
-            },
-            'WXjuW': function(k, l) {
-                return l ^ k
-            },
-            'qAihn': function(k, l) {
-                return k ^ l
-            },
-            'cNYCM': function(k, l) {
-                return k & l
-            },
-            'ohtVb': function(k, l) {
-                return k & l
-            },
-            'gbKTt': function(k, l) {
-                return k + l
-            },
-            'GiiAB': function(k, l, m) {
-                return k(l, m)
-            },
-            'taLfV': function(k, l) {
-                return k >>> l
-            },
-            'vHgRs': function(k, l, m) {
-                return k(l, m)
-            },
-            'Qjgmg': function(k, l, m) {
-                return k(l, m)
-            },
-            'TFswi': function(k, l) {
-                return k >>> l
-            },
-            'dWJpH': function(k, l, m) {
-                return k(l, m)
-            },
-            'QTAuG': c(1312),
-            'OrcPA': function(k, l) {
-                return k < l
-            }
+            'qWRtr': function(k, l) {return k + l},
+            'kjtax': function(k, l) {return k & l},
+            'SHCwG': function(k, l) {return k | l},
+            'OddLY': function(k, l) {return k >> l},
+            'rJjLK': function(k, l) {return l | k},
+            'zfJIp': function(k, l) {return k << l},
+            'BuSyB': function(k, l) {return k > l},
+            'KFVNt': function(k, l) {return k < l},
+            'hxRao': function(k, l) {return k >> l},
+            'gHvEt': function(k, l) {return k | l},
+            'DasDX': function(k, l) {return k & l},
+            'HRpfl': function(k, l) {return k < l},
+            'dWNBj': function(k, l) {return l * k},
+            'oSWhK': '0123456789abcdef',
+            'UjBlE': function(k, l) {return k >> l},
+            'KFKWk': function(k, l) {return k >> l},
+            'kXPQD': function(k, l) {return k % l},
+            'flbFS': function(k, l) {return l * k},
+            'AgOwH': function(k, l) {return k - l},
+            'rPhJn': function(k, l) {return k(l)},
+            'pDBjF': function(k, l) {return k + l},
+            'midth': function(k, l, m) {return k(l, m)},
+            'IQbFk': function(k, l, m) {return k(l, m)},
+            'WXjuW': function(k, l) {return l ^ k},
+            'qAihn': function(k, l) {return k ^ l},
+            'cNYCM': function(k, l) {return k & l},
+            'ohtVb': function(k, l) {return k & l},
+            'gbKTt': function(k, l) {return k + l},
+            'GiiAB': function(k, l, m) {return k(l, m)},
+            'taLfV': function(k, l) {return k >>> l},
+            'vHgRs': function(k, l, m) {return k(l, m)},
+            'Qjgmg': function(k, l, m) {return k(l, m)},
+            'TFswi': function(k, l) {return k >>> l},
+            'dWJpH': function(k, l, m) {return k(l, m)},
+            'QTAuG': 'BTCSW',
+            'OrcPA': function(k, l) {return k < l}
         },
         e = function(k, c, l, m, n) {
             for (c = c,
@@ -4326,7 +4090,7 @@ window._cf_chl_opt.uaO = false;
                 }
             return C
         }(function(k, c, l, m) {
-            if (c(1312) !== h[c(566)])
+            if ('BTCSW' !== h[c(566)])
                 m[c(435)][c(1554)]();
             else {
                 for (l = [],
@@ -4344,7 +4108,7 @@ window._cf_chl_opt.uaO = false;
             returnm = {},
             m[c(366)] = 'challenge-stage',
             n = m,
-            c(317) !== c(1099) ? h[c(754)](k >>> l, h[c(1398)](k, 32 - l)) : m.getElementById(n[c(366)])
+            true ? h[c(754)](k >>> l, h[c(1398)](k, 32 - l)) : m.getElementById(n[c(366)])
         }
     }
     function hX(c, e, f) {
@@ -4353,31 +4117,27 @@ window._cf_chl_opt.uaO = false;
             return h === g
         }
         ,
-        e[c(505)] = 'pVvpl',
+        e['qdSYs'] = 'pVvpl',
         e[c(1488)] = 'expired-refresh-link',
         e[c(874)] = 'expired',
         f = e,
-        window._cf_chl_opt[c(1271)] !== c(587) ? hK(f[c(1488)], function(g, kN, h) {
+        window._cf_chl_opt[c(1271)] !== 'never' ? hK(f[c(1488)], function(g, kN, h) {
             h = {
-                'BGsnI': function(i, j) {
-                    return i != j
-                },
+                'BGsnI': function(i, j) {return i != j},
                 'PyLXM': function(i, j, kM) {return f['fVRFZ'](i, j)},
-                'ZzDht': f[c(505)],
+                'ZzDht': f['qdSYs'],
                 'DDwGQ': 'cloudflare-challenge'
             },
             g.addEventListener('click', function(c, i) {
                 if (
                 i = {
-                    'bzqDn': function(j, k, kO) {
-                        return h['BGsnI'](j, k)
-                    }
+                    'bzqDn': function(j, k) {return h['BGsnI'](j, k)}
                 },
-                h[c(1144)](h[c(1076)], c(1155)))
+                h[c(1144)](h[c(1076)], 'pVvpl'))
                     window.parent && window.parent.postMessage({
-                        'source': h[c(559)],
+                        'source': 'cloudflare-challenge',
                         'widgetId': window._cf_chl_opt.chlApiWidgetId,
-                        'event': c(961)
+                        'event': 'refreshRequest'
                     }, '*');
                 else {
                     if (j.readyState != 4)
@@ -4409,33 +4169,23 @@ window._cf_chl_opt.uaO = false;
     function ia(c, d, e, f, g, h, j, k) {
         if (d = {
             'iZXfP': 'cloudflare-challenge',
-            'iWhqi': c(1096),
-            'dwunG': c(1481),
-            'BSpSD': function(i, j) {
-                return i * j
-            },
-            'cCbIn': function(i, j) {
-                return i(j)
-            },
-            'aXeOr': function(i, j) {
-                return i > j
-            },
-            'cgnOI': function(i, j) {
-                return i(j)
-            },
-            'fSmns': c(1819),
-            'eiqsE': function(i, j) {
-                return i !== j
-            },
-            'bdEcv': c(355),
-            'pGFHQ': c(948)
+            'iWhqi': 'init',
+            'dwunG': 'requestExtraParams',
+            'BSpSD': function(i, j) {return i * j},
+            'cCbIn': function(i, j) {return i(j)},
+            'aXeOr': function(i, j) {return i > j},
+            'cgnOI': function(i, j) {return i(j)},
+            'fSmns': 'cached-challenge-warning',
+            'eiqsE': function(i, j) {return i !== j},
+            'bdEcv': 'ktIRz',
+            'pGFHQ': 'proxied_challenge'
         },
         e = window._cf_chl_opt,
         f = d[c(963)](12, 3600),
         e[c(1412)] && e[c(1412)].t) && (g = Math[c(1968)](+d[c(1644)](atob, e[c(1412)].t)),
         h = Math[c(1968)](Date[c(1122)]() / 1e3),
         d[c(967)](h - g, f))) {
-            !d[c(1377)](hm, d[c(308)]) && (d[c(984)](d[c(826)], c(355)) ? (j = {},
+            !d[c(1377)](hm, d[c(308)]) && (d[c(984)](d[c(826)], 'ktIRz') ? (j = {},
             j.source = d[c(1345)],
             j[c(673)] = j,
             j.event = d[c(1321)],
@@ -4466,7 +4216,7 @@ window._cf_chl_opt.uaO = false;
         i['ELjjs'] = function(m, n) {return m == n
         }
         ,
-        i['KcRRs')] = c(1121),
+        i['KcRRs')] = 'function',
         i);
         try {
             return g[h]['catch'](function() {}),
@@ -4486,11 +4236,11 @@ window._cf_chl_opt.uaO = false;
             'ESyjF': function(h, i) {return i & h},
             'WTRuO': function(h, i) {return h >>> i},
             'MBvbB': function(h, i) {return h ^ i},
-            'TOJPz': c(1249),
+            'TOJPz': 'vAeUu',
             'hAeoh': function(h) {return h()},
             'ppUbp': function(h, i) {return h === i},
-            'qrgJJ': c(698),
-            'nGAbv': c(432),
+            'qrgJJ': 'ZnPeL',
+            'nGAbv': 'bubbles',
             'jlMck': function(h) {return h()},
             'cEeiS': function(h, i, j) {return h(i, j)},
             'ejRVo': 'spinner-icon',
@@ -4513,7 +4263,7 @@ window._cf_chl_opt.uaO = false;
                     'sCDky': function(k, l) {return k - l},
                     'NOjFf': function(k, l) {return l & k}
                 },
-                c(1249) !== d[c(1407)]) {
+                'vAeUu' !== d[c(1407)]) {
                     for (l = ['7', '12', '3', '16', '14', '0', '11', '15', '8', '9', '2', '10', '13', '5', '4', '1', '6'],
                     m = 0; true; ) {
                         switch (l[m++]) {
@@ -4638,9 +4388,9 @@ window._cf_chl_opt.uaO = false;
             }),
             d[c(1856)](hM, 'verifying-text'));
         else if (f = d[c(1229)](hF),
-        g = document.getElementById(f + c(1008)),
+        g = document.getElementById(f + '-please-wait'),
         g) {
-            if (d[c(1512)](c(698), d[c(1548)]))
+            if (d[c(1512)]('ZnPeL', d[c(1548)]))
                 g[c(1915)][c(1201)] = 'none';
             else
                 try {
@@ -4746,7 +4496,7 @@ window._cf_chl_opt.uaO = false;
     }
     function il(e, c, f, g, h, i, j, k, l, m) {
         if (f = {
-            'EGVuw': c(1255),
+            'EGVuw': 'catch',
             'aQJdT': 'ZNYtO',
             'WzHWi': function(n, o) {return n != o},
             'zXgVf': function(n, o) {return n !== o},
@@ -4755,7 +4505,7 @@ window._cf_chl_opt.uaO = false;
             'GXQmg': function(n, o) {return n || o},
             'ReTVn': function(n, o) {return n >= o},
             'wocQw': function(n) {return n()},
-            'dXmeH': c(274),
+            'dXmeH': '/reports/v0/post',
             'yWrkF': 'POST',
             'uPcww': 'Content-type',
             'zhGkB': 'application/json'
@@ -4825,7 +4575,7 @@ window._cf_chl_opt.uaO = false;
         window.parent) && (g = {},
         g.source = e[c(285)],
         g[c(673)] = f,
-        g[c(1005)] = c(1296),
+        g[c(1005)] = 'interactiveEnd',
         window.parent.postMessage(g, '*'))
     }
     function hg(c, d) {
@@ -4945,7 +4695,7 @@ window._cf_chl_opt.uaO = false;
                 j[c(1813)] = e[c(923)],
                 j[c(1915)][c(1201)] = e[c(1759)]
             }),
-            hJ(c(432), function(j, kc) {
+            hJ('bubbles', function(j, kc) {
                 kc = c,
                 j[k'innerHTML'] = kc(1619)
             })) : e[c(251)](hJ, e[c(1864)], function(j, kd) {
