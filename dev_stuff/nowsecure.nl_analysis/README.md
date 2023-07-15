@@ -105,6 +105,7 @@ self.onmessage = function(m) {
 ### `invisible.js` de-obfuscated
 - at [nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js](https://nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js)
 - and [bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js](https://bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js)
+
 ### `v1?ray=****************.js` de-obfuscated
 
 ```js
