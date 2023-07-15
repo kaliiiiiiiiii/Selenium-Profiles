@@ -1210,7 +1210,7 @@ window._cf_chl_opt.uaO = false;
                 false) ? (m = 1,
                 g._cf_chl_opt['cTplV'] && typeof h._cf_chl_opt['cTplV'] === 'number' && (m = j._cf_chl_opt['cTplV']),
                 m) : i == null ? '' : g.g(i, 6, function(m) {
-                    k['VxBop']['charAt'](m)
+                    k['VxBop'].charAt(m)
                 })
             },
             'g': function(i, j, o, kW, s, x, B, C, D, E, F, G, H, I, J, K, L, O, M) {
@@ -1565,14 +1565,14 @@ window._cf_chl_opt.uaO = false;
         !window._cf_chl_opt['uaOAd'])
             try {
                 // create empty worker
-                new Worker(URL['createObjectURL'](new Blob([''],{"type":'text/javascript'})))
+                new Worker(URL.createObjectURL(new Blob([''],{"type":'text/javascript'})))
             } catch (k) {
                 g = true
             }
         if (g) {
             (f['AMtso'](hk, 'outdated_browser'),
             window.parent) && (i = window._cf_chl_opt['chlApiWidgetId'],
-            window.parent['postMessage']) && ('eugPN' !== 'eugPN' ? f['dTDYr'](j, 'check_delays') : (j = {},
+            window.parent.postMessage) && ('eugPN' !== 'eugPN' ? f['dTDYr'](j, 'check_delays') : (j = {},
             j['source'] = 'cloudflare-challenge',
             j['widgetId'] = i,
             j['reason'] = 'outdated_browser',
@@ -1586,49 +1586,20 @@ window._cf_chl_opt.uaO = false;
         return hA(),
         true
     }),
-    fG.push(function(c, e, f, g, h, i, j, k) {
-        if (e = {},
-        e[c(1247)] = 'challenge-form',
-        e[c(1805)] = '3|1|7|4|6|0|5|8|2',
-        e[c(283)] = 'span',
-        e[c(1376)] = function(l, m) {
-            return l < m},
-        f = e,
-        g = document.getElementById(f[c(1247)]),
-        g) {
-            for (h = f[c(1805)].split('|'),
-            i = 0; true; ) {
-                switch (h[i++]) {
-                case '0':
-                    k[c(292)] = 'text-gray-600';
-                    continue;
-                case '1':
-                    j.style.display = 'none';
-                    continue;
-                case '2':
-                    j.appendChild(k);
-                    continue;
-                case '3':
-                    j = document.createElement('span');
-                    continue;
-                case '4':
-                    k = document.createElement(f[c(283)]);
-                    continue;
-                case '5':
-                    k.setAttribute(c(1142), 'error');
-                    continue;
-                case '6':
-                    f[c(1376)](Math[c(1905)](), .25) && (k.style.display = 'none');
-                    continue;
-                case '7':
-                    g.appendChild(j);
-                    continue;
-                case '8':
-                    k[c(316)] = 'error code: 1020';
-                    continue
-                }
-                break
-            }
+    fG.push(function() {
+        g = document.getElementById('challenge-form')
+        if (g) {
+            j = document.createElement('span')
+            j.style.display = 'none'
+            g.appendChild(j)
+
+            k = document.createElement('span')
+            (Math.random() < .25) && (k.style.display = 'none')
+            k.className = 'text-gray-600'
+            k.setAttribute('data-translate', 'error')
+            k.innerText = 'error code: 1020'
+
+            j.appendChild(k)
         }
     }),
     fG.push(function() {
@@ -1642,7 +1613,6 @@ window._cf_chl_opt.uaO = false;
         window._cf_chl_ctx.ffs = false,
         !window.Proxy || !Object.assign || !document.querySelector)
             return;
-
         h = {
             apply: function(i, j, k) {
                 return k.lenght != 0 && (k[0] == '#trk_jschal_js' || k[0] == '#cf-challenge-running') && (true ? window._cf_chl_ctx.ffs = true : e._cf_chl_ctx.ie.mm++),
@@ -1652,40 +1622,25 @@ window._cf_chl_opt.uaO = false;
         document.querySelector = new Proxy(document.querySelector,h)
     }),
     window._cf_chl_enter = function(c, d, e, f, h, j, k, g) {
-        for (c = c,
-        d = {'xKEoh': function(l, m) {
-                return l < m
-            },
-            'ZWQHc': function(l, m) {
-                return l + m
-            },
-            'mcXIZ': function(l, m) {
-                return l(m)
-            },
-            'kZEbp': function(l, m) {
-                return l + m
-            },
-            'qoIkb': '/cdn-cgi/challenge-platform/'
-        },
-        e = ['2', '5', '0', '4', '1', '6', '3'],
+        for (e = ['2', '5', '0', '4', '1', '6', '3'],
         f = 0; true; ) {
             switch (e[f++]) {
             case '0':
-                for (g = 0; d[c(585)](g, fG.length); g++)
+                for (g = 0; (g < fG.length); g++)
                     if (fG[g]() === false)
                         return;
                 continue;
             case '1':
-                h = j.cFPWv ? d[c(593)]('h/' + j.cFPWv, '/') : '';
+                h = j.cFPWv ? ('h/' + j.cFPWv + '/') : '';
                 continue;
             case '2':
-                if (window._cf_chl_opt[c(599)] !== 'd')
-                    window._cf_chl_opt[c(599)] = 'd';
+                if (window._cf_chl_opt.cLt !== 'd')
+                    window._cf_chl_opt.cLt = 'd';
                 else
                     return;
                 continue;
             case '3':
-                d['mcXIZ'](ic, function() {
+                ic(function() {
                     setTimeout(window.WZbB0, 100, k)
                 });
                 continue;
@@ -1696,7 +1651,7 @@ window._cf_chl_opt.uaO = false;
                 j = window._cf_chl_opt;
                 continue;
             case '6':
-                k = d[c(593)](d[c(593)](d[c(1212)](d[c(228)], h), 'flow/ov') + 1 + '/1187327337:1687885785:pJ8fhPQGnzupBtPvPK-VPJfKdSfDYY1hZA4hL-88qyU/' + j.cRay, '/') + j[ld(1909)];
+                k = '/cdn-cgi/challenge-platform/' + h + 'flow/ov' + 1 + '/1187327337:1687885785:pJ8fhPQGnzupBtPvPK-VPJfKdSfDYY1hZA4hL-88qyU/' + j.cRay + '/' + j.cHash;
                 continue
             }
             break
@@ -1743,7 +1698,7 @@ window._cf_chl_opt.uaO = false;
         g[c(146)] = 'HjFno',
         h = g,
         document.readyState && (h[c(1006)](document.readyState, 'complete') || document.readyState === h[c(1855)]))
-            window._cf_chl_opt[c(599)] = 'c',
+            window._cf_chl_opt.cLt = 'c',
             setTimeout(function(c, i, k, l, m, v) {
                 (i = {
                     'tCvIo': function(j, k, lq) {
@@ -3204,19 +3159,19 @@ window._cf_chl_opt.uaO = false;
         hP.style.display = 'flex',
         d['IivDQ'(window._cf_chl_opt.ui.getTemplateVersion(), 1) && (hP.style.alignItems = center,
         hP.style.justifyContent = 'center'),
-        hl() ? (hP[c(292)] = 'ctp-checkbox-container',
+        hl() ? (hP.className = 'ctp-checkbox-container',
         hP.setAttribute('role', 'alert'),
         f = document.createElement('label'),
-        f[c(292)] = d[c(908)],
+        f.className = d[c(908)],
         g = document.createElement('input'),
         g[c(1025)] = d[c(1225)],
         f.appendChild(g),
         h = document.createElement('span'),
-        h[c(292)] = d[c(1358)],
+        h.className = d[c(1358)],
         f.appendChild(h),
         i = document.createElement('span'),
         i.innerHTML = e,
-        i[c(292)] = d[c(1498)],
+        i.className = d[c(1498)],
         f.appendChild(i),
         hP.appendChild(f),
         d[c(400)](ht).appendChild(hP),
