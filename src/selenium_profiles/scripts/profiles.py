@@ -109,11 +109,12 @@ class cdp_handler:
                 # noinspection PyTypeChecker
                 metadata.update(profile["userAgentMetadata"])
 
+                brans_pattern = r'^Not[.:=)]A[/?;]Brand$'
                 if metadata["brands"]:
                     brands = []
                     # noinspection PyTypeChecker
                     for brand in metadata["brands"]:
-                        if not (brand["brand"] == "Not=A?Brand" or brand["brand"] == "Not)A;Brand"):
+                        if not re.match(brans_pattern, brand["brand"]):
                             brand["version"] = version.split(".")[0]
                         brands.append(brand)
                     # noinspection PyTypeChecker
@@ -123,7 +124,7 @@ class cdp_handler:
                     version_list = []
                     # noinspection PyTypeChecker
                     for i in metadata["fullVersionList"]:
-                        if not (i["brand"] == "Not=A?Brand" or i["brand"] == "Not)A;Brand"):
+                        if not re.match(brans_pattern, i["brand"]):
                             i["version"] = version
                         version_list.append(i)
                     # noinspection PyTypeChecker
