@@ -109,7 +109,7 @@ class cdp_handler:
                 # noinspection PyTypeChecker
                 metadata.update(profile["userAgentMetadata"])
 
-                brands_pattern = r'^Not[ (:-./);=?_]A[ (:-./);=?_]Brand$'
+                brands_pattern = r'^Not[ (:\-./);=?]A[ (:\-./);=?]Brand$'
                 if metadata["brands"]:
                     brands = []
                     # noinspection PyTypeChecker
