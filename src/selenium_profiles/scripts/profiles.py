@@ -98,8 +98,8 @@ class cdp_handler:
                 raise ValueError("driver or version needs to be specified")
 
         if type(version) == str:
+            import re
             if profile["userAgent"]:
-                import re
                 # noinspection PyTypeChecker
                 profile["userAgent"] = re.sub(r"(?<=Chrome/)\d+(?:\.\d+)+|(?<=Chromium/)\d+(?:\.\d+)+",
                                               version.split(".")[0] + ".0.0.0", profile["userAgent"])
@@ -109,7 +109,7 @@ class cdp_handler:
                 # noinspection PyTypeChecker
                 metadata.update(profile["userAgentMetadata"])
 
-                brands_pattern = r'^Not[ (:-./);=?_]A[ (:-./);=?_]Brand$'
+                brands_pattern = r'^Not[ (:\-./);=?]A[ (:\-./);=?]Brand$'
                 if metadata["brands"]:
                     brands = []
                     # noinspection PyTypeChecker
