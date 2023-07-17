@@ -1,7 +1,6 @@
 {
   "options": {
     "sandbox": true,
-    "window_size": {"x":1024,"y":648},
     "headless": false,
     "load_images": true,
     "incognito": true,

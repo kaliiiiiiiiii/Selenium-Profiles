@@ -150,6 +150,7 @@ class cdp_handler:
                 emulation.update({"screenWidth": emulation["width"]})
             if not "screenHeight" in emulation.keys():
                 emulation.update({"screenHeight": emulation["height"]})
+            self._driver.set_window_rect(0,0,emulation["width"], emulation["height"])
 
             return self._driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', emulation)
 
@@ -210,7 +211,7 @@ class cdp_handler:
 class options:  # webdriver.Chrome or uc.Chrome options
     # noinspection PyDefaultArgument,PyShadowingNames
     def __init__(self, options, options_profile: dict or None = None, duplicate_policy: str = "warn-add",
-                 safe_duplicates: list = ["--add-extension"]):
+                 safe_duplicates: list = None):
         """
         :param options:  for example ChromeOptions()
         :param options_profile: # profile["options"] for a Selenium-Profiles profile
@@ -224,12 +225,14 @@ class options:  # webdriver.Chrome or uc.Chrome options
 
         self.duplicate_policy = duplicate_policy
         self.duplicates = defaultdict(lambda: set())
+        if not safe_duplicates:
+            safe_duplicates = []
         self.safe_duplicates = safe_duplicates
 
         self.Options = options
         self.to_capabilities = self.Options.to_capabilities
 
-        self._profile_keys = ["sandbox", "window_size", "headless", "load_images", "incognito", "touch", "app", "gpu",
+        self._profile_keys = ["sandbox", "headless", "load_images", "incognito", "touch", "app", "gpu",
                               "proxy", "args", "capabilities", "experimental_options", "adb", "adb_package",
                               "use_running_app",
                               "extension_paths",
@@ -246,7 +249,6 @@ class options:  # webdriver.Chrome or uc.Chrome options
         valid_key(profile.keys(), self._profile_keys, "options_profile => profile['options']")
         # libs
         self.sandbox(enabled=profile["sandbox"], adb=profile["adb"])
-        self.window_size(profile["window_size"], adb=profile["adb"])
         self.headless(profile["headless"], profile["load_images"])
         self.incognito(profile["incognito"], profile["extensions"])
         self.touch(profile["touch"])
@@ -268,21 +270,6 @@ class options:  # webdriver.Chrome or uc.Chrome options
         if enabled is False:
             self.warn_adb_unsupported(adb, "disabling sandbox")
             self.extend_arguments(["--no-sandbox", "--test-type"])
-
-    # noinspection PyDefaultArgument
-    def window_size(self, size: Dict[str, str] or None = None, adb: bool or None = None):
-        """
-        :param size: defaults to default
-        :param adb: warning
-        """
-        if size:
-            self.warn_adb_unsupported(adb, "setting window_size")
-            if "x" not in size.keys():
-                raise ValueError("value 'x' is required for specifying window_size")
-            if "y" not in size.keys():
-                raise ValueError("value 'y' is required for specifying window_size")
-            valid_key(size.keys(), ["x", "y"], 'profile_options window_size => profile["options"]["window_size]')
-            self.add_argument("--window-size=" + str(size['x']) + "," + str(size['y']))
 
     # noinspection PyIncorrectDocstring
     def headless(self, headless: bool or None = None, load_images: bool or None = None, adb: bool or None = None):

@@ -1,8 +1,7 @@
 {
   "Android": {
     "options": {
-      "gpu": false,
-      "window_size": {"x":384,"y":700}
+      "gpu": false
     },
     "cdp": {
       "touch": true,
@@ -35,8 +34,7 @@
   "IOS": {},
   "Windows": {
     "options": {
-      "gpu": false,
-      "window_size": {"x":1024,"y":648}
+      "gpu": false
     },
     "cdp": {
       "touch": true,

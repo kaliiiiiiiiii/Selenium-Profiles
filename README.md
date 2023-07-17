@@ -67,7 +67,6 @@ profile = \
 {
   "options": {
       "sandbox": True,
-      "window_size": {"x":1024,"y":648},
       "headless": False,
       "load_images": True,
       "incognito": True,
