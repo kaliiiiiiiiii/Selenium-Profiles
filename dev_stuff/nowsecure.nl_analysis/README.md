@@ -59,6 +59,7 @@ onmessage = function(e) {var gsb = function(){
   - with local var
   - without local var
   - difference in bytes ??
+- might be bypassable with https://stackoverflow.com/a/49601237/20443541
 
 #### get "speed" of execution within worker
 ```js
