@@ -122,7 +122,6 @@ profile = \
 warning: 
 - this package is experimental and might include bugs, please report them at [bug-reports](https://github.com/kaliiiiiiiiii/Selenium-Driverless/issues)
 - only for python >=3.8
-- you'll need to install __pycdp__ first with `pip install git+https://github.com/HMaker/python-cdp.git@latest`
 ```python
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
