@@ -4,9 +4,9 @@
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
-* **Undetected** by Google, Cloudflare, creep-js using [selenium-driverless](# with selenium-driverless)
+* **Undetected** by Google, Cloudflare, creep-js using [selenium-driverless](#selenium-driverless)
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
-* [Touch Actions](# Touch_actions)
+* [Touch Actions](#Touch_actions)
 * dynamic proxies with authentication
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.profiles.fetch(url)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
@@ -118,7 +118,7 @@ profile = \
 }
 ```
 
-### with selenium-driverless
+### selenium-driverless
 warning: 
 - this package is experimental and might include bugs, please report them at [bug-reports](https://github.com/kaliiiiiiiiii/Selenium-Driverless/issues)
 - only for python >=3.8
