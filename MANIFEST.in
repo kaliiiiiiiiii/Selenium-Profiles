@@ -4,6 +4,4 @@ include LICENSE.md
 recursive-include tests test*.py
 graft src/selenium_profiles/js
 graft src/selenium_profiles/profiles
-graft src/selenium_profiles/files/proxy_extension
-graft src/selenium_profiles/files/tmp/proxy_extension
 

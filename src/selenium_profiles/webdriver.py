@@ -12,9 +12,10 @@ class Chrome(BaseDriver):
 
     # noinspection PyDefaultArgument
     def __init__(self, profile: dict = None, chrome_binary: str = None, executable_path: str = None,
-                 options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = ["--add-extension"],
+                 options=None, duplicate_policy: str = "warn-add", safe_duplicates: list = list(),
                  base_drivers:tuple=None,
-                 uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None, injector_options:dict or bool or None = None,
+                 uc_driver: bool or None = None, seleniumwire_options: dict or bool or None = None,
+                 injector_options:dict or bool or None = None, driverless_options = None,
                  **kwargs):
 
         import seleniumwire.undetected_chromedriver as wire_uc_webdriver
@@ -46,6 +47,14 @@ class Chrome(BaseDriver):
             else:
                 from selenium.webdriver import ChromeOptions
                 options = ChromeOptions()
+
+        if driverless_options:
+            try:
+                # noinspection PyUnresolvedReferences
+                from selenium_driverless.sync.webdriver import Chrome as DriverlessChrome
+            except:
+                raise RuntimeError("selenium-driverless requires Python>=3.8")
+            base_drivers = base_drivers + (DriverlessChrome,)
 
         if len(base_drivers) > 1:
             warnings.warn("More than one base_driver might not initialize correctly, seems buggy.\n Also, you might try different order")
@@ -105,6 +114,8 @@ class Chrome(BaseDriver):
         if (uc_webdriver.Chrome in base_drivers) or (wire_uc_webdriver.Chrome in base_drivers):
             if executable_path:
                 kwargs.update({"driver_executable_path": executable_path})
+        elif driverless_options:
+            pass
         else:
             # detectability options
             from selenium_profiles.scripts import undetected
@@ -130,10 +141,12 @@ class Chrome(BaseDriver):
             if (injector_options is True) or injector_options == {}:
                 injector_options = {}
             injector = Injector(**injector_options)
+            options_manager.add_extensions(injector.paths)
 
-            options_manager.add_argument(f'--load-extension={",".join(injector.paths)}')
 
         # add options to kwargs
+        # noinspection PyProtectedMember,PyUnresolvedReferences
+        options_manager.add_argument(f'--load-extension={",".join(options_manager._extensions)}')
         kwargs.update({"options": options_manager.Options})
 
         # Actual start of chrome

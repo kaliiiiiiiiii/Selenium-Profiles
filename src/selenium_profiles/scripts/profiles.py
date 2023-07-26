@@ -222,6 +222,7 @@ class options:  # webdriver.Chrome or uc.Chrome options
             options_profile = {}
         self.profile = defaultdict(lambda: None)
         self.profile.update(options_profile)
+        self._extensions = []
 
         self.duplicate_policy = duplicate_policy
         self.duplicates = defaultdict(lambda: set())
@@ -527,6 +528,6 @@ class options:  # webdriver.Chrome or uc.Chrome options
                             warnings.warn("Extension-file isn't *.zip or *.crx")
                         self.Options.add_extension(extension_path)
                     elif os.path.isdir(extension_path):
-                        self.add_argument('--load-extension=' + extension_path)
+                        self._extensions.append(extension_path)
                 else:
                     raise LookupError("Extension-path doesn't exist")

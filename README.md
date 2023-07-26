@@ -4,9 +4,9 @@
 
 * Overwrite **device metrics** using Selenium
 * Mobile and Desktop **emulation**
-* **Undetected** by Google, Cloudflare, creep-js ..
+* **Undetected** by Google, Cloudflare, creep-js using [selenium-driverless](# with selenium-driverless)
 * [Modifying headers](#Modify-headers) supported using [Selenium-Interceptor](https://github.com/kaliiiiiiiiii/Selenium-Interceptor) or seleniumwire
-* [Touch Actions](#Touch_actions)
+* [Touch Actions](# Touch_actions)
 * dynamic proxies with authentication
 * making single [POST](https://github.com/kaliiiiiiiiii/Selenium-Profiles/discussions/11#discussioncomment-4797109), GET or other requests using `driver.profiles.fetch(url)`  ([syntax](https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax))
 * headless unofficially supported
@@ -117,6 +117,30 @@ profile = \
   }
 }
 ```
+
+### with selenium-driverless
+warning: 
+- this package is experimental and might include bugs, please report them at [bug-reports](https://github.com/kaliiiiiiiiii/Selenium-Driverless/issues)
+- only for python >=3.8
+- you'll need to install __pycdp__ first with `* `pip install git+https://github.com/HMaker/python-cdp.git@latest``
+```python
+from selenium_profiles.webdriver import Chrome
+from selenium_profiles.profiles import profiles
+from selenium_driverless.webdriver import ChromeOptions
+from selenium_driverless.types.by import By
+
+profile = profiles.Windows()  # or .Android
+options = ChromeOptions()
+# options.add_argument("--headless=new")
+driver = Chrome(profile, options=options, driverless_options=True)
+
+# get url
+driver.get('https://nowsecure.nl#relax')  # test fingerprint
+
+driver.quit()  # Execute on the End!
+```
+see [documentation](https://github.com/kaliiiiiiiiii/Selenium-Driverless) for usages
+
 
 ### Modify-headers
 

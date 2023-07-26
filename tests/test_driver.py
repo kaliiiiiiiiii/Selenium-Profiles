@@ -13,7 +13,8 @@ def test_driver(choose: str, headless: bool = True, uc_driver=False):
     testprofile["options"]["headless"] = headless
     driver = Chrome(profile=testprofile, uc_driver=uc_driver)
     driver.get('https://browserleaks.com/client-hints')
-    useragent = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]').accessible_name
+    elem = driver.find_element(By.XPATH, '//*[@id="content"]/table[1]/tbody/tr/td[2]')
+    useragent = elem.text
     exported_profile = driver.profiles.get_profile()
     driver.quit()
 
