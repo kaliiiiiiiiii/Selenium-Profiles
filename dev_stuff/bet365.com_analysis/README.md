@@ -33,3 +33,5 @@ where C is a list of functions to patch:
 ### `ProductCommon_v1.js?seed=****************` de-obfuscated
 -  look like obfuscated with [Jscrambler](https://en.wikipedia.org/wiki/Jscrambler)
 
+### `unknown.js`
+- no idea where it came from (`VM171`)
