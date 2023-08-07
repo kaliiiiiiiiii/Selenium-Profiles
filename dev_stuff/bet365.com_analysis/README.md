@@ -1,8 +1,4 @@
-# Nowsecure Cloudfare analysis
-as 27.6.2023
-
-## Scripts
- look like obfuscated with [Jscrambler](https://en.wikipedia.org/wiki/Jscrambler)
+# bet365.com analysis
 
 ### `ProductCommon_v1.js`
 - at [365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js](https://www.365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js)
@@ -34,6 +30,6 @@ where C is a list of functions to patch:
 ]
 ```
 
-### `ProductCommon_v1.js?seed=****************.js` de-obfuscated
-- at [365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js?seed=****************.js](https://www.365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js?seed=AICwzNGJAQAANMPHm_3LPoi-vy22xUst6sG736Ql0Y4tQ_Kn7HCRMQnJcqju&PIRXTcSdwp--z=q)
+### `ProductCommon_v1.js?seed=****************` de-obfuscated
+-  look like obfuscated with [Jscrambler](https://en.wikipedia.org/wiki/Jscrambler)
 
