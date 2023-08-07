@@ -1,132 +1,39 @@
 # Nowsecure Cloudfare analysis
-as 7.8.2023
-- same scripts on [bscscan.com/contractsVerified](https://bscscan.com/contractsVerified)
-- => not just nowsecure-specific
-
-## Service-worker scripts
-overwriting javascript and emulation doesn't work there :(
-
-
-#### expose emulation and `navigator.webdriver`
-```js
-(function() {
-    var workerData = {
-        p: navigator.platform,
-        l: navigator.languages,
-        hwC: navigator.hardwareConcurrency,
-        dM: navigator.deviceMemory,
-        wd: navigator.webdriver,
-        uA: navigator.userAgent
-    };
-    postMessage(workerData);
-}
-)()
-```
-
-#### maximum Stack-size
-```js
-onmessage = function(e) {var gsb = function(){
-    var sizeA = 0;
-    var sizeB = 0;
-    var counter = 0;
-    try {
-        var fn_1 = function () {
-            counter += 1;
-            fn_1();
-        };
-        fn_1();
-    }
-    catch (_a) {
-        sizeA = counter;
-        try {
-            counter = 0;
-            var fn_2 = function () {
-                var local = 1;
-                counter += local;
-                fn_2();
-            };
-            fn_2();
-        }
-        catch (_b) {
-            sizeB = counter;
-        }
-    }
-    var bytes = (sizeB * 8) / (sizeA - sizeB);
-    return [sizeA, sizeB, bytes];
-}; postMessage({a3: gsb()})};
-```
-- seems to get the max stack size:
-  - with local var
-  - without local var
-  - difference in bytes ??
-- might be bypassable with https://stackoverflow.com/a/49601237/20443541
-
-#### get "speed" of execution within worker
-```js
-function getTimingResolution() {
-    var runs = 5000;
-    var valA = 1;
-    var valB = 1;
-    var res;
-    for (var i = 0; i < runs; i++) {
-        var a = performance.now();
-        var b = performance.now();
-        if (a < b) {
-            res = b - a;
-            if (res > valA && res < valB) {
-                valB = res;
-            } else if (res < valA) {
-                valB = valA;
-                valA = res;
-            }
-        }
-    }
-    return valA;
-};
-
-onmessage = function(){ postMessage({ a: getTimingResolution() })}
-```
-
-#### detect open devtools  with `debugger` statement
-```js
-self.onmessage = function(m) {
-    self.postMessage({
-        o: true
-    });
-    eval("debugger");
-    self.postMessage({
-        o: false
-    })
-}
-```
+as 27.6.2023
 
 ## Scripts
  look like obfuscated with [Jscrambler](https://en.wikipedia.org/wiki/Jscrambler)
 
-### `invisible.js` de-obfuscated
-- at [nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js](https://nowsecure.nl/cdn-cgi/challenge-platform/scripts/invisible.js)
-- and [bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js](https://bscscan.com/cdn-cgi/challenge-platform/h/b/scripts/jsd/556d0c9f/invisible.js)
+### `ProductCommon_v1.js`
+- at [365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js](https://www.365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js)
 
-### `v1?ray=****************.js` de-obfuscated
-
+#### `Object.toString()` patch
 ```js
-// assumption: check function
-    // args[0]: native function to check
-    // args[1]: globalThis
-function u(c, e) {
-   e instanceof c.Function && 0 < c.Function.prototype.toString.call(e).indexOf('[native code]')
+function() {
+    var f = c.lastIndexOf(this);
+        if (f >= 0) {
+           return d[f]
+        }
+        return b(this)
 }
 ```
-- check `.toString() == '[native code]'`
-- check `instanceof Function`
-
-```js
-// get all keys of object => return [key1, key2, ...]
-function w(c) {
-    for (b = b,
-    e = []; null !== c; e = e.concat(Object.keys(c)),
-    c = Object.getPrototypeOf(c));
-    return e
-}
+where C is a list of functions to patch:
+```json
+[
+  "function toString() { [native code] }", 
+  "function CustomEvent() { [native code] }", 
+  "function get cancelBubble() { [native code] }", 
+  "function set cancelBubble() { [native code] }", 
+  "function fetch() { [native code] }", 
+  "function submit() { [native code] }", 
+  "function preventDefault() { [native code] }", 
+  "function stopImmediatePropagation() { [native code] }", 
+  "function stopPropagation() { [native code] }", 
+  "function open() { [native code] }", 
+  "function send() { [native code] }"
+]
 ```
-check .getPrototypeOf() correlates with .keys()
+
+### `ProductCommon_v1.js?seed=****************.js` de-obfuscated
+- at [365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js?seed=****************.js](https://www.365365824.com/members/services/host/Scripts/js/ProductCommon_v1.js?seed=AICwzNGJAQAANMPHm_3LPoi-vy22xUst6sG736Ql0Y4tQ_Kn7HCRMQnJcqju&PIRXTcSdwp--z=q)
+
