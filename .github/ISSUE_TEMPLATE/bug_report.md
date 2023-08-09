@@ -26,6 +26,7 @@ A clear and concise description of what you expected to happen.
 - OS-Version [e.g. 10]
 - Browser [e.g. Google-Chrome, Chromium]
  - Selenium-Profiles Version [e.g. 2.2.5.1]
+ - Selenium Version [e.g. 4.11.1]
 
 **Additional context**
 Add any other context about the problem here.
