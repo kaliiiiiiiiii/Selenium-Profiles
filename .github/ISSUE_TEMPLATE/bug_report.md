@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 **Environment (please complete the following information):**
  - OS: [e.g. Windows, Google-Colab ]
 - OS-Version [e.g. 10]
-- Browser [e.g. `115.0.5790.166 (Official Build) (64-Bit) `]
+- Browser [e.g. `Google-Chrome, 115.0.5790.166 (Official Build) (64-Bit) `]
  - Selenium-Profiles Version [e.g. 2.2.5.1]
  - Selenium Version [e.g. 4.11.1]
  - Python versin [e.g. 3.7.9]
