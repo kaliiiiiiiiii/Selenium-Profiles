@@ -108,7 +108,7 @@ class Chrome(BaseDriver):
                                           safe_duplicates=safe_duplicates)
 
         # chrome executable path
-        if not chrome_binary:
+        if chrome_binary:
             options_manager.Options.binary_location = chrome_binary
 
         if (uc_webdriver.Chrome in base_drivers) or (wire_uc_webdriver.Chrome in base_drivers):
