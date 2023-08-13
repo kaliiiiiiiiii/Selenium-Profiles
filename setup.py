@@ -4,12 +4,7 @@ import sys
 
 requirements = ['selenium', 'requests', 'selenium-interceptor',
                 "undetected-chromedriver", "selenium-wire", "webdriver-manager",
-                "selenium-injector>=2.3"]
-
-py_version = sys.version_info
-if py_version.major >= 3 and py_version.minor >= 8:
-    # requires python >= 3.8
-    requirements.append("selenium-driverless>=1.2.2")
+                "selenium-injector>=2.3","selenium-driverless>=1.2.2"]
 
 if 'google.colab' in sys.modules: # we're on google-colab
     requirements.extend(['PyVirtualDisplay', "google-colab-shell"])
