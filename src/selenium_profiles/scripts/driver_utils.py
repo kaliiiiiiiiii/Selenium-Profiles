@@ -1,7 +1,7 @@
 class requests:
     def __init__(self, driver):
         self.driver = driver
-        self.methods = ["GET","HEAD" "POST", "PUT", "DELETE","OPTIONS"] # TRACE, CONNECT exluded here
+        self.methods = ["GET","HEAD", "POST", "PUT", "DELETE","OPTIONS"] # TRACE, CONNECT exluded here
         self.supported_credentials = ["omit", "same-origin", "include"]
         self.modes = ["cors", "no-cors", "same-origin"]
         self.cache_values = ["default", "no-store", "reload", "no-cache", "force-cache", "only-if-cached"]
