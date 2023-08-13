@@ -1,9 +1,15 @@
-selenium_profiles>=2.2.5.5
-requests==2.31.0
-selenium==4.8.3 # 4.1.0 for touch_actions
-setuptools==67.6.0
-undetected-chromedriver==3.4.6
-trio
-pillow
-selenium-interceptor>=1.0.2
+selenium
+requests
+selenium-interceptor
+undetected-chromedriver
 selenium-wire
+webdriver-manager
+selenium-injector>=2.3
+
+# google-colab
+# PyVirtualDisplay
+# google-colab-shell
+
+# dev
+setuptools
+twine
