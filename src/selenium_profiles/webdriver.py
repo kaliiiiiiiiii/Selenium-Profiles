@@ -18,9 +18,11 @@ class Chrome(BaseDriver):
                  injector_options:dict or bool or None = None, driverless_options = None,
                  **kwargs):
 
-        import seleniumwire.undetected_chromedriver as wire_uc_webdriver
+
         import undetected_chromedriver as uc_webdriver
+        import seleniumwire.undetected_chromedriver as wire_uc_webdriver
         from seleniumwire import webdriver as wire_webdriver
+
 
         from selenium_profiles.utils.utils import valid_key
 
@@ -168,7 +170,7 @@ class Chrome(BaseDriver):
 
         self.profiles.cdp_handler.apply(cdp_profile=profile["cdp"])
 
-        if not uc_driver:
+        if not (uc_driver or driverless_options):
             from selenium_profiles.scripts import undetected
             undetected.exec_cdp(self, cdp_handler=self.profiles.cdp_handler)
 
