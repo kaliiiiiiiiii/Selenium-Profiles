@@ -4,7 +4,7 @@ selenium-interceptor
 undetected-chromedriver
 selenium-wire
 webdriver-manager
-selenium-injector>=2.3
+selenium-injector
 
 # google-colab
 # PyVirtualDisplay
