@@ -20,9 +20,8 @@ class Chrome(BaseDriver):
 
 
         import undetected_chromedriver as uc_webdriver
-        if seleniumwire_options:
-            import seleniumwire.undetected_chromedriver as wire_uc_webdriver
-            from seleniumwire import webdriver as wire_webdriver
+        import seleniumwire.undetected_chromedriver as wire_uc_webdriver
+        from seleniumwire import webdriver as wire_webdriver
 
 
         from selenium_profiles.utils.utils import valid_key
@@ -34,13 +33,11 @@ class Chrome(BaseDriver):
         webdriver = None
         if uc_driver:
             if seleniumwire_options:
-                # noinspection PyUnboundLocalVariable
                 webdriver = wire_uc_webdriver
             else:
                 webdriver = uc_webdriver
         else:
             if seleniumwire_options:
-                # noinspection PyUnboundLocalVariable
                 webdriver = wire_webdriver
 
         if webdriver:
