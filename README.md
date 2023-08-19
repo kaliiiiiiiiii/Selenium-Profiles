@@ -121,6 +121,9 @@ profile = \
 ### selenium-driverless
 warning: 
 - this package is experimental and might include bugs, please report them at [bug-reports](https://github.com/kaliiiiiiiiii/Selenium-Driverless/issues)
+- might only work with 64-bit Python installations
+- profiles might make it detected
+- requires `pip install selenium-driverless>=1.3.4` first
 ```python
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
