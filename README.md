@@ -13,6 +13,16 @@
 * apply profile on already running driver with `driver.profiles.apply(profiles.Android())`
 * use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
+## Sponsors
+
+### [Capsolver](https://is.gd/OJSVP4)
+
+<a href="https://is.gd/OJSVP4" >
+  <img src="https://github.com/kaliiiiiiiiii/Selenium-Driverless/blob/master/assets/capsolver.png" alt="drawing" width="60%"/>
+</a>
+
+An AI-powered captcha-solver service.
+
 for the latest features, have a look at the `dev` branch
 
 ### Feel free to test my code!
