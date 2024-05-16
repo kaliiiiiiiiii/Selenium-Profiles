@@ -27,6 +27,7 @@ A clear and concise description of what you expected to happen.
 - Browser [e.g. `Google-Chrome, 115.0.5790.166 (Official Build) (64-Bit) `]
  - Selenium-Profiles Version [e.g. 2.2.5.1]
  - Selenium Version [e.g. 4.11.1]
+ - selenium-driverless Version [e.g. 1.4.1]
  - Python versin [e.g. 3.7.9]
 
 **Additional context**
