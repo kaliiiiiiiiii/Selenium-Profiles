@@ -17,12 +17,12 @@
 
 ### [Capsolver](https://is.gd/OJSVP4)
 
-<a href="https://is.gd/hq6iTS" >
-  <img src="https://github.com/kaliiiiiiiiii/Selenium-Driverless/blob/master/assets/capsolver.png" alt="drawing" width="60%"/>
+<a href="https://is.gd/w4deja" >
+  <img src="https://github.com/kaliiiiiiiiii/Selenium-Driverless/blob/master/assets/CapSolver Ads.png" alt="drawing" width="60%"/>
 </a>
 
 <!--- 
-https://is.gd/stats.php?url=hq6iTS
+https://is.gd/stats.php?url=w4deja
 --->
 
 An AI-powered captcha-solver service.
