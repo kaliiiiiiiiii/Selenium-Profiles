@@ -18,8 +18,6 @@ This project is currently not being sponsored.
 
 for the latest features, have a look at the `dev` branch
 
-### Feel free to test my code!
-
 ## Getting Started
 
 ### Dependencies
