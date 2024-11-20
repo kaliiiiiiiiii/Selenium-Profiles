@@ -14,18 +14,7 @@
 * use of [seleniumwire](https://github.com/wkeeling/selenium-wire)
 
 ## Sponsors
-
-### [Capsolver](https://is.gd/hq6iTS)
-
-<a href="https://is.gd/w4deja" >
-  <img src="https://github.com/kaliiiiiiiiii/Selenium-Driverless/blob/master/assets/CapSolver Ads.png" alt="drawing" width="60%"/>
-</a>
-
-<!--- 
-https://is.gd/stats.php?url=w4deja
---->
-
-An AI-powered captcha-solver service.
+This project is currently not being sponsored.
 
 for the latest features, have a look at the `dev` branch
 
